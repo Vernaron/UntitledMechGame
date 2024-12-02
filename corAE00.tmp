@@ -1,0 +1,35 @@
+[gd_scene load_steps=6 format=3 uid="uid://bmlxiimebv5fi"]
+
+[ext_resource type="Script" path="res://Camera2D.gd" id="1_dcmfb"]
+[ext_resource type="Texture2D" uid="uid://dggqs5eqnf47b" path="res://icon.svg" id="1_nfxue"]
+[ext_resource type="Script" path="res://Legs.gd" id="1_u4xsa"]
+[ext_resource type="Script" path="res://Body.gd" id="3_rxfhr"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_tntyi"]
+
+[node name="Node2D" type="Node2D"]
+
+[node name="Arena" type="Node2D" parent="."]
+unique_name_in_owner = true
+
+[node name="Camera2D" type="Camera2D" parent="Arena"]
+zoom = Vector2(0.5, 0.5)
+script = ExtResource("1_dcmfb")
+
+[node name="Legs" type="CharacterBody2D" parent="Arena"]
+unique_name_in_owner = true
+collision_mask = 29
+motion_mode = 1
+script = ExtResource("1_u4xsa")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Arena/Legs"]
+shape = SubResource("CircleShape2D_tntyi")
+
+[node name="Sprite2D" type="Sprite2D" parent="Arena/Legs"]
+texture = ExtResource("1_nfxue")
+
+[node name="Body" type="Sprite2D" parent="Arena/Legs"]
+position = Vector2(-9.53674e-07, 0)
+scale = Vector2(0.328125, 1)
+texture = ExtResource("1_nfxue")
+script = ExtResource("3_rxfhr")

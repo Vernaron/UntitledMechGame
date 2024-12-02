@@ -1,0 +1,51 @@
+[gd_scene load_steps=7 format=3 uid="uid://cuq7wsqmeyfeu"]
+
+[ext_resource type="Script" path="res://Camera2D.gd" id="1_mtnlw"]
+[ext_resource type="Script" path="res://ShakeIntensity.gd" id="2_ljbyw"]
+[ext_resource type="Script" path="res://Legs.gd" id="3_ee4gl"]
+[ext_resource type="Texture2D" uid="uid://dggqs5eqnf47b" path="res://icon.svg" id="4_k88q0"]
+[ext_resource type="Script" path="res://Body.gd" id="5_jfexe"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_tntyi"]
+
+[node name="Arena" type="Node2D"]
+
+[node name="mainCamera" type="Camera2D" parent="."]
+unique_name_in_owner = true
+zoom = Vector2(0.5, 0.5)
+script = ExtResource("1_mtnlw")
+
+[node name="ShakeIntensity" type="HSlider" parent="mainCamera"]
+offset_left = -1130.0
+offset_top = -695.0
+offset_right = -780.0
+offset_bottom = -472.0
+max_value = 300.0
+step = 25.0
+value = 100.0
+tick_count = 12
+ticks_on_borders = true
+script = ExtResource("2_ljbyw")
+
+[node name="Legs" type="CharacterBody2D" parent="."]
+unique_name_in_owner = true
+collision_mask = 29
+motion_mode = 1
+script = ExtResource("3_ee4gl")
+dash_time = 0.1
+dash_cooldown = 1.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Legs"]
+shape = SubResource("CircleShape2D_tntyi")
+
+[node name="Sprite2D" type="Sprite2D" parent="Legs"]
+texture = ExtResource("4_k88q0")
+
+[node name="Body" type="Sprite2D" parent="Legs"]
+position = Vector2(-9.53674e-07, 0)
+scale = Vector2(0.328125, 1)
+texture = ExtResource("4_k88q0")
+script = ExtResource("5_jfexe")
+RELOAD_SPEED = 0.3
+
+[connection signal="drag_ended" from="mainCamera/ShakeIntensity" to="mainCamera/ShakeIntensity" method="_on_drag_ended"]

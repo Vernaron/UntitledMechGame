@@ -1,0 +1,14 @@
+[gd_scene load_steps=4 format=3 uid="uid://bmlxiimebv5fi"]
+
+[ext_resource type="Script" path="res://core_scene.gd" id="1_4krre"]
+[ext_resource type="Texture2D" uid="uid://dggqs5eqnf47b" path="res://icon.svg" id="1_nfxue"]
+[ext_resource type="PackedScene" uid="uid://cuq7wsqmeyfeu" path="res://arena.tscn" id="2_5bmao"]
+
+[node name="root" type="Node2D"]
+script = ExtResource("1_4krre")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(30, 30)
+texture = ExtResource("1_nfxue")
+
+[node name="Arena" parent="." instance=ExtResource("2_5bmao")]
