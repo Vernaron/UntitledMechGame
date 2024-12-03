@@ -13,12 +13,7 @@ var angle_locked = 0
 var current_dash_cooldown = 0
 var current_dash_time = 0
 func _process(delta):
-	if(Input.is_action_pressed("up")||Input.is_action_pressed("down")
-	   || Input.is_action_pressed("left")||Input.is_action_pressed("right")):
-		get_turn_vec()
-		angle = atan2(turn_vec.x, turn_vec.y)
-		curr_move_ratio=min(1.0, curr_move_ratio+ACCELERATION)
-	turn()
+
 	if(Input.is_action_just_pressed("special")&& current_dash_cooldown<=0):
 		curr_dash_ratio = 1*ACCELERATION
 		angle_locked = angle
@@ -27,6 +22,12 @@ func _process(delta):
 		
 		
 func _physics_process(delta):
+	if(Input.is_action_pressed("up")||Input.is_action_pressed("down")
+	   || Input.is_action_pressed("left")||Input.is_action_pressed("right")):
+		get_turn_vec()
+		angle = atan2(turn_vec.x, turn_vec.y)
+		curr_move_ratio=min(1.0, curr_move_ratio+ACCELERATION)
+	turn()
 	velocity = (Vector2(0,-curr_move_ratio*1).rotated(rotation)+
 		Vector2(0, -curr_dash_ratio*10).rotated(angle_locked)) * SPEED
 	curr_move_ratio*=(1-ACCELERATION)/5

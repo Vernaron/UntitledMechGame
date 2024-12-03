@@ -10,12 +10,13 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	look_at(get_global_mouse_position())
-	rotate(PI/2)
 	if(Input.is_action_pressed("shoot")):
 		shoot()
 	if(curr_reload>0):
 		curr_reload-=delta
+func _physics_process(delta):
+	look_at(get_global_mouse_position())
+	rotate(PI/2)
 func shoot():
 	if(curr_reload<=0):
 		curr_reload = RELOAD_SPEED

@@ -11,7 +11,7 @@ func _ready():
 func _process(delta):
 	pass
 func _physics_process(delta):
-	if((%Legs.position-position).length()>150):
+	if((%Legs.position-position).length()>0):
 		position += (%Legs.position - position)/20
 	shake(delta)
 	
@@ -32,10 +32,6 @@ func start_shaking(intensity, time):
 	if intensity!=0&&time!=0:
 		shaking_list.append([intensity, time])
 	
-
-
-func _on_h_slider_drag_ended(value_changed):
-	pass # Replace with function body.
 
 
 
