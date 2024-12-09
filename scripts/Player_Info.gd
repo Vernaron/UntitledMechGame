@@ -2,6 +2,10 @@ extends Node2D
 
 
 # Called when the node enters the scene tree for the first time.
+var bodies_list = {}
+var legs_list = {}
+var weapons_list = {}
+var target : Node2D = null
 var bodies=[]
 var legs=[]
 var modules = []
@@ -23,13 +27,13 @@ var progress = {
 }
 var default_save = {
 	"save_ver":1.0,
-	"owned_bodies":["strider_body_1"],
-	"owned_legs":["strider_legs_1"],
+	"owned_bodies":["strider_1"],
+	"owned_legs":["strider_1"],
 	"owned_modules":[],
 	"owned_weapons":[["bolter",2]],
 	"saved_inventory":[],
-	"active_body":"strider_body_1",
-	"active_legs":"strider_legs_1",
+	"active_body":"strider_1",
+	"active_legs":"strider_1",
 	"active_body_mods":[],
 	"active_leg_mods":[],
 	"active_weapons":["bolter","bolter"],
@@ -49,20 +53,11 @@ func _ready():
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
+func _process(_delta):
 	pass
 func readSettings():
 	settings = readFile("settings", default_settings)
-	print(settings)
-	#if(FileAccess.file_exists("user://settings.data")):
-	#	var settingsFile = FileAccess.open("user://settings.data", FileAccess.READ)
-	#	settings = JSON.parse_string(settingsFile.get_line())
-	#	print(settings)
-		
-	#else:
-	#	FileAccess.open("user://settings.data", FileAccess.WRITE).store_string(
-	#		JSON.stringify(default_settings)
-	#	)
+
 func readFile(filename:String, default:Dictionary)->Variant : 
 	var filepath = "user://"+filename+".data"
 	if(FileAccess.file_exists(filepath)):

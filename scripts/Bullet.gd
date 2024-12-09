@@ -5,8 +5,7 @@ class_name Bullet
 
 
 
-
-func _physics_process(delta):
+func _physics_process(_delta):
 	velocity = Vector2(0, -SPEED).rotated(rotation)
 	
 	move_and_slide()

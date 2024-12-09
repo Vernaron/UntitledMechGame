@@ -1,0 +1,25 @@
+[gd_scene load_steps=5 format=3 uid="uid://dmp714q72dxit"]
+
+[ext_resource type="Script" path="res://scripts/mech_enemy_legs.gd" id="1_nnusb"]
+[ext_resource type="Texture2D" uid="uid://dggqs5eqnf47b" path="res://icon.svg" id="2_yxnnr"]
+[ext_resource type="Script" path="res://scripts/mech_enemy_body.gd" id="3_p6k87"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_j8bok"]
+radius = 63.01
+
+[node name="Legs" type="CharacterBody2D"]
+script = ExtResource("1_nnusb")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_yxnnr")
+
+[node name="Body" type="Node2D" parent="."]
+position = Vector2(-9.53674e-07, 0)
+scale = Vector2(0.328125, 1)
+script = ExtResource("3_p6k87")
+
+[node name="Sprite2D" type="Sprite2D" parent="Body"]
+texture = ExtResource("2_yxnnr")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_j8bok")

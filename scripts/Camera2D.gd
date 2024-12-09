@@ -1,18 +1,20 @@
 extends Camera2D
 
-var intensity = ProjectSettings.get_setting("global/shake_intensity")
 # Called when the node enters the scene tree for the first time.
 var shaking_list = []
+var target : Node2D
 func _ready():
 	pass # Replace with function body.
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
+func _process(_delta):
 	pass
+func set_target(_target : Node2D):
+	target = _target
 func _physics_process(delta):
-	if((%Legs.position-position).length()>0):
-		position += (%Legs.position - position)/20
+	if((target.position-position).length()>0):
+		position += (target.position - position)/20
 	shake(delta)
 	
 func shake(delta):

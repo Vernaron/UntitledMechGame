@@ -1,0 +1,105 @@
+[gd_scene load_steps=10 format=3 uid="uid://cuq7wsqmeyfeu"]
+
+[ext_resource type="Script" path="res://Camera2D.gd" id="1_mtnlw"]
+[ext_resource type="Script" path="res://arena.gd" id="1_rl44l"]
+[ext_resource type="Script" path="res://ShakeIntensity.gd" id="2_ljbyw"]
+[ext_resource type="Script" path="res://Legs.gd" id="3_ee4gl"]
+[ext_resource type="Texture2D" uid="uid://dggqs5eqnf47b" path="res://icon.svg" id="4_k88q0"]
+[ext_resource type="Script" path="res://Menu.gd" id="5_akwam"]
+[ext_resource type="Script" path="res://Body.gd" id="5_jfexe"]
+[ext_resource type="Script" path="res://MainContainer.gd" id="7_odq32"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_tntyi"]
+
+[node name="Arena" type="Node2D"]
+process_mode = 1
+script = ExtResource("1_rl44l")
+
+[node name="mainCamera" type="Camera2D" parent="."]
+unique_name_in_owner = true
+zoom = Vector2(0.5, 0.5)
+drag_left_margin = 0.01
+drag_top_margin = 0.01
+drag_right_margin = 0.01
+drag_bottom_margin = 0.01
+script = ExtResource("1_mtnlw")
+
+[node name="Legs" type="CharacterBody2D" parent="."]
+unique_name_in_owner = true
+collision_mask = 29
+motion_mode = 1
+script = ExtResource("3_ee4gl")
+SPEED = 581.651
+ACCELERATION = 0.4
+dash_time = 3.867
+dash_cooldown = 1.0
+dash_speed = 210.314
+current_dash_type = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Legs"]
+shape = SubResource("CircleShape2D_tntyi")
+
+[node name="Sprite2D" type="Sprite2D" parent="Legs"]
+texture = ExtResource("4_k88q0")
+
+[node name="Body" type="Sprite2D" parent="Legs"]
+position = Vector2(-9.53674e-07, 0)
+scale = Vector2(0.328125, 1)
+texture = ExtResource("4_k88q0")
+script = ExtResource("5_jfexe")
+RELOAD_SPEED = 0.3
+
+[node name="Menu" type="CanvasLayer" parent="."]
+process_mode = 3
+script = ExtResource("5_akwam")
+
+[node name="MainContainer" type="AspectRatioContainer" parent="Menu"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("7_odq32")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Menu/MainContainer"]
+layout_mode = 2
+
+[node name="MenuButton" type="MenuButton" parent="Menu/MainContainer/VBoxContainer"]
+layout_mode = 2
+text = "Settings"
+item_count = 2
+popup/item_0/text = "Settings"
+popup/item_0/id = 0
+popup/item_1/text = "Controls"
+popup/item_1/id = 1
+
+[node name="Settings" type="PopupMenu" parent="Menu/MainContainer/VBoxContainer/MenuButton"]
+
+[node name="Settings" type="TabContainer" parent="Menu/MainContainer/VBoxContainer/MenuButton/Settings"]
+offset_left = 252.0
+offset_right = 900.0
+offset_bottom = 648.0
+
+[node name="Graphics" type="VBoxContainer" parent="Menu/MainContainer/VBoxContainer/MenuButton/Settings/Settings"]
+layout_mode = 2
+
+[node name="ShakeIntensity" type="HSlider" parent="Menu/MainContainer/VBoxContainer/MenuButton/Settings/Settings/Graphics"]
+layout_mode = 2
+max_value = 300.0
+step = 25.0
+value = 100.0
+tick_count = 12
+ticks_on_borders = true
+script = ExtResource("2_ljbyw")
+
+[node name="Controls" type="VBoxContainer" parent="Menu/MainContainer/VBoxContainer/MenuButton/Settings/Settings"]
+visible = false
+layout_mode = 2
+
+[node name="OptionButton" type="OptionButton" parent="Menu/MainContainer/VBoxContainer/MenuButton"]
+layout_mode = 0
+offset_right = 14.0
+offset_bottom = 20.0
+
+[connection signal="item_rect_changed" from="mainCamera" to="Menu/MainContainer" method="_on_main_camera_item_rect_changed"]
+[connection signal="drag_ended" from="Menu/MainContainer/VBoxContainer/MenuButton/Settings/Settings/Graphics/ShakeIntensity" to="Menu/MainContainer/VBoxContainer/MenuButton/Settings/Settings/Graphics/ShakeIntensity" method="_on_drag_ended"]

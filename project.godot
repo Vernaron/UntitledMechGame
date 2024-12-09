@@ -11,13 +11,14 @@ config_version=5
 [application]
 
 config/name="UntitledMechGame"
-run/main_scene="res://core_scene.tscn"
+run/main_scene="res://scenes/core_scene.tscn"
 config/features=PackedStringArray("4.1", "GL Compatibility")
 config/icon="res://icon.svg"
 
 [autoload]
 
-PlayerInfo="*res://Player_Info.gd"
+PlayerInfo="*res://scripts/Player_Info.gd"
+ItemData="*res://scripts/Item_Data.gd"
 
 [dotnet]
 

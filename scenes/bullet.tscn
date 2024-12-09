@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://10sc537gku43"]
 
-[ext_resource type="Script" path="res://Bullet.gd" id="1_cj1yo"]
+[ext_resource type="Script" path="res://scripts/Bullet.gd" id="1_p75r2"]
 [ext_resource type="Texture2D" uid="uid://dggqs5eqnf47b" path="res://icon.svg" id="2_ehxyj"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_ihvry"]
@@ -11,7 +11,7 @@ height = 38.0
 position = Vector2(2.90644e-06, 0)
 collision_layer = 2
 collision_mask = 20
-script = ExtResource("1_cj1yo")
+script = ExtResource("1_p75r2")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CapsuleShape2D_ihvry")
