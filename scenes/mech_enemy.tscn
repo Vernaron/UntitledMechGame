@@ -1,25 +1,33 @@
-[gd_scene load_steps=5 format=3 uid="uid://dmp714q72dxit"]
+[gd_scene load_steps=7 format=3 uid="uid://cmwtuxws5txrm"]
 
 [ext_resource type="Script" path="res://scripts/mech_enemy_legs.gd" id="1_nnusb"]
-[ext_resource type="Texture2D" uid="uid://dggqs5eqnf47b" path="res://icon.svg" id="2_yxnnr"]
+[ext_resource type="SpriteFrames" uid="uid://cqborks534jmw" path="res://assets/Strider_Legs_1.tres" id="2_dwem5"]
 [ext_resource type="Script" path="res://scripts/mech_enemy_body.gd" id="3_p6k87"]
-
-[sub_resource type="CircleShape2D" id="CircleShape2D_j8bok"]
-radius = 63.01
+[ext_resource type="Texture2D" uid="uid://cfmn85c2ubch1" path="res://assets/Strider_Head_1.png" id="4_j66fc"]
+[ext_resource type="PackedScene" uid="uid://fqojb4na28fx" path="res://particles/bullet_richochet.tscn" id="5_p4s0p"]
+[ext_resource type="Script" path="res://scenes/LegCollisionPolygon.gd" id="6_l22hl"]
 
 [node name="Legs" type="CharacterBody2D"]
+collision_layer = 4
+collision_mask = 23
 script = ExtResource("1_nnusb")
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
-texture = ExtResource("2_yxnnr")
+[node name="LegsSprite" type="AnimatedSprite2D" parent="."]
+scale = Vector2(4, 4)
+sprite_frames = ExtResource("2_dwem5")
+
+[node name="GPUParticles2D" parent="." instance=ExtResource("5_p4s0p")]
 
 [node name="Body" type="Node2D" parent="."]
+z_index = 2
 position = Vector2(-9.53674e-07, 0)
-scale = Vector2(0.328125, 1)
 script = ExtResource("3_p6k87")
+team = 1
 
-[node name="Sprite2D" type="Sprite2D" parent="Body"]
-texture = ExtResource("2_yxnnr")
+[node name="BodySprite" type="Sprite2D" parent="Body"]
+scale = Vector2(4, 4)
+texture = ExtResource("4_j66fc")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource("CircleShape2D_j8bok")
+[node name="LegCollisionPolygon" type="CollisionPolygon2D" parent="."]
+polygon = PackedVector2Array(0, -52, -28, -4, -60, -4, -60, 36, 0, 44, 60, 35, 60, -3, 28, -4)
+script = ExtResource("6_l22hl")

@@ -1,16 +1,17 @@
 extends Node2D
 class_name Body
-var hardpoint_preload = preload("res://scenes/hardpoint.tscn")
 @export var RELOAD_SPEED = 1.0
 var curr_reload = 0
 var angle = 0
 @export_range(.1, 1) var ACCELERATION : float =1
 @export var armor:float =1
 @export_range(1, 5) var hardpoints
+@export_range(0, 2) var team : int
 var hardpoint_arr = []
 var delta_buildup = 0
 var camera = null
 var root = null
+
 #Hardpoint that encapsulates a weapon
 class Hardpoint:
 	var weapon : ItemData.Weapon
@@ -35,7 +36,8 @@ func set_current_body(body : Dictionary):
 	hardpoints = body["hardpoint_count"]
 	for hardpoint in body["hardpoints"]:
 		hardpoint_arr.append(Hardpoint.new(hardpoint[1], hardpoint[0]))
-
+	$BodySprite.texture = body["sprite"]
+	
 func set_weapon(weapon, index):
 	weapon.set_references(root, self, camera)
 	weapon.offset = hardpoint_arr[index].offset

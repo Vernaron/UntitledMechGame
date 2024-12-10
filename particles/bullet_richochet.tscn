@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://fqojb4na28fx"]
+
+[ext_resource type="Material" uid="uid://dtitmk8g08m5g" path="res://particles/bullet_spark.tres" id="1_0ja2j"]
+[ext_resource type="Script" path="res://scripts/bullet_richochet.gd" id="2_wgkl1"]
+
+[node name="GPUParticles2D" type="GPUParticles2D"]
+z_index = 5
+rotation = -1.98793
+emitting = false
+amount = 5
+process_material = ExtResource("1_0ja2j")
+lifetime = 0.4
+one_shot = true
+explosiveness = 1.0
+script = ExtResource("2_wgkl1")

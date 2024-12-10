@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3 uid="uid://cdicfkptuy1bd"]
+
+[ext_resource type="Script" path="res://addons/packedarraycopier/packedarraycopier.gd" id="1_82uvd"]
+
+[node name="packedarray_tool" type="Node2D"]
+script = ExtResource("1_82uvd")
+array = PackedVector2Array(0, -36, -60, -25, -60, 20, -34, 34, 36, 34, 48, -3, 47, -31)

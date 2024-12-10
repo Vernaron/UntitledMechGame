@@ -1,0 +1,73 @@
+[gd_scene load_steps=6 format=3 uid="uid://cuq7wsqmeyfeu"]
+
+[ext_resource type="Script" path="res://scripts/arena.gd" id="1_dggth"]
+[ext_resource type="Script" path="res://scripts/Camera2D.gd" id="2_rbf87"]
+[ext_resource type="Script" path="res://scripts/Menu.gd" id="4_k4184"]
+[ext_resource type="Script" path="res://scripts/MainContainer.gd" id="5_yjrli"]
+[ext_resource type="Script" path="res://scripts/ShakeIntensity.gd" id="6_riicw"]
+
+[node name="Arena" type="Node2D"]
+process_mode = 1
+script = ExtResource("1_dggth")
+
+[node name="mainCamera" type="Camera2D" parent="."]
+unique_name_in_owner = true
+zoom = Vector2(0.5, 0.5)
+drag_left_margin = 0.01
+drag_top_margin = 0.01
+drag_right_margin = 0.01
+drag_bottom_margin = 0.01
+script = ExtResource("2_rbf87")
+
+[node name="Menu" type="CanvasLayer" parent="."]
+process_mode = 3
+script = ExtResource("4_k4184")
+
+[node name="MainContainer" type="AspectRatioContainer" parent="Menu"]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("5_yjrli")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Menu/MainContainer"]
+layout_mode = 2
+
+[node name="MenuButton" type="MenuButton" parent="Menu/MainContainer/VBoxContainer"]
+layout_mode = 2
+text = "Settings"
+item_count = 2
+popup/item_0/text = "Settings"
+popup/item_0/id = 0
+popup/item_1/text = "Controls"
+popup/item_1/id = 1
+
+[node name="Settings" type="PopupMenu" parent="Menu/MainContainer/VBoxContainer/MenuButton"]
+
+[node name="Settings" type="TabContainer" parent="Menu/MainContainer/VBoxContainer/MenuButton/Settings"]
+offset_left = 252.0
+offset_right = 900.0
+offset_bottom = 648.0
+
+[node name="Controls" type="VBoxContainer" parent="Menu/MainContainer/VBoxContainer/MenuButton/Settings/Settings"]
+layout_mode = 2
+
+[node name="ShakeIntensity" type="HSlider" parent="Menu/MainContainer/VBoxContainer/MenuButton/Settings/Settings"]
+visible = false
+layout_mode = 2
+max_value = 300.0
+step = 25.0
+value = 100.0
+tick_count = 12
+ticks_on_borders = true
+script = ExtResource("6_riicw")
+
+[node name="OptionButton" type="OptionButton" parent="Menu/MainContainer/VBoxContainer/MenuButton"]
+layout_mode = 0
+offset_right = 14.0
+offset_bottom = 20.0
+
+[connection signal="item_rect_changed" from="mainCamera" to="Menu/MainContainer" method="_on_main_camera_item_rect_changed"]
+[connection signal="drag_ended" from="Menu/MainContainer/VBoxContainer/MenuButton/Settings/Settings/ShakeIntensity" to="Menu/MainContainer/VBoxContainer/MenuButton/Settings/Settings/ShakeIntensity" method="_on_drag_ended"]

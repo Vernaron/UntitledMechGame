@@ -2,6 +2,7 @@ extends Node
 class_name Item_Data
 enum Weapon_Type{Bullet, Laser, Missile, Grenade}
 enum Basic_Enemy{Strider, Bulwark}
+enum DASH{BURST, JET}
 class Weapon:
 	var root_scene : Node2D
 	var body : Node2D
@@ -17,7 +18,8 @@ class Weapon:
 	var is_firing = false
 	var curr_reload : float = 0
 	var shake_coeff : float 
-	func _init(_reload, _damage, _projectile_count, _bullet, _type, _accuracy, _area_of_effect):
+	var size_level : int
+	func _init(_reload, _damage, _projectile_count, _bullet, _type, _accuracy, _size_level, _area_of_effect = 0):
 		projectile_count = _projectile_count
 		reload = _reload
 		damage = _damage
@@ -25,7 +27,8 @@ class Weapon:
 		type = _type
 		accuracy = _accuracy
 		area_of_effect=_area_of_effect
-		shake_coeff = sqrt(damage)
+		size_level = _size_level
+		shake_coeff = damage
 	func setOffset(new_offset: Vector2):
 		offset = new_offset
 	func set_references(_root_scene, _body, _camera):
@@ -40,7 +43,8 @@ class Weapon:
 				if(curr_reload<=0):
 					for num in range(0, projectile_count):
 						var temp_bullet = bullet.instantiate()
-						temp_bullet.rotation = body.global_rotation
+						temp_bullet.set_team(body.team)
+						temp_bullet.rotation = body.global_rotation + (randf()*2*accuracy - accuracy)*PI/180
 						temp_bullet.position=offset.rotated(body.global_rotation)+body.global_position
 						root_scene.add_child(temp_bullet)
 						curr_reload=reload	
@@ -61,28 +65,56 @@ class Weapon:
 		tempWeapon.camera = camera
 		return tempWeapon
 var weapons = {
-	"bolter": Weapon.new(.5, 1, 1, preload("res://scenes/bullet.tscn"), Weapon_Type.Bullet, 1, 0),
-	
+	"bolter": Weapon.new(.5, 1, 1, preload("res://scenes/bullet_simple_small.tscn"), Weapon_Type.Bullet, 1, 1),
+	"gatling": Weapon.new(.1, .2, 1, preload("res://scenes/bullet_simple_small.tscn"), Weapon_Type.Bullet, 5, 1),
+	"autocannon": Weapon.new(5, 3, 1, preload("res://scenes/bullet_simple_small.tscn"), Weapon_Type.Bullet, 1, 2),
 }
 var bodies = {
 	"strider_1":{
+		sprite = preload("res://assets/Strider_Head_1.png"),
 		armor=5,
 		hardpoint_count=2,
 		turn_speed = 1,
+		collision_array_points=PackedVector2Array([Vector2(0, -52),Vector2(-28, -4),Vector2(-60, -4),\
+			Vector2(-60, 36),Vector2(0, 44),Vector2(60, 35),Vector2(60, -3),Vector2(28, -4)]),
 		hardpoints=[
-			[Vector2(-10, 1), 1],[Vector2(10, 1), 1]
+			[Vector2(48, -11), 1],[Vector2(-48, -1), 1]
 		]
 		
+	},
+	"bulwark_1":{
+		sprite = preload("res://assets/Bulwark_body_1.png"),
+		armor = 10,
+		hardpoint_count = 2, 
+		turn_speed=.5,
+		collision_array_points=PackedVector2Array([Vector2(0,-36),Vector2(-60,-25),Vector2(-60,20),\
+		Vector2(-34,34),Vector2(36,34),Vector2(48,-3),Vector2(47,-31),]),
+		hardpoints=[
+			[Vector2(48, -11), 2],[Vector2(-48, -1), 1]
+		]
 	}
 }
 var legs = {
 	"strider_1": {
 		speed = 600,
-		acceleration = .4,
+		acceleration = .7,
 		dash_time=.1,
 		dash_cooldown=2,
 		dash_speed=600,
+		dash_type=ItemData.DASH.BURST,
 		turn_radius=.5,
-		health = 100
+		health = 100,
+		sprite = preload("res://assets/Strider_Legs_1.tres")
+	},
+	"bulwark_1": {
+		speed = 300,
+		acceleration=.3,
+		dash_time=8,
+		dash_cooldown=2,
+		dash_speed=100,
+		dash_type=ItemData.DASH.JET,
+		turn_radius=.3,
+		health=400,
+		sprite = preload("res://assets/Bulwark_Legs_1.tres")
 	}
 }

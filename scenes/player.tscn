@@ -1,27 +1,30 @@
-[gd_scene load_steps=5 format=3 uid="uid://cyilq4ba3ayx5"]
+[gd_scene load_steps=6 format=3 uid="uid://cyilq4ba3ayx5"]
 
 [ext_resource type="Script" path="res://scripts/player_legs.gd" id="1_8mtcs"]
-[ext_resource type="Texture2D" uid="uid://dggqs5eqnf47b" path="res://icon.svg" id="2_7pmes"]
 [ext_resource type="Script" path="res://scripts/player_body.gd" id="3_js6eh"]
-
-[sub_resource type="CircleShape2D" id="CircleShape2D_leeno"]
-radius = 63.01
+[ext_resource type="PackedScene" uid="uid://fqojb4na28fx" path="res://particles/bullet_richochet.tscn" id="4_bjw2s"]
+[ext_resource type="Texture2D" uid="uid://bdm4wnsav2lh5" path="res://assets/Bulwark_body_1.png" id="4_hb5p4"]
+[ext_resource type="Script" path="res://scenes/LegCollisionPolygon.gd" id="5_hhk74"]
 
 [node name="Legs" type="CharacterBody2D"]
+z_index = 2
 collision_mask = 29
 motion_mode = 1
 script = ExtResource("1_8mtcs")
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
-texture = ExtResource("2_7pmes")
+[node name="GPUParticles2D" parent="." instance=ExtResource("4_bjw2s")]
+
+[node name="LegsSprite" type="AnimatedSprite2D" parent="."]
+scale = Vector2(4, 4)
 
 [node name="Body" type="Node2D" parent="."]
 position = Vector2(-9.53674e-07, 0)
-scale = Vector2(0.328125, 1)
 script = ExtResource("3_js6eh")
 
-[node name="Sprite2D" type="Sprite2D" parent="Body"]
-texture = ExtResource("2_7pmes")
+[node name="BodySprite" type="Sprite2D" parent="Body"]
+scale = Vector2(4, 4)
+texture = ExtResource("4_hb5p4")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource("CircleShape2D_leeno")
+[node name="LegCollisionPolygon" type="CollisionPolygon2D" parent="."]
+polygon = PackedVector2Array(0, -36, -60, -25, -60, 20, -34, 34, 36, 34, 48, -3, 47, -31)
+script = ExtResource("5_hhk74")

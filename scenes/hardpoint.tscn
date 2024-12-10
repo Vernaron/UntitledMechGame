@@ -1,8 +1,0 @@
-[gd_scene load_steps=2 format=3 uid="uid://de4gj4ovaoapd"]
-
-[ext_resource type="Script" path="res://scripts/hardpoint.gd" id="1_f3v4l"]
-
-[node name="Node2D" type="Node2D"]
-script = ExtResource("1_f3v4l")
-
-[node name="Sprite2D" type="Sprite2D" parent="."]

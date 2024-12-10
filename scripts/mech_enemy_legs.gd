@@ -25,4 +25,6 @@ func _physics_process_custom(_delta):
 func _get_intended_angle():
 	var direction= position.direction_to(PlayerInfo.target.position)
 	angle = atan2(-direction.y, -direction.x)
-	print(position)
+func _take_damage(damage, angle=null, bullet_spark=false, laser_spark=false):
+	resolve_particles(angle, bullet_spark, laser_spark)
+	camera.start_shaking(damage/2, .2)

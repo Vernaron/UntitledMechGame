@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=3 uid="uid://cx17gtgy0nimj"]
+
+[ext_resource type="Script" path="res://scripts/bullet_simple_small.gd" id="1_1em8q"]
+[ext_resource type="Texture2D" uid="uid://31mha7krjjqm" path="res://assets/bullet_simple_small.png" id="2_q4cxr"]
+
+[node name="Bullet" type="CharacterBody2D"]
+position = Vector2(2.90644e-06, 0)
+collision_layer = 0
+collision_mask = 0
+script = ExtResource("1_1em8q")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(4, 4)
+texture = ExtResource("2_q4cxr")
+
+[node name="ray" type="RayCast2D" parent="."]
+collision_mask = 0

@@ -1,6 +1,7 @@
 extends CharacterBody2D
 class_name Legs
-enum DASH{BURST, JET}
+var richochet_blast = preload("res://particles/bullet_richochet.tscn")
+
 @export_range(1, 1000) var SPEED : float = 1000.0
 @export_range(.1, 1) var ACCELERATION : float =1
 var angle : float = 0 
@@ -13,7 +14,7 @@ var root = null
 @export_range(1, 10) var dash_cooldown:float = 0.0
 @export_range(1, 1000) var dash_speed : float = 1000.0
 @export_range(0.1, 1) var turn_radius : float = 1
-@export var current_dash_type : DASH =  DASH.BURST
+@export var current_dash_type : ItemData.DASH =  ItemData.DASH.BURST
 @export var health : float = 1
 var curr_dash_time : float = dash_time
 var current_dash_cooldown = 0
@@ -21,7 +22,7 @@ var current_dash_time = 0
 var jet_button_down : bool= false
 var is_on_cooldown : bool = false
 var is_moving : bool = false
-
+var movement_juice : float = 0
 func construct(_name = "", _camera = null, _root = null, _current_legs = {}, _current_body = {}, _weapons_array = []):
 	name = _name
 	set_camera(_camera)
@@ -38,12 +39,20 @@ func _physics_process(delta):
 		_get_intended_angle()
 		angle-=PI/2
 		curr_move_ratio=min(1.0, curr_move_ratio+ACCELERATION*delta)
+		angle+=movement_juice / 4
 	else:
 		if(curr_move_ratio>0):
 			curr_move_ratio*=1-clamp((ACCELERATION * delta)*10, 0, 1)
+		elif(curr_move_ratio<0.1):
+			movement_juice = 0
+			$LegsSprite.frame = 0
 	turn(delta)
 	var dash_boost = get_dash_vector(delta)
-
+	$LegsSprite.speed_scale = curr_move_ratio * SPEED/1000
+	movement_juice = sin(($LegsSprite.frame +$LegsSprite.frame_progress ) * PI / 6)
+	scale.x = 1+abs(movement_juice)*.1
+	scale.y = 1+abs(movement_juice)*.1
+	
 	if(rotation < 0):
 		rotation+=2*PI
 	velocity = (Vector2(0,-curr_move_ratio*1.5).rotated(rotation) + \
@@ -57,14 +66,14 @@ func _physics_process(delta):
 func get_dash_vector(delta):
 	var dash_boost = Vector2.ZERO
 	match (current_dash_type):
-		DASH.BURST:
+		ItemData.DASH.BURST:
 			dash_boost = Vector2(0, -curr_dash_ratio*5) \
 				.rotated(angle_locked) * dash_speed
 			if(current_dash_time > 0):
 				current_dash_time-=delta
 			else:
 				curr_dash_ratio*=0.8
-		DASH.JET:
+		ItemData.DASH.JET:
 			if(jet_button_down&&!is_on_cooldown):
 				curr_dash_ratio+=ACCELERATION * delta
 				curr_dash_time-=delta
@@ -98,8 +107,12 @@ func set_current_legs(_legs : Dictionary):
 	dash_speed = _legs["dash_speed"]
 	turn_radius = _legs["turn_radius"]
 	health = _legs["health"]
+	current_dash_type=_legs["dash_type"]
+	$LegsSprite.sprite_frames = _legs.sprite
+	$LegsSprite.play()
 func set_current_body(body : Dictionary):
 	$Body.set_current_body(body)
+	$LegCollisionPolygon.set_array(body["collision_array_points"])
 func set_weapons_from_array(weapon_array : Array):
 	$Body.set_weapons_from_array(weapon_array)
 func set_camera(_camera):
@@ -110,17 +123,19 @@ func set_root(_root):
 	$Body.set_root(_root)
 func start_dash():
 	match(current_dash_type):
-		DASH.BURST:
+		ItemData.DASH.BURST:
 			if(current_dash_cooldown<=0):
 				curr_dash_ratio = 1
 				angle_locked = angle
 				current_dash_time = dash_time
 				current_dash_cooldown = dash_cooldown
-		DASH.JET:
+		ItemData.DASH.JET:
 			jet_button_down = true
 func end_dash():
 	jet_button_down=false
-	
+func set_team(_team):
+	$Body.team=_team	
+
 #Override functions
 func _process_custom(_delta):
 	pass
@@ -130,3 +145,12 @@ func _get_intended_angle():
 	pass
 func _construct_custom():
 	pass
+func _take_damage(target, angle=null, bullet_spark=false, laser_spark=false):
+	pass
+func resolve_particles(angle, bullet_spark, laser_spark):
+	if bullet_spark:
+		var temp = richochet_blast.instantiate()
+		temp.rotation = angle[0]
+		temp.position = angle[1]
+		root.add_child(temp)
+	
