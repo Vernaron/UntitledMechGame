@@ -10,12 +10,14 @@ var curr_dash_ratio = 0
 var angle_locked = 0
 var camera = null
 var root = null
+var healthZero = false
 @export_range(.01, 10) var dash_time : float = 0.0
 @export_range(1, 10) var dash_cooldown:float = 0.0
 @export_range(1, 1000) var dash_speed : float = 1000.0
 @export_range(0.1, 1) var turn_radius : float = 1
 @export var current_dash_type : ItemData.DASH =  ItemData.DASH.BURST
 @export var health : float = 1
+var current_health = health
 var curr_dash_time : float = dash_time
 var current_dash_cooldown = 0
 var current_dash_time = 0
@@ -107,12 +109,15 @@ func set_current_legs(_legs : Dictionary):
 	dash_speed = _legs["dash_speed"]
 	turn_radius = _legs["turn_radius"]
 	health = _legs["health"]
+	current_health = health
 	current_dash_type=_legs["dash_type"]
 	$LegsSprite.sprite_frames = _legs.sprite
+
 	$LegsSprite.play()
 func set_current_body(body : Dictionary):
 	$Body.set_current_body(body)
 	$LegCollisionPolygon.set_array(body["collision_array_points"])
+	$Occluder.occluder.polygon = body["collision_array_points"]
 func set_weapons_from_array(weapon_array : Array):
 	$Body.set_weapons_from_array(weapon_array)
 func set_camera(_camera):
@@ -145,12 +150,18 @@ func _get_intended_angle():
 	pass
 func _construct_custom():
 	pass
-func _take_damage(target, angle=null, bullet_spark=false, laser_spark=false):
+func _take_damage(_target, _location=null, _bullet_spark=false, _laser_spark=false):
 	pass
-func resolve_particles(angle, bullet_spark, laser_spark):
+func damage_inflict(damage):
+	current_health -=damage * 20/($Body.armor + 20)
+	if(current_health <= 0):
+		healthZero = true
+func resolve_particles(location, bullet_spark, laser_spark, damage):
+	if PlayerInfo.settings["particles"] <=.001: return
 	if bullet_spark:
 		var temp = richochet_blast.instantiate()
-		temp.rotation = angle[0]
-		temp.position = angle[1]
+		temp.set_damage(damage)
+		temp.rotation = location[0]
+		temp.position = location[1]
 		root.add_child(temp)
 	

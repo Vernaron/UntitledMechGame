@@ -1,0 +1,85 @@
+[gd_scene load_steps=6 format=3 uid="uid://cj2rf8hpbbllv"]
+
+[ext_resource type="Script" path="res://scenes/continuous_laser_small.gd" id="1_pvspi"]
+[ext_resource type="Script" path="res://scenes/BeamShaderCompanion.gd" id="2_k4e6l"]
+[ext_resource type="Texture2D" uid="uid://cpu6crgevt4m6" path="res://assets/base_bullet_sprite.png" id="2_p60ec"]
+
+[sub_resource type="Shader" id="Shader_u8q0f"]
+code = "shader_type canvas_item;
+uniform vec2 size_px = vec2(50.0, 50.0);
+uniform vec2 major_wave = vec2(100, 0.1);
+uniform vec2 minor_wave = vec2(100, 0.1);
+uniform float minor_offset = 0.2;
+uniform float ripple_speed = 6.0;
+uniform float ripple_difference = 1.2;
+uniform vec4 rgb = vec4(1.0,1.0,1.0,1.0);
+vec4 add_vecs(vec4 v1, vec4 v2){
+	return vec4(v1.r+v2.r,v1.g+v2.g,v1.b+v2.b,v1.a+v2.a);
+}
+vec4 get_color(vec2 _UV, vec2 offset){
+	if(1.0-minor_offset-minor_wave.y+minor_wave.y*sin((_UV.x+offset.x)*TAU*size_px.x/minor_wave.x + TIME*ripple_speed*ripple_difference)>_UV.y+offset.y&&
+		1.0-minor_offset-minor_wave.y+minor_wave.y*sin(PI+(_UV.x+offset.x)*TAU*size_px.x/minor_wave.x + TIME*ripple_speed*ripple_difference)>1.0-(_UV.y+offset.y)
+	){
+		 return vec4(min(1.2*rgb.r, 1.0), min(1.2*rgb.g, 1.0), min(1.2*rgb.b, 1.0),1);
+	}
+	if(1.0-major_wave.y+major_wave.y*sin((_UV.x+offset.x)*TAU*size_px.x/major_wave.x + TIME*ripple_speed)>_UV.y+offset.y&&
+			1.0-major_wave.y+major_wave.y*sin(PI+(_UV.x+offset.x)*TAU*size_px.x/major_wave.x + TIME*ripple_speed)>1.0-(_UV.y+offset.y)
+		){
+			return vec4(rgb.r,rgb.g,rgb.b,1);
+		}	
+	
+	return vec4(rgb.r,rgb.g,rgb.b,0);
+	}
+void fragment() {
+	float diff_x = 1.0/size_px.x;
+	float diff_y = 1.0/size_px.y;
+	vec4 left=get_color(UV, vec2(0,-.01));
+	vec4 right=get_color(UV, vec2(0,.01));
+	vec4 up=get_color(UV, vec2(.01,0));
+	vec4 down=get_color(UV, vec2(-.01,0));
+	vec4 left2=get_color(UV, vec2(-.01,-.01));
+	vec4 right2=get_color(UV, vec2(.01,.01));
+	vec4 up2=get_color(UV, vec2(.01,-.01));
+	vec4 down2=get_color(UV, vec2(-.01,.01));
+	vec4 averager = add_vecs(add_vecs(add_vecs(left,right),add_vecs(up,down)),add_vecs(add_vecs(left2,right2),add_vecs(up2,down2)))/8.0;
+	COLOR =averager;
+	//if(1.0-major_wave.y+major_wave.y*sin(UV.x*TAU*size_px.x/major_wave.x + TIME*ripple_speed)>UV.y&&
+	//		1.0-major_wave.y+major_wave.y*sin(PI+UV.x*TAU*size_px.x/major_wave.x + TIME*ripple_speed)>1.0-UV.y
+	//	){
+	//		COLOR.a = rgb.a;
+	//	}	
+	//if(1.0-minor_offset-minor_wave.y+minor_wave.y*sin(UV.x*TAU*size_px.x/minor_wave.x + TIME*ripple_speed*ripple_difference)>UV.y&&
+	//	1.0-minor_offset-minor_wave.y+minor_wave.y*sin(PI+UV.x*TAU*size_px.x/minor_wave.x + TIME*ripple_speed*ripple_difference)>1.0-UV.y
+	//){
+	//COLOR = vec4(rgb.r,rgb.g,rgb.b, get_color(vec2(0, 0),minor_wave, UV, 0, 1));
+	//COLOR = vec4(min(1.2*rgb.r, 1.0), min(1.2*rgb.g, 1.0), min(1.2*rgb.b, 1.0), get_color(vec2(0, 0),minor_wave, UV, minor_offset, ripple_difference));
+	//}
+	
+
+
+	
+}
+
+
+"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_kxg4p"]
+shader = SubResource("Shader_u8q0f")
+shader_parameter/size_px = Vector2(50, 50)
+shader_parameter/major_wave = Vector2(300, 0.2)
+shader_parameter/minor_wave = Vector2(300, 0.1)
+shader_parameter/minor_offset = 0.1
+shader_parameter/ripple_speed = 10.0
+shader_parameter/ripple_difference = 1.4
+shader_parameter/rgb = Vector4(0.9, 0.9, 0.6, 0.9)
+
+[node name="SmallContinuousLaser" type="Node2D"]
+script = ExtResource("1_pvspi")
+
+[node name="Beam" type="Sprite2D" parent="."]
+material = SubResource("ShaderMaterial_kxg4p")
+rotation = -1.5708
+texture = ExtResource("2_p60ec")
+centered = false
+offset = Vector2(0, -8)
+script = ExtResource("2_k4e6l")

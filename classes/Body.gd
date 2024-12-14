@@ -61,8 +61,13 @@ func shoot():
 	for hardpoint in hardpoint_arr:
 		hardpoint.shoot(delta_buildup)
 	delta_buildup=0
+func release():
+	for hardpoint in hardpoint_arr:
+		hardpoint.release()
+
 func turn(delta):
 	var diff = angle - global_rotation
+	
 	if(diff > PI): diff-=2*PI
 	if(diff < -PI): diff+=2*PI
 	diff *=ACCELERATION * 10

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bdm4wnsav2lh5"
-path="res://.godot/imported/Bulwark_body_1.png-8b321e8d96eb2c5ffa0b261007830cf0.ctex"
+uid="uid://2bsrtj30lvf2"
+path="res://.godot/imported/Bulwark_body_1_n.png-33f0ad0bf5e78182d528b06f86ec6e68.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/Bulwark_body_1.png"
-dest_files=["res://.godot/imported/Bulwark_body_1.png-8b321e8d96eb2c5ffa0b261007830cf0.ctex"]
+source_file="res://assets/bodies/Bulwark_body_1_n.png"
+dest_files=["res://.godot/imported/Bulwark_body_1_n.png-33f0ad0bf5e78182d528b06f86ec6e68.ctex"]
 
 [params]
 

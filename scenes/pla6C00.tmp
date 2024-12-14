@@ -1,14 +1,10 @@
-[gd_scene load_steps=8 format=3 uid="uid://cyilq4ba3ayx5"]
+[gd_scene load_steps=6 format=3 uid="uid://cyilq4ba3ayx5"]
 
 [ext_resource type="Script" path="res://scripts/player_legs.gd" id="1_8mtcs"]
 [ext_resource type="Script" path="res://scripts/player_body.gd" id="3_js6eh"]
-[ext_resource type="Texture2D" uid="uid://bdm4wnsav2lh5" path="res://assets/bodies/Bulwark_body_1.png" id="3_vwayn"]
-[ext_resource type="Script" path="res://scripts/HardpointVisualizer.gd" id="5_c1hbs"]
+[ext_resource type="PackedScene" uid="uid://fqojb4na28fx" path="res://particles/bullet_richochet.tscn" id="4_bjw2s"]
+[ext_resource type="Texture2D" uid="uid://bdm4wnsav2lh5" path="res://assets/Bulwark_body_1.png" id="4_hb5p4"]
 [ext_resource type="Script" path="res://scripts/LegCollisionPolygon.gd" id="5_vtox4"]
-[ext_resource type="Script" path="res://scripts/rotateOccluder.gd" id="8_cg75g"]
-
-[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_vu108"]
-cull_mode = 1
 
 [node name="Legs" type="CharacterBody2D"]
 z_index = 2
@@ -16,24 +12,21 @@ collision_mask = 29
 motion_mode = 1
 script = ExtResource("1_8mtcs")
 
+[node name="GPUParticles2D" parent="." instance=ExtResource("4_bjw2s")]
+
 [node name="LegsSprite" type="AnimatedSprite2D" parent="."]
 scale = Vector2(4, 4)
 
 [node name="Body" type="Node2D" parent="."]
-z_index = 4
 script = ExtResource("3_js6eh")
 
 [node name="BodySprite" type="Sprite2D" parent="Body"]
 scale = Vector2(4, 4)
-texture = ExtResource("3_vwayn")
-script = ExtResource("5_c1hbs")
-Reference = "bulwark_1"
+texture = ExtResource("4_hb5p4")
+
+[node name="RemoteTransform2D" type="RemoteTransform2D" parent="Body"]
+update_scale = false
 
 [node name="LegCollisionPolygon" type="CollisionPolygon2D" parent="."]
 polygon = PackedVector2Array(0, -36, -60, -25, -60, 20, -34, 34, 36, 34, 48, -3, 47, -31)
 script = ExtResource("5_vtox4")
-
-[node name="Occluder" type="LightOccluder2D" parent="."]
-occluder = SubResource("OccluderPolygon2D_vu108")
-sdf_collision = false
-script = ExtResource("8_cg75g")

@@ -1,10 +1,11 @@
-[gd_scene load_steps=7 format=3 uid="uid://cmwtuxws5txrm"]
+[gd_scene load_steps=8 format=3 uid="uid://cmwtuxws5txrm"]
 
 [ext_resource type="Script" path="res://scripts/mech_enemy_legs.gd" id="1_nnusb"]
 [ext_resource type="SpriteFrames" uid="uid://cqborks534jmw" path="res://assets/Strider_Legs_1.tres" id="2_dwem5"]
 [ext_resource type="Script" path="res://scripts/mech_enemy_body.gd" id="3_p6k87"]
 [ext_resource type="Script" path="res://scripts/LegCollisionPolygon.gd" id="4_axtof"]
-[ext_resource type="Script" path="res://scripts/rotateOccluder.gd" id="6_8lcdg"]
+[ext_resource type="Texture2D" uid="uid://cfmn85c2ubch1" path="res://assets/Strider_Head_1.png" id="4_j66fc"]
+[ext_resource type="Script" path="res://scenes/rotateOccluder.gd" id="6_8lcdg"]
 
 [sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_3sggo"]
 
@@ -19,7 +20,6 @@ scale = Vector2(4, 4)
 sprite_frames = ExtResource("2_dwem5")
 
 [node name="LegCollisionPolygon" type="CollisionPolygon2D" parent="."]
-z_index = 5
 polygon = PackedVector2Array(0, -52, -28, -4, -60, -4, -60, 36, 0, 44, 60, 35, 60, -3, 28, -4)
 script = ExtResource("4_axtof")
 
@@ -30,6 +30,7 @@ team = 1
 
 [node name="BodySprite" type="Sprite2D" parent="Body"]
 scale = Vector2(4, 4)
+texture = ExtResource("4_j66fc")
 
 [node name="Occluder" type="LightOccluder2D" parent="."]
 occluder = SubResource("OccluderPolygon2D_3sggo")

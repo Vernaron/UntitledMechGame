@@ -43,6 +43,7 @@ var settings = {}
 var default_settings = {
 	"intensity":1.0,
 	"flashing":1.0,
+	"particles": 0.0,
 	"control_style":"keyboard",
 	"save_files":["save_1", "save_2"],
 	"last_active_save":"save_1"
@@ -54,11 +55,11 @@ func _ready():
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta):
 	pass
-func readSettings():
-	settings = readFile("settings", default_settings)
-func get_saves():
+func readSettings(default : bool):
+	settings = readFile("settings", default_settings, default)
+func get_saves(default : bool):
 	for save_name in settings["save_files"]:
-		saves[save_name] = readFile(save_name, default_save)
+		saves[save_name] = readFile(save_name, default_save, default)
 	active_save_name = settings["last_active_save"]
 	print(settings["last_active_save"])
 	active_save_data = saves[settings["last_active_save"]] 
@@ -75,9 +76,9 @@ func save_player():
 func save_to_file():
 	for save_name in saves.keys():
 		writeFile(save_name+".data", saves[save_name])
-func readFile(filename:String, default:Dictionary)->Variant : 
+func readFile(filename:String, default:Dictionary, using_default : bool)->Variant : 
 	var filepath = "user://"+filename+".data"
-	if(FileAccess.file_exists(filepath)):
+	if(FileAccess.file_exists(filepath)&&!using_default):
 		return JSON.parse_string(FileAccess.open(filepath,FileAccess.READ).get_line())
 	else:
 		writeFile(filename, default)

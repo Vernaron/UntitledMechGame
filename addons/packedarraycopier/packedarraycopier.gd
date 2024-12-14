@@ -1,5 +1,6 @@
 @tool
 extends Node2D
+class_name PackedArrayPrinter
 @export var array : PackedVector2Array
 @export var isActive:bool = false
 var array_printable = ""

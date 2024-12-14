@@ -1,0 +1,8 @@
+[gd_resource type="CanvasTexture" load_steps=3 format=3 uid="uid://dx1lfy5uav2bt"]
+
+[ext_resource type="Texture2D" uid="uid://bdm4wnsav2lh5" path="res://assets/bodies/Bulwark_body_1.png" id="1_b0rfw"]
+[ext_resource type="Texture2D" uid="uid://2bsrtj30lvf2" path="res://assets/bodies/Bulwark_body_1_n.png" id="2_yka5q"]
+
+[resource]
+diffuse_texture = ExtResource("1_b0rfw")
+normal_texture = ExtResource("2_yka5q")

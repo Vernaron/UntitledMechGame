@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3 uid="uid://b2juagtqduvgs"]
+
+[ext_resource type="Texture2D" uid="uid://vqk66u15uiqj" path="res://assets/crosshair.png" id="1_7xemt"]
+
+[node name="custom_node_visual" type="Sprite2D"]
+scale = Vector2(0.4, 0.4)
+texture = ExtResource("1_7xemt")

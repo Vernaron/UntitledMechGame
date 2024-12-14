@@ -19,6 +19,9 @@ drag_right_margin = 0.01
 drag_bottom_margin = 0.01
 script = ExtResource("2_rbf87")
 
+[node name="CanvasModulate" type="CanvasModulate" parent="mainCamera"]
+color = Color(0.454902, 0.454902, 0.454902, 1)
+
 [node name="Menu" type="CanvasLayer" parent="."]
 process_mode = 3
 script = ExtResource("4_k4184")

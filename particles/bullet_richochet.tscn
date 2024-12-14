@@ -1,15 +1,43 @@
-[gd_scene load_steps=3 format=3 uid="uid://fqojb4na28fx"]
+[gd_scene load_steps=6 format=3 uid="uid://fqojb4na28fx"]
 
-[ext_resource type="Material" uid="uid://dtitmk8g08m5g" path="res://particles/bullet_spark.tres" id="1_0ja2j"]
+[ext_resource type="Texture2D" uid="uid://d1801komu21ka" path="res://assets/white_line.png" id="1_qikkj"]
 [ext_resource type="Script" path="res://scripts/bullet_richochet.gd" id="2_wgkl1"]
+
+[sub_resource type="Gradient" id="Gradient_y2524"]
+offsets = PackedFloat32Array(0, 0.2, 0.451852, 1)
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 1, 1, 0.952941, 0, 0.658824, 1, 0.301961, 0, 0.27451)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_83yb6"]
+gradient = SubResource("Gradient_y2524")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_hba0k"]
+lifetime_randomness = 0.34
+emission_shape = 1
+emission_sphere_radius = 29.79
+particle_flag_align_y = true
+particle_flag_disable_z = true
+spread = 35.91
+gravity = Vector3(0, 0, 0)
+initial_velocity_min = 778.95
+initial_velocity_max = 989.47
+orbit_velocity_min = 0.0
+orbit_velocity_max = 0.0
+linear_accel_min = -100.0
+linear_accel_max = -100.0
+damping_min = 5000.0
+damping_max = 5000.0
+scale_min = 7.0
+scale_max = 12.0
+color_ramp = SubResource("GradientTexture1D_83yb6")
 
 [node name="GPUParticles2D" type="GPUParticles2D"]
 z_index = 5
 rotation = -1.98793
 emitting = false
 amount = 5
-process_material = ExtResource("1_0ja2j")
-lifetime = 0.4
+process_material = SubResource("ParticleProcessMaterial_hba0k")
+texture = ExtResource("1_qikkj")
+lifetime = 0.3
 one_shot = true
 explosiveness = 1.0
 script = ExtResource("2_wgkl1")

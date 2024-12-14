@@ -15,8 +15,8 @@ func _process_custom(_delta):
 
 func _get_intended_angle(): 
 	angle = atan2(Input.get_axis("down", "up"),-Input.get_axis("left","right"))
-func _take_damage(target, angle=null, bullet_spark=false, laser_spark=false):
-	resolve_particles(angle, bullet_spark, laser_spark)
+func _take_damage(_damage, location=null, bullet_spark=false, laser_spark=false):
+	resolve_particles(location, bullet_spark, laser_spark, _damage)
 func _construct_custom():
 	set_current_legs(PlayerInfo.get_active_legs())
 	set_current_body(PlayerInfo.get_active_body())
