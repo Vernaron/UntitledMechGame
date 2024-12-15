@@ -1,14 +1,24 @@
-[gd_scene load_steps=8 format=3 uid="uid://cyilq4ba3ayx5"]
+[gd_scene load_steps=12 format=3 uid="uid://cyilq4ba3ayx5"]
 
 [ext_resource type="Script" path="res://scripts/player_legs.gd" id="1_8mtcs"]
 [ext_resource type="Script" path="res://scripts/player_body.gd" id="3_js6eh"]
 [ext_resource type="Texture2D" uid="uid://bdm4wnsav2lh5" path="res://assets/bodies/Bulwark_body_1.png" id="3_vwayn"]
 [ext_resource type="Script" path="res://scripts/HardpointVisualizer.gd" id="5_c1hbs"]
+[ext_resource type="PackedScene" uid="uid://b2juagtqduvgs" path="res://scenes/hardpoint_visual.tscn" id="5_euok7"]
 [ext_resource type="Script" path="res://scripts/LegCollisionPolygon.gd" id="5_vtox4"]
+[ext_resource type="Texture2D" uid="uid://vqk66u15uiqj" path="res://assets/crosshair.png" id="6_q1jfx"]
 [ext_resource type="Script" path="res://scripts/rotateOccluder.gd" id="8_cg75g"]
+[ext_resource type="Shader" path="res://scenes/coneShader.gdshader" id="9_q2054"]
 
 [sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_vu108"]
 cull_mode = 1
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_k7jog"]
+shader = ExtResource("9_q2054")
+shader_parameter/negOffset = 0.0
+shader_parameter/leftTopPoint = Vector2(0, 0)
+shader_parameter/rightTopPoint = Vector2(1, 0)
+shader_parameter/bottomPoint = Vector2(0.5, 1)
 
 [node name="Legs" type="CharacterBody2D"]
 z_index = 2
@@ -29,6 +39,16 @@ texture = ExtResource("3_vwayn")
 script = ExtResource("5_c1hbs")
 Reference = "bulwark_1"
 
+[node name="Hardpoint_0_2" type="Sprite2D" parent="Body/BodySprite" instance=ExtResource("5_euok7")]
+position = Vector2(10, -7)
+scale = Vector2(0.4, 0.4)
+texture = ExtResource("6_q1jfx")
+
+[node name="Hardpoint_1_1" type="Sprite2D" parent="Body/BodySprite" instance=ExtResource("5_euok7")]
+position = Vector2(-11.5, -6)
+scale = Vector2(0.4, 0.4)
+texture = ExtResource("6_q1jfx")
+
 [node name="LegCollisionPolygon" type="CollisionPolygon2D" parent="."]
 polygon = PackedVector2Array(0, -36, -60, -25, -60, 20, -34, 34, 36, 34, 48, -3, 47, -31)
 script = ExtResource("5_vtox4")
@@ -37,3 +57,10 @@ script = ExtResource("5_vtox4")
 occluder = SubResource("OccluderPolygon2D_vu108")
 sdf_collision = false
 script = ExtResource("8_cg75g")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+material = SubResource("ShaderMaterial_k7jog")
+offset_left = 111.0
+offset_top = -47.0
+offset_right = 151.0
+offset_bottom = -7.0
