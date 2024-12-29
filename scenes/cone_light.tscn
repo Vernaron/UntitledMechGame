@@ -1,0 +1,36 @@
+[gd_scene load_steps=5 format=3 uid="uid://j05qj0skos78"]
+
+[ext_resource type="Script" path="res://scripts/catchViewportTexture.gd" id="1_kk3we"]
+[ext_resource type="Shader" path="res://scenes/coneShader.gdshader" id="2_xr2n0"]
+
+[sub_resource type="ImageTexture" id="ImageTexture_mru42"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_awwop"]
+resource_local_to_scene = true
+shader = ExtResource("2_xr2n0")
+shader_parameter/leftTopPoint = Vector2(0, 0.6)
+shader_parameter/rightTopPoint = Vector2(1, 0.6)
+shader_parameter/bottomPoint = Vector2(0.5, 1)
+shader_parameter/innerRadius = 0.05
+shader_parameter/intensity = 0.7
+shader_parameter/color = Color(1, 1, 1, 1)
+
+[node name="testSprite" type="PointLight2D"]
+position = Vector2(0, -50)
+scale = Vector2(5, 5)
+shadow_enabled = true
+texture = SubResource("ImageTexture_mru42")
+offset = Vector2(0, -150)
+
+[node name="SubViewport" type="SubViewport" parent="."]
+transparent_bg = true
+canvas_item_default_texture_filter = 0
+size = Vector2i(320, 320)
+render_target_clear_mode = 1
+render_target_update_mode = 1
+script = ExtResource("1_kk3we")
+
+[node name="ColorRect2" type="ColorRect" parent="SubViewport"]
+material = SubResource("ShaderMaterial_awwop")
+offset_right = 320.0
+offset_bottom = 320.0

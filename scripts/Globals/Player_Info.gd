@@ -1,7 +1,5 @@
 extends Node2D
 
-
-# Called when the node enters the scene tree for the first time.
 var target : Node2D = null
 var saves = {}
 var active_save_name = ""
@@ -43,7 +41,7 @@ var settings = {}
 var default_settings = {
 	"intensity":1.0,
 	"flashing":1.0,
-	"particles": 0.0,
+	"particles": 1.0,
 	"control_style":"keyboard",
 	"save_files":["save_1", "save_2"],
 	"last_active_save":"save_1"
@@ -57,11 +55,11 @@ func _process(_delta):
 	pass
 func readSettings(default : bool):
 	settings = readFile("settings", default_settings, default)
+	Signals.SettingsChange.emit()
 func get_saves(default : bool):
 	for save_name in settings["save_files"]:
 		saves[save_name] = readFile(save_name, default_save, default)
 	active_save_name = settings["last_active_save"]
-	print(settings["last_active_save"])
 	active_save_data = saves[settings["last_active_save"]] 
 func switch(_save_name):
 	if saves[_save_name] != null:

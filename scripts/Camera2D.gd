@@ -4,7 +4,7 @@ extends Camera2D
 var shaking_list = []
 var target : Node2D
 func _ready():
-	pass # Replace with function body.
+	Signals.screen_shake.connect(start_shaking)
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.

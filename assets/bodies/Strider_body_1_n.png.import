@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://d1gek8px0a16d"
-path="res://.godot/imported/Strider_Head_1_n.png-135cab151c706206ca7c8e010f4d1cff.ctex"
+uid="uid://dq8iklucl6ev2"
+path="res://.godot/imported/Strider_body_1_n.png-abe142314ea7e7199db3667b743b339f.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/bodies/Strider_Head_1_n.png"
-dest_files=["res://.godot/imported/Strider_Head_1_n.png-135cab151c706206ca7c8e010f4d1cff.ctex"]
+source_file="res://assets/bodies/Strider_body_1_n.png"
+dest_files=["res://.godot/imported/Strider_body_1_n.png-abe142314ea7e7199db3667b743b339f.ctex"]
 
 [params]
 

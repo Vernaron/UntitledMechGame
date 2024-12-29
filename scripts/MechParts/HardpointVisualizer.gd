@@ -1,6 +1,6 @@
 @tool
 extends Sprite2D
-var itemData_res = load("res://scripts/Item_Data.gd")
+var itemData_res = load("res://scripts/Globals/Item_Data.gd")
 var point_res = preload("res://scenes/hardpoint_visual.tscn")
 var printer = preload("res://addons/packedarraycopier/packedarraycopier.gd").new()
 var itemData = itemData_res.new()
@@ -15,7 +15,7 @@ func _ready():
 		hardpointList = get_children()
 		var num = hardpointList.size()-1
 		while(num>=0):
-				hardpointList[num].queue_free()
+				if hardpointList[num].name.find("Hardpoint")!=-1 : hardpointList[num].queue_free()
 				num-=1
 		hardpointList = []
 

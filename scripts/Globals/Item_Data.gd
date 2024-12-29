@@ -3,12 +3,14 @@ extends Node
 class_name Item_Data
 @export var Reload : bool = false
 enum Weapon_Type{Bullet, Laser, Missile, Grenade}
+
 enum Basic_Enemy{Strider, Bulwark}
 enum DASH{BURST, JET}
+	
 class Weapon:
+	var bullet_flash: Node2D
 	var root_scene : Node2D
 	var body : Node2D
-	var camera : Node2D
 	var reload : float
 	var damage : float
 	var offset : Vector2 = Vector2.ZERO
@@ -22,23 +24,28 @@ class Weapon:
 	var curr_reload : float = 0
 	var shake_coeff : float 
 	var size_level : int
-	func _init(_reload, _damage: float, _projectile_count, _bullet, _type, _accuracy, _size_level, _area_of_effect = 0.0):
+	func _init(_reload, _damage: float, _projectile_count, _bullet, _type, _accuracy, _size_level, _area_of_effect = 0.0, flash = "no_flash"):
 		projectile_count = _projectile_count
 		reload = _reload
 		damage = _damage
-		
+		bullet_flash = flash
 		bullet = _bullet
 		type = _type
 		accuracy = _accuracy
 		area_of_effect=_area_of_effect
 		size_level = _size_level
-		shake_coeff = damage
+		Signals.SettingsChange.connect(settingsChanged)
+		if(PlayerInfo.settings!={}):
+			shake_coeff = damage * PlayerInfo.settings["intensity"]
+		else:
+			shake_coeff = damage
 	func setOffset(new_offset: Vector2):
 		offset = new_offset
-	func set_references(_root_scene, _body, _camera):
+	func settingsChanged():
+		shake_coeff = damage * PlayerInfo.settings["intensity"]
+	func set_references(_root_scene, _body):
 		root_scene = _root_scene
 		body = _body
-		camera = _camera
 	func shoot(delta):
 		
 		match(type):
@@ -51,12 +58,15 @@ class Weapon:
 						temp_bullet.DAMAGE = damage
 						temp_bullet.rotation = body.global_rotation + (randf()*accuracy - accuracy/2)*PI/180
 						temp_bullet.position=offset.rotated(body.global_rotation)+body.global_position
+						
+						
+						body.add_child(bullet_flash.copy())
 						root_scene.add_child(temp_bullet)
 						curr_reload=reload	
 						if(body.team ==1):
-							camera.start_shaking(shake_coeff/4, .2)
+							Signals.screen_shake.emit(shake_coeff/4, .2)
 						else:
-							camera.start_shaking(shake_coeff/2, .2)
+							Signals.screen_shake.emit(shake_coeff/2, .2)
 			Weapon_Type.Laser:
 				if !is_firing:
 					is_firing = true
@@ -103,22 +113,27 @@ class Weapon:
 			i-=1
 		projectiles.clear()
 	func copy():
-		var tempWeapon = Weapon.new(reload, damage, projectile_count, bullet, type, accuracy,size_level, area_of_effect)
+		var tempWeapon = Weapon.new(reload, damage, projectile_count, bullet, type, accuracy,size_level, area_of_effect, bullet_flash)
 		tempWeapon.offset = offset
 		tempWeapon.root_scene = root_scene
 		tempWeapon.body = body
-		tempWeapon.camera = camera
 		return tempWeapon
-var weapons = {
-	#reload, damage, projectile_count, bullet, type, accuracy,size_level, area_of_effect=0
-	"bolter": Weapon.new(.5, 5, 1, preload("res://scenes/bullet_simple_small.tscn"), Weapon_Type.Bullet, 1, 1),
-	"gatling": Weapon.new(.1, 1, 1, preload("res://scenes/bullet_simple_small.tscn"), Weapon_Type.Bullet, 5, 1),
-	"autocannon": Weapon.new(5, 15, 1, preload("res://scenes/bullet_simple_large.tscn"), Weapon_Type.Bullet, 1, 2),
-	"laser_small": Weapon.new(-1, 2, 1, preload("res://scenes/continuous_laser_small.tscn"),Weapon_Type.Laser, 2,1, 2)
+var flashes = {
+	"light_flash" : preload("res://scenes/bullet_flash.tscn").instantiate().init(10, Color.hex(0xffa50044), .01, .1, true),
+	"medium_flash" : preload("res://scenes/bullet_flash.tscn").instantiate().init(30, Color.hex(0xffa50066), .01, .3, true)
+
 }
-@export var bodies = {
+var weapons = {
+	#reload, damage, projectile_count, bullet, type, accuracy,size_level, area_of_effect, bullet_flash
+	"bolter": Weapon.new(.5, 5, 1, preload("res://scenes/bullet_simple_small.tscn"), Weapon_Type.Bullet, 1, 1, 0.0,flashes["light_flash"]),
+	"gatling": Weapon.new(.1, 1, 1, preload("res://scenes/bullet_simple_small.tscn"), Weapon_Type.Bullet, 5, 1,  0.0, flashes["light_flash"]),
+	"autocannon": Weapon.new(5, 15, 1, preload("res://scenes/bullet_simple_large.tscn"), Weapon_Type.Bullet, 1, 2,  0.0, flashes["medium_flash"]),
+	"laser_small": Weapon.new(-1, 2, 1, preload("res://scenes/continuous_laser_small.tscn"),Weapon_Type.Laser, 2,1, 2, flashes["light_flash"])
+}
+
+var bodies = {
 	"strider_1":{
-		sprite = preload("res://assets/bodies/Strider_body_1.png"),
+		sprite = preload("res://assets/bodies/Strider_body_1.tres"),
 		armor=5,
 		hardpoint_count=2,
 		turn_speed = 7,
@@ -137,7 +152,7 @@ var weapons = {
 		collision_array_points=PackedVector2Array([Vector2(0,-36),Vector2(-60,-25),Vector2(-60,20),\
 		Vector2(-34,34),Vector2(36,34),Vector2(48,-3),Vector2(47,-31),]),
 		hardpoints=[
-			[Vector2(40, -28), 2],[Vector2(-46, -24), 1],
+			[Vector2(40, -32), 2],[Vector2(-46, -24), 1],
 		]
 	}
 }

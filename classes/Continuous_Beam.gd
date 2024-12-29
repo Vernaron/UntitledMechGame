@@ -18,7 +18,6 @@ func _process(_delta):
 		intersect_ray(PhysicsRayQueryParameters2D.\
 		create(global_position+Vector2(-aoe/2, 0).rotated(global_rotation), global_position+Vector2(aoe/2, 0).rotated(global_rotation)+Vector2(0, -10000).rotated(global_rotation)))
 	if(target_hit_1!={}&&target_hit_2!={}):
-		print( target_hit_1.position, " ", target_hit_2.position)
 		if(global_position.distance_squared_to(target_hit_1.position)<global_position.distance_squared_to(target_hit_2.position)):
 			target_hit=target_hit_1
 	

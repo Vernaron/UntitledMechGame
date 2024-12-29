@@ -1,18 +1,23 @@
-[gd_scene load_steps=7 format=3 uid="uid://cmwtuxws5txrm"]
+[gd_scene load_steps=8 format=3 uid="uid://cmwtuxws5txrm"]
 
-[ext_resource type="Script" path="res://scripts/mech_enemy_legs.gd" id="1_nnusb"]
+[ext_resource type="Script" path="res://scripts/MechParts/mech_enemy_legs.gd" id="1_nswqw"]
 [ext_resource type="SpriteFrames" uid="uid://cqborks534jmw" path="res://assets/Strider_Legs_1.tres" id="2_dwem5"]
-[ext_resource type="Script" path="res://scripts/mech_enemy_body.gd" id="3_p6k87"]
-[ext_resource type="Script" path="res://scripts/LegCollisionPolygon.gd" id="4_axtof"]
+[ext_resource type="Script" path="res://scripts/MechParts/LegCollisionPolygon.gd" id="3_ae3vx"]
+[ext_resource type="Script" path="res://scripts/MechParts/mech_enemy_body.gd" id="4_8u50x"]
 [ext_resource type="Script" path="res://scripts/rotateOccluder.gd" id="6_8lcdg"]
+[ext_resource type="Script" path="res://scenes/Pather.gd" id="6_uqtq3"]
 
 [sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_3sggo"]
+cull_mode = 2
 
 [node name="Legs" type="CharacterBody2D"]
 collision_layer = 4
 collision_mask = 23
 motion_mode = 1
-script = ExtResource("1_nnusb")
+wall_min_slide_angle = 0.0
+script = ExtResource("1_nswqw")
+attention_span = 3.0
+swap_time = 0.5
 
 [node name="LegsSprite" type="AnimatedSprite2D" parent="."]
 scale = Vector2(4, 4)
@@ -21,16 +26,25 @@ sprite_frames = ExtResource("2_dwem5")
 [node name="LegCollisionPolygon" type="CollisionPolygon2D" parent="."]
 z_index = 5
 polygon = PackedVector2Array(0, -52, -28, -4, -60, -4, -60, 36, 0, 44, 60, 35, 60, -3, 28, -4)
-script = ExtResource("4_axtof")
+script = ExtResource("3_ae3vx")
 
 [node name="Body" type="Node2D" parent="."]
 z_index = 5
-script = ExtResource("3_p6k87")
+script = ExtResource("4_8u50x")
 team = 1
 
 [node name="BodySprite" type="Sprite2D" parent="Body"]
 scale = Vector2(4, 4)
 
+[node name="playerPointer" type="RayCast2D" parent="Body"]
+collision_mask = 32768
+
 [node name="Occluder" type="LightOccluder2D" parent="."]
+show_behind_parent = true
 occluder = SubResource("OccluderPolygon2D_3sggo")
 script = ExtResource("6_8lcdg")
+
+[node name="Pather" type="NavigationAgent2D" parent="."]
+path_desired_distance = 40.0
+target_desired_distance = 40.0
+script = ExtResource("6_uqtq3")

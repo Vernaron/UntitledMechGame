@@ -8,7 +8,6 @@ var angle : float = 0
 var curr_move_ratio = 0
 var curr_dash_ratio = 0
 var angle_locked = 0
-var camera = null
 var root = null
 var healthZero = false
 @export_range(.01, 10) var dash_time : float = 0.0
@@ -25,9 +24,8 @@ var jet_button_down : bool= false
 var is_on_cooldown : bool = false
 var is_moving : bool = false
 var movement_juice : float = 0
-func construct(_name = "", _camera = null, _root = null, _current_legs = {}, _current_body = {}, _weapons_array = []):
+func construct(_name = "", _root = null, _current_legs = {}, _current_body = {}, _weapons_array = []):
 	name = _name
-	set_camera(_camera)
 	set_root(_root)
 	_construct_custom()
 	if _current_legs!={}: set_current_legs(_current_legs)
@@ -52,9 +50,11 @@ func _physics_process(delta):
 	var dash_boost = get_dash_vector(delta)
 	$LegsSprite.speed_scale = curr_move_ratio * SPEED/1000
 	movement_juice = sin(($LegsSprite.frame +$LegsSprite.frame_progress ) * PI / 6)
-	scale.x = 1+abs(movement_juice)*.1
-	scale.y = 1+abs(movement_juice)*.1
-	
+	var currScale:Vector2=Vector2.ZERO
+	currScale.x = 4+abs(movement_juice)*.4
+	currScale.y = 4+abs(movement_juice)*.4
+	$LegsSprite.scale = currScale
+	$Body/BodySprite.scale = currScale
 	if(rotation < 0):
 		rotation+=2*PI
 	velocity = (Vector2(0,-curr_move_ratio*1.5).rotated(rotation) + \
@@ -95,12 +95,14 @@ func get_dash_vector(delta):
 
 	
 func turn(delta):
-	var diff = angle - global_rotation
-	if(diff > PI): diff-=2*PI
-	if(diff < -PI): diff+=2*PI
+	var diff = normalize(angle - global_rotation)
 	diff *=turn_radius * 10
 	diff = clamp(diff, -4 * PI *(turn_radius), 4 * PI * (turn_radius))
 	rotate(diff * delta)
+func normalize(value):
+	if(value > PI): return value-2*PI
+	if(value < -PI): return value+2*PI
+	return value
 func set_current_legs(_legs : Dictionary):
 	SPEED= _legs["speed"]
 	ACCELERATION = _legs["acceleration"]
@@ -120,9 +122,7 @@ func set_current_body(body : Dictionary):
 	$Occluder.occluder.polygon = body["collision_array_points"]
 func set_weapons_from_array(weapon_array : Array):
 	$Body.set_weapons_from_array(weapon_array)
-func set_camera(_camera):
-	camera = _camera
-	$Body.set_camera(_camera)
+
 func set_root(_root):
 	root = _root
 	$Body.set_root(_root)
@@ -140,18 +140,7 @@ func end_dash():
 	jet_button_down=false
 func set_team(_team):
 	$Body.team=_team	
-
-#Override functions
-func _process_custom(_delta):
-	pass
-func _physics_process_custom(_delta):
-	pass
-func _get_intended_angle():
-	pass
-func _construct_custom():
-	pass
-func _take_damage(_target, _location=null, _bullet_spark=false, _laser_spark=false):
-	pass
+	
 func damage_inflict(damage):
 	current_health -=damage * 20/($Body.armor + 20)
 	if(current_health <= 0):
@@ -165,3 +154,19 @@ func resolve_particles(location, bullet_spark, laser_spark, damage):
 		temp.position = location[1]
 		root.add_child(temp)
 	
+func _ready():
+	_ready_custom()
+#Override functions
+func _ready_custom():
+	pass
+func _process_custom(_delta):
+	pass
+func _physics_process_custom(_delta):
+	pass
+func _get_intended_angle():
+	pass
+func _construct_custom():
+	pass
+func _take_damage(_target, _location=null, _bullet_spark=false, _laser_spark=false):
+	pass
+

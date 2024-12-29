@@ -1,7 +1,7 @@
 [gd_scene load_steps=6 format=3 uid="uid://fqojb4na28fx"]
 
 [ext_resource type="Texture2D" uid="uid://d1801komu21ka" path="res://assets/white_line.png" id="1_qikkj"]
-[ext_resource type="Script" path="res://scripts/bullet_richochet.gd" id="2_wgkl1"]
+[ext_resource type="Script" path="res://scripts/Bullets/bullet_richochet.gd" id="2_pnsl0"]
 
 [sub_resource type="Gradient" id="Gradient_y2524"]
 offsets = PackedFloat32Array(0, 0.2, 0.451852, 1)
@@ -40,4 +40,4 @@ texture = ExtResource("1_qikkj")
 lifetime = 0.3
 one_shot = true
 explosiveness = 1.0
-script = ExtResource("2_wgkl1")
+script = ExtResource("2_pnsl0")

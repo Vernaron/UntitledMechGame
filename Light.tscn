@@ -1,0 +1,22 @@
+[gd_scene load_steps=3 format=3 uid="uid://bbj5untp1ahvh"]
+
+[ext_resource type="Shader" path="res://scenes/coneShader.gdshader" id="1_hp1oa"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_k7jog"]
+shader = ExtResource("1_hp1oa")
+shader_parameter/leftTopPoint = Vector2(0, 0.2)
+shader_parameter/rightTopPoint = Vector2(1, 0.2)
+shader_parameter/bottomPoint = Vector2(0.5, 2.01)
+shader_parameter/innerRadius = 1.53
+shader_parameter/intensity = 0.5
+shader_parameter/color = Color(1, 0.313726, 1, 1)
+
+[node name="SubViewport" type="SubViewport"]
+transparent_bg = true
+size = Vector2i(128, 128)
+
+[node name="ColorRect" type="ColorRect" parent="."]
+z_index = 4
+material = SubResource("ShaderMaterial_k7jog")
+offset_right = 128.0
+offset_bottom = 128.0

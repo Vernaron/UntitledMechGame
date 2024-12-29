@@ -4,6 +4,7 @@ extends Node2D
 var arena_res = preload("res://scenes/arena.tscn")
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	randomize()
 	PlayerInfo.readSettings(default_settings)
 	print(PlayerInfo.settings)
 	PlayerInfo.get_saves(default_saves)

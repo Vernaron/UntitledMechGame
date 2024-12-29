@@ -1,12 +1,24 @@
 shader_type canvas_item;
-uniform float negOffset = 0.0;
-uniform vec2 leftTopPoint = vec2(0,0);
-uniform vec2 rightTopPoint = vec2(1,0);
-uniform vec2 bottomPoint = vec2(.5,1);
+//render_mode blend_add;
+uniform vec2 leftTopPoint = vec2(0.0,0.0);
+uniform vec2 rightTopPoint = vec2(1.0,0.0);
+uniform vec2 bottomPoint = vec2(0.5,1.0);
+uniform float innerRadius = 0;
+uniform float intensity = 1.0;
+uniform vec3 color : source_color;
+float slope(vec2 v1, vec2 v2){
+	return (v1.y-v2.y)/(v1.x-v2.x);
+}
 float circpiece(vec2 _UV){
-	
-	if(.1+_UV.x > _UV.y/1.8&&-1.1+_UV.x < -_UV.y/1.8&&length(_UV - vec2(0.5, 1.0))<=1.0){
-		return _UV.y/1.5;
+	;
+	if(_UV.x*slope(leftTopPoint, bottomPoint)+leftTopPoint.y > _UV.y&&
+	2.0*bottomPoint.y+_UV.x*slope(rightTopPoint, bottomPoint)-rightTopPoint.y > _UV.y&&
+	length(_UV - bottomPoint) <=length(leftTopPoint-bottomPoint)
+	){
+		
+		return length(_UV - bottomPoint) >=length(bottomPoint-vec2(bottomPoint.x, bottomPoint.y-innerRadius)) ?
+			 pow(_UV.y, 2)*(intensity*(.1+sin(_UV.x*PI)))/(bottomPoint.y-innerRadius):
+				0.0;
 	}
 	else{
 	 	return 0.0;
@@ -20,6 +32,6 @@ void fragment() {
 			averageOp += circpiece(UV + vec2(xoff, yoff));
 		}
 	}
-	COLOR.a = UV.x*acos(dot(leftTopPoint, bottomPoint)) > UV.y? 1.0:0.0;
-	//COLOR.a = averageOp/9.0;
+	COLOR = vec4(color.x, color.y, color.z, averageOp/9.0);
 }
+

@@ -37,9 +37,9 @@ shadow_color = Color(1, 1, 1, 0.231373)
 texture = SubResource("GradientTexture2D_tw6tx")
 texture_scale = 0.4
 
-[node name="baseLight" type="PointLight2D" parent="tipLight"]
+[node name="tipLightFull" type="PointLight2D" parent="tipLight"]
 energy = 0.5
-blend_mode = 2
+shadow_enabled = true
 shadow_color = Color(1, 1, 1, 0.231373)
 shadow_filter_smooth = 11.0
 texture = SubResource("GradientTexture2D_tw6tx")
@@ -50,9 +50,9 @@ height = 10.0
 light_mask = 3
 visibility_layer = 2
 material = ExtResource("2_kutuw")
-offset_left = -12.5
-offset_right = 87.5
-offset_bottom = 25.0
+offset_left = -10.0
+offset_right = 90.0
+offset_bottom = 20.0
 rotation = -1.5708
 script = ExtResource("3_pj4rs")
 

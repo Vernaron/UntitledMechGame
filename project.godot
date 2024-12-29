@@ -17,8 +17,15 @@ config/icon="res://icon.svg"
 
 [autoload]
 
-PlayerInfo="*res://scripts/Player_Info.gd"
-ItemData="*res://scripts/Item_Data.gd"
+Signals="*res://scripts/Globals/signals.gd"
+PlayerInfo="*res://scripts/Globals/Player_Info.gd"
+ItemData="*res://scripts/Globals/Item_Data.gd"
+
+[display]
+
+window/size/viewport_width=1920
+window/size/viewport_height=1080
+window/size/mode=3
 
 [dotnet]
 
@@ -27,6 +34,10 @@ project/assembly_name="UntitledMechGame"
 [global]
 
 shake_intensity=3.0
+
+[gui]
+
+theme/default_font_multichannel_signed_distance_field=true
 
 [input]
 
@@ -63,6 +74,11 @@ special={
 escape_button={
 "deadzone": 0.5,
 "events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":4194305,"key_label":0,"unicode":0,"echo":false,"script":null)
+]
+}
+debug={
+"deadzone": 0.5,
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"command_or_control_autoremap":true,"alt_pressed":false,"shift_pressed":false,"pressed":false,"keycode":0,"physical_keycode":72,"key_label":0,"unicode":104,"echo":false,"script":null)
 ]
 }
 

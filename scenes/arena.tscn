@@ -1,10 +1,18 @@
-[gd_scene load_steps=6 format=3 uid="uid://cuq7wsqmeyfeu"]
+[gd_scene load_steps=13 format=3 uid="uid://cuq7wsqmeyfeu"]
 
 [ext_resource type="Script" path="res://scripts/arena.gd" id="1_dggth"]
 [ext_resource type="Script" path="res://scripts/Camera2D.gd" id="2_rbf87"]
 [ext_resource type="Script" path="res://scripts/Menu.gd" id="4_k4184"]
+[ext_resource type="Script" path="res://scripts/SettingsButton.gd" id="5_dg5rs"]
 [ext_resource type="Script" path="res://scripts/MainContainer.gd" id="5_yjrli"]
+[ext_resource type="Script" path="res://scenes/settingsPanel.gd" id="6_jplw4"]
+[ext_resource type="Script" path="res://scripts/SettingsMenu.gd" id="6_jvf2h"]
 [ext_resource type="Script" path="res://scripts/ShakeIntensity.gd" id="6_riicw"]
+[ext_resource type="Script" path="res://scenes/Exit.gd" id="6_w0u4k"]
+[ext_resource type="PackedScene" uid="uid://taw0egbmmxs6" path="res://Locale.tscn" id="6_y32ry"]
+[ext_resource type="Script" path="res://scenes/enemy_targetter.gd" id="11_ddhsv"]
+
+[sub_resource type="Theme" id="Theme_iflhl"]
 
 [node name="Arena" type="Node2D"]
 process_mode = 1
@@ -20,14 +28,15 @@ drag_bottom_margin = 0.01
 script = ExtResource("2_rbf87")
 
 [node name="CanvasModulate" type="CanvasModulate" parent="mainCamera"]
+visible = false
 color = Color(0.454902, 0.454902, 0.454902, 1)
 
 [node name="Menu" type="CanvasLayer" parent="."]
 process_mode = 3
+visible = false
 script = ExtResource("4_k4184")
 
 [node name="MainContainer" type="AspectRatioContainer" parent="Menu"]
-visible = false
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -35,42 +44,107 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("5_yjrli")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Menu/MainContainer"]
+[node name="Control" type="CenterContainer" parent="Menu/MainContainer"]
 layout_mode = 2
 
-[node name="MenuButton" type="MenuButton" parent="Menu/MainContainer/VBoxContainer"]
+[node name="Control" type="Control" parent="Menu/MainContainer/Control"]
 layout_mode = 2
+
+[node name="PanelContainer" type="Panel" parent="Menu/MainContainer/Control/Control"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -270.0
+offset_top = -490.909
+offset_right = 270.0
+offset_bottom = 490.909
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="mainMenuContainer" type="VBoxContainer" parent="Menu/MainContainer/Control/Control/PanelContainer"]
+layout_mode = 2
+offset_right = 540.0
+offset_bottom = 981.818
+mouse_filter = 2
+alignment = 1
+
+[node name="settingsButton" type="Button" parent="Menu/MainContainer/Control/Control/PanelContainer/mainMenuContainer"]
+layout_mode = 2
+mouse_filter = 1
 text = "Settings"
-item_count = 2
-popup/item_0/text = "Settings"
-popup/item_0/id = 0
-popup/item_1/text = "Controls"
-popup/item_1/id = 1
+script = ExtResource("5_dg5rs")
 
-[node name="Settings" type="PopupMenu" parent="Menu/MainContainer/VBoxContainer/MenuButton"]
-
-[node name="Settings" type="TabContainer" parent="Menu/MainContainer/VBoxContainer/MenuButton/Settings"]
-offset_left = 252.0
-offset_right = 900.0
-offset_bottom = 648.0
-
-[node name="Controls" type="VBoxContainer" parent="Menu/MainContainer/VBoxContainer/MenuButton/Settings/Settings"]
+[node name="Exit" type="Button" parent="Menu/MainContainer/Control/Control/PanelContainer/mainMenuContainer"]
 layout_mode = 2
+text = "Exit"
+script = ExtResource("6_w0u4k")
 
-[node name="ShakeIntensity" type="HSlider" parent="Menu/MainContainer/VBoxContainer/MenuButton/Settings/Settings"]
+[node name="settingsPanel" type="Panel" parent="Menu/MainContainer"]
 visible = false
+layout_mode = 2
+mouse_filter = 2
+script = ExtResource("6_jplw4")
+
+[node name="MenuButton" type="TabBar" parent="Menu/MainContainer/settingsPanel"]
+layout_mode = 2
+offset_right = 1080.0
+offset_bottom = 44.0
+tab_alignment = 1
+clip_tabs = false
+tab_count = 2
+tab_0/title = "Controls"
+tab_1/title = "Graphics"
+script = ExtResource("6_jvf2h")
+
+[node name="Graphics" type="VBoxContainer" parent="Menu/MainContainer/settingsPanel"]
+layout_mode = 0
+offset_top = 40.0
+offset_right = 1080.0
+offset_bottom = 1080.0
+mouse_filter = 2
+alignment = 1
+
+[node name="ShakeIntensity" type="HSlider" parent="Menu/MainContainer/settingsPanel/Graphics"]
 layout_mode = 2
 max_value = 300.0
 step = 25.0
 value = 100.0
-tick_count = 12
+tick_count = 13
 ticks_on_borders = true
 script = ExtResource("6_riicw")
 
-[node name="OptionButton" type="OptionButton" parent="Menu/MainContainer/VBoxContainer/MenuButton"]
+[node name="RichTextLabel" type="RichTextLabel" parent="Menu/MainContainer/settingsPanel/Graphics"]
+layout_mode = 2
+mouse_filter = 2
+theme = SubResource("Theme_iflhl")
+bbcode_enabled = true
+text = "[center]Shake[/center]"
+fit_content = true
+scroll_active = false
+
+[node name="Controls" type="VBoxContainer" parent="Menu/MainContainer/settingsPanel"]
 layout_mode = 0
-offset_right = 14.0
-offset_bottom = 20.0
+offset_top = 40.0
+offset_right = 1080.0
+offset_bottom = 1080.0
+mouse_filter = 2
+
+[node name="Locale" parent="." instance=ExtResource("6_y32ry")]
+
+[node name="Timer" type="Timer" parent="."]
+process_callback = 0
+wait_time = 0.1
+autostart = true
+script = ExtResource("11_ddhsv")
 
 [connection signal="item_rect_changed" from="mainCamera" to="Menu/MainContainer" method="_on_main_camera_item_rect_changed"]
-[connection signal="drag_ended" from="Menu/MainContainer/VBoxContainer/MenuButton/Settings/Settings/ShakeIntensity" to="Menu/MainContainer/VBoxContainer/MenuButton/Settings/Settings/ShakeIntensity" method="_on_drag_ended"]
+[connection signal="pressed" from="Menu/MainContainer/Control/Control/PanelContainer/mainMenuContainer/settingsButton" to="Menu" method="settings_pressed"]
+[connection signal="pressed" from="Menu/MainContainer/Control/Control/PanelContainer/mainMenuContainer/settingsButton" to="Menu/MainContainer/Control/Control/PanelContainer/mainMenuContainer/settingsButton" method="_on_pressed"]
+[connection signal="pressed" from="Menu/MainContainer/Control/Control/PanelContainer/mainMenuContainer/settingsButton" to="Menu/MainContainer/settingsPanel" method="settings_pressed"]
+[connection signal="pressed" from="Menu/MainContainer/Control/Control/PanelContainer/mainMenuContainer/Exit" to="Menu/MainContainer/Control/Control/PanelContainer/mainMenuContainer/Exit" method="_on_pressed"]
+[connection signal="tab_changed" from="Menu/MainContainer/settingsPanel/MenuButton" to="Menu/MainContainer/settingsPanel/MenuButton" method="_on_tab_changed"]
+[connection signal="drag_ended" from="Menu/MainContainer/settingsPanel/Graphics/ShakeIntensity" to="Menu/MainContainer/settingsPanel/Graphics/ShakeIntensity" method="_on_drag_ended"]
+[connection signal="timeout" from="Timer" to="Timer" method="_on_timeout"]

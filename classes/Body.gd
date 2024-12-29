@@ -9,7 +9,6 @@ var angle = 0
 @export_range(0, 2) var team : int
 var hardpoint_arr = []
 var delta_buildup = 0
-var camera = null
 var root = null
 
 #Hardpoint that encapsulates a weapon
@@ -39,16 +38,13 @@ func set_current_body(body : Dictionary):
 	$BodySprite.texture = body["sprite"]
 	
 func set_weapon(weapon, index):
-	weapon.set_references(root, self, camera)
+	weapon.set_references(root, self)
 	weapon.offset = hardpoint_arr[index].offset
 	hardpoint_arr[index].set_weapon(weapon.copy())
 func set_weapons_from_array(weapon_array):
 	for i in range(0, min(weapon_array.size(), hardpoints)):
 		set_weapon(weapon_array[i],i)
-func set_camera(_camera):
-	camera = _camera
-		
-# Called every frame. 'delta' is the elapsed time since the previous frame.
+
 func _process(delta):
 	_process_custom(delta)
 	delta_buildup+=delta
@@ -66,16 +62,20 @@ func release():
 		hardpoint.release()
 
 func turn(delta):
-	var diff = angle - global_rotation
-	
-	if(diff > PI): diff-=2*PI
-	if(diff < -PI): diff+=2*PI
+	var diff = normalize(angle - global_rotation)
 	diff *=ACCELERATION * 10
-	diff = clamp(diff, -2 * PI *(ACCELERATION), 2 * PI * (ACCELERATION))
+	diff = clamp(diff, -4 * PI *(ACCELERATION), 4 * PI * (ACCELERATION))
 	rotate(diff * delta)
+func normalize(value):
+	if(value > PI): return value-2*PI
+	if(value < -PI): return value+2*PI
+	return value
 func set_root(_root):
 	root = _root
-	
+func _ready():
+	_ready_custom()
+func _ready_custom():
+	pass
 func _process_custom(_delta):
 	pass
 func _physics_process_custom(_delta):

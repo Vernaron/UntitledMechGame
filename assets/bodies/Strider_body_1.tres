@@ -1,8 +1,8 @@
 [gd_resource type="CanvasTexture" load_steps=3 format=3 uid="uid://ctkmf8ulce0t0"]
 
 [ext_resource type="Texture2D" uid="uid://cfmn85c2ubch1" path="res://assets/bodies/Strider_body_1.png" id="1_q7yuo"]
-[ext_resource type="Texture2D" uid="uid://d1gek8px0a16d" path="res://assets/bodies/Strider_Head_1_n.png" id="2_5w5db"]
+[ext_resource type="Texture2D" uid="uid://dq8iklucl6ev2" path="res://assets/bodies/Strider_body_1_n.png" id="2_f58v2"]
 
 [resource]
 diffuse_texture = ExtResource("1_q7yuo")
-normal_texture = ExtResource("2_5w5db")
+normal_texture = ExtResource("2_f58v2")
