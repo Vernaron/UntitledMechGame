@@ -1,6 +1,9 @@
 extends Legs
 
-
+func _ready_custom():
+	Signals.teleport_player.connect(teleport)
+func teleport(location):
+	global_position = location
 func _process_custom(_delta):
 	if(Input.is_action_pressed("up")||Input.is_action_pressed("down")
 	   || Input.is_action_pressed("left")||Input.is_action_pressed("right")):

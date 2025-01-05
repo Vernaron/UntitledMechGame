@@ -9,7 +9,7 @@ enum DASH{BURST, JET}
 	
 class Weapon:
 	var bullet_flash: Node2D
-	var root_scene : Node2D
+	#var root_scene : Node2D
 	var body : Node2D
 	var reload : float
 	var damage : float
@@ -43,8 +43,7 @@ class Weapon:
 		offset = new_offset
 	func settingsChanged():
 		shake_coeff = damage * PlayerInfo.settings["intensity"]
-	func set_references(_root_scene, _body):
-		root_scene = _root_scene
+	func set_body(_body):
 		body = _body
 	func shoot(delta):
 		
@@ -61,7 +60,7 @@ class Weapon:
 						
 						
 						body.add_child(bullet_flash.copy())
-						root_scene.add_child(temp_bullet)
+						Signals.spawn_root.emit(temp_bullet)
 						curr_reload=reload	
 						if(body.team ==1):
 							Signals.screen_shake.emit(shake_coeff/4, .2)
@@ -82,8 +81,7 @@ class Weapon:
 						temp_bullet.body = body
 						temp_bullet.visible = false
 						projectiles.push_back(temp_bullet)
-						
-						root_scene.add_child(temp_bullet)
+						Signals.spawn_root.emit(temp_bullet)
 				else:
 					for i in range(0, projectiles.size()):
 						var target = (randf()*2*accuracy - accuracy)*PI/180
@@ -115,7 +113,7 @@ class Weapon:
 	func copy():
 		var tempWeapon = Weapon.new(reload, damage, projectile_count, bullet, type, accuracy,size_level, area_of_effect, bullet_flash)
 		tempWeapon.offset = offset
-		tempWeapon.root_scene = root_scene
+#		tempWeapon.root_scene = root_scene
 		tempWeapon.body = body
 		return tempWeapon
 var flashes = {

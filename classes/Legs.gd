@@ -7,8 +7,9 @@ var richochet_blast = preload("res://particles/bullet_richochet.tscn")
 var angle : float = 0 
 var curr_move_ratio = 0
 var curr_dash_ratio = 0
+var touching_wall:bool = false
+var layer_enabled = true
 var angle_locked = 0
-var root = null
 var healthZero = false
 @export_range(.01, 10) var dash_time : float = 0.0
 @export_range(1, 10) var dash_cooldown:float = 0.0
@@ -24,16 +25,23 @@ var jet_button_down : bool= false
 var is_on_cooldown : bool = false
 var is_moving : bool = false
 var movement_juice : float = 0
-func construct(_name = "", _root = null, _current_legs = {}, _current_body = {}, _weapons_array = []):
+var collision_rotation_offset: float = 0
+func toggle_processing():
+	if(process_mode!=Node.PROCESS_MODE_DISABLED):
+		process_mode=Node.PROCESS_MODE_DISABLED
+	else:
+		process_mode=Node.PROCESS_MODE_INHERIT
+func construct(_name = "", _current_legs = {}, _current_body = {}, _weapons_array = []):
 	name = _name
-	set_root(_root)
 	_construct_custom()
 	if _current_legs!={}: set_current_legs(_current_legs)
 	if _current_body !={}: set_current_body(_current_body)
 	if _weapons_array != []:set_weapons_from_array(_weapons_array)
 func _process(delta):
-	_process_custom(delta)
+	if(layer_enabled):
+		_process_custom(delta)
 func _physics_process(delta):
+	if(!layer_enabled):return
 	_physics_process_custom(delta)
 	if(is_moving):
 		_get_intended_angle()
@@ -59,9 +67,19 @@ func _physics_process(delta):
 		rotation+=2*PI
 	velocity = (Vector2(0,-curr_move_ratio*1.5).rotated(rotation) + \
 		Vector2(0, -curr_move_ratio*.5).rotated(angle)) * SPEED + dash_boost
-	
+	velocity = velocity.rotated(collision_rotation_offset)
 
-	move_and_slide()
+	if move_and_slide():
+		var forceSum = velocity
+		touching_wall = false
+		for n in range(0, get_slide_collision_count()):
+			var coll = get_slide_collision(n)
+			if(coll.get_collider().is_class("CharacterBody2D")):
+				forceSum+= coll.get_collider_velocity()
+			if(coll.get_collider().is_class("TileMap")):
+				touching_wall = true
+		collision_rotation_offset = velocity.angle()-forceSum.angle()
+	else:collision_rotation_offset = 0
 	if (current_dash_cooldown > 0):
 		current_dash_cooldown-=delta;
 		
@@ -123,9 +141,6 @@ func set_current_body(body : Dictionary):
 func set_weapons_from_array(weapon_array : Array):
 	$Body.set_weapons_from_array(weapon_array)
 
-func set_root(_root):
-	root = _root
-	$Body.set_root(_root)
 func start_dash():
 	match(current_dash_type):
 		ItemData.DASH.BURST:
@@ -140,7 +155,7 @@ func end_dash():
 	jet_button_down=false
 func set_team(_team):
 	$Body.team=_team	
-	
+
 func damage_inflict(damage):
 	current_health -=damage * 20/($Body.armor + 20)
 	if(current_health <= 0):
@@ -152,10 +167,13 @@ func resolve_particles(location, bullet_spark, laser_spark, damage):
 		temp.set_damage(damage)
 		temp.rotation = location[0]
 		temp.position = location[1]
-		root.add_child(temp)
+		Signals.spawn_root.emit(temp)
+	if laser_spark:
+		pass
 	
 func _ready():
 	_ready_custom()
+
 #Override functions
 func _ready_custom():
 	pass

@@ -9,8 +9,6 @@ var angle = 0
 @export_range(0, 2) var team : int
 var hardpoint_arr = []
 var delta_buildup = 0
-var root = null
-
 #Hardpoint that encapsulates a weapon
 class Hardpoint:
 	var weapon : ItemData.Weapon
@@ -38,7 +36,7 @@ func set_current_body(body : Dictionary):
 	$BodySprite.texture = body["sprite"]
 	
 func set_weapon(weapon, index):
-	weapon.set_references(root, self)
+	weapon.set_body(self)
 	weapon.offset = hardpoint_arr[index].offset
 	hardpoint_arr[index].set_weapon(weapon.copy())
 func set_weapons_from_array(weapon_array):
@@ -70,8 +68,6 @@ func normalize(value):
 	if(value > PI): return value-2*PI
 	if(value < -PI): return value+2*PI
 	return value
-func set_root(_root):
-	root = _root
 func _ready():
 	_ready_custom()
 func _ready_custom():

@@ -4,7 +4,9 @@
 [ext_resource type="Texture2D" uid="uid://31mha7krjjqm" path="res://assets/bullet_simple_small.png" id="2_q4cxr"]
 
 [node name="Bullet" type="Node2D"]
+process_mode = 1
 z_index = -2
+z_as_relative = false
 position = Vector2(2.90644e-06, 0)
 scale = Vector2(1, 5)
 script = ExtResource("1_ajy2l")

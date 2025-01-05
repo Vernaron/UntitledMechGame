@@ -14,7 +14,6 @@ fill_to = Vector2(1, 0.5)
 
 [node name="bullet_flash" type="PointLight2D"]
 color = Color(0.282353, 0.733333, 0.478431, 1)
-shadow_enabled = true
 texture = SubResource("GradientTexture2D_pv3yh")
-texture_scale = 0.01
+texture_scale = nan
 script = ExtResource("1_54dre")

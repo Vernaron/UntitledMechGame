@@ -1,7 +1,8 @@
-[gd_scene load_steps=13 format=3 uid="uid://cuq7wsqmeyfeu"]
+[gd_scene load_steps=15 format=3 uid="uid://cuq7wsqmeyfeu"]
 
 [ext_resource type="Script" path="res://scripts/arena.gd" id="1_dggth"]
 [ext_resource type="Script" path="res://scripts/Camera2D.gd" id="2_rbf87"]
+[ext_resource type="Script" path="res://scenes/BackgroundColor.gd" id="3_8102s"]
 [ext_resource type="Script" path="res://scripts/Menu.gd" id="4_k4184"]
 [ext_resource type="Script" path="res://scripts/SettingsButton.gd" id="5_dg5rs"]
 [ext_resource type="Script" path="res://scripts/MainContainer.gd" id="5_yjrli"]
@@ -9,8 +10,9 @@
 [ext_resource type="Script" path="res://scripts/SettingsMenu.gd" id="6_jvf2h"]
 [ext_resource type="Script" path="res://scripts/ShakeIntensity.gd" id="6_riicw"]
 [ext_resource type="Script" path="res://scenes/Exit.gd" id="6_w0u4k"]
-[ext_resource type="PackedScene" uid="uid://taw0egbmmxs6" path="res://Locale.tscn" id="6_y32ry"]
 [ext_resource type="Script" path="res://scenes/enemy_targetter.gd" id="11_ddhsv"]
+[ext_resource type="Script" path="res://scenes/mainSpawnTimer.gd" id="12_nednc"]
+[ext_resource type="PackedScene" uid="uid://b53d1lxfelmb4" path="res://scenes/Locales/Tundra.tscn" id="13_tt2bj"]
 
 [sub_resource type="Theme" id="Theme_iflhl"]
 
@@ -26,10 +28,22 @@ drag_top_margin = 0.01
 drag_right_margin = 0.01
 drag_bottom_margin = 0.01
 script = ExtResource("2_rbf87")
+defaultZoom = 0.5
+zoomShiftIntensity = 0.1
 
 [node name="CanvasModulate" type="CanvasModulate" parent="mainCamera"]
 visible = false
-color = Color(0.454902, 0.454902, 0.454902, 1)
+color = Color(0.560784, 0.560784, 0.560784, 1)
+
+[node name="ColorRect" type="ColorRect" parent="mainCamera"]
+show_behind_parent = true
+z_index = -100
+offset_left = -4000.0
+offset_top = -3000.0
+offset_right = 4000.0
+offset_bottom = 3000.0
+mouse_filter = 2
+script = ExtResource("3_8102s")
 
 [node name="Menu" type="CanvasLayer" parent="."]
 process_mode = 3
@@ -132,13 +146,17 @@ offset_right = 1080.0
 offset_bottom = 1080.0
 mouse_filter = 2
 
-[node name="Locale" parent="." instance=ExtResource("6_y32ry")]
-
 [node name="Timer" type="Timer" parent="."]
 process_callback = 0
 wait_time = 0.1
 autostart = true
 script = ExtResource("11_ddhsv")
+
+[node name="mainSpawnTimer" type="Timer" parent="."]
+autostart = true
+script = ExtResource("12_nednc")
+
+[node name="Node2D" parent="." instance=ExtResource("13_tt2bj")]
 
 [connection signal="item_rect_changed" from="mainCamera" to="Menu/MainContainer" method="_on_main_camera_item_rect_changed"]
 [connection signal="pressed" from="Menu/MainContainer/Control/Control/PanelContainer/mainMenuContainer/settingsButton" to="Menu" method="settings_pressed"]
@@ -148,3 +166,4 @@ script = ExtResource("11_ddhsv")
 [connection signal="tab_changed" from="Menu/MainContainer/settingsPanel/MenuButton" to="Menu/MainContainer/settingsPanel/MenuButton" method="_on_tab_changed"]
 [connection signal="drag_ended" from="Menu/MainContainer/settingsPanel/Graphics/ShakeIntensity" to="Menu/MainContainer/settingsPanel/Graphics/ShakeIntensity" method="_on_drag_ended"]
 [connection signal="timeout" from="Timer" to="Timer" method="_on_timeout"]
+[connection signal="timeout" from="mainSpawnTimer" to="mainSpawnTimer" method="_on_timeout"]

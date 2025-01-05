@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dhq2v08xhin4v"
-path="res://.godot/imported/simple_blocks.png-b4fb933e423fbeed3623395e8994e663.ctex"
+uid="uid://cyjigf80vjkmb"
+path="res://.godot/imported/simple_snow.png-730b835575a969c0095a2bd764f1aafa.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/simple_blocks.png"
-dest_files=["res://.godot/imported/simple_blocks.png-b4fb933e423fbeed3623395e8994e663.ctex"]
+source_file="res://assets/tiles/simple_snow.png"
+dest_files=["res://.godot/imported/simple_snow.png-730b835575a969c0095a2bd764f1aafa.ctex"]
 
 [params]
 
@@ -21,14 +21,14 @@ compress/lossy_quality=0.7
 compress/hdr_compression=1
 compress/normal_map=0
 compress/channel_pack=0
-mipmaps/generate=true
+mipmaps/generate=false
 mipmaps/limit=-1
 roughness/mode=0
 roughness/src_normal=""
-process/fix_alpha_border=false
+process/fix_alpha_border=true
 process/premult_alpha=false
 process/normal_map_invert_y=false
 process/hdr_as_srgb=false
 process/hdr_clamp_exposure=false
 process/size_limit=0
-detect_3d/compress_to=0
+detect_3d/compress_to=1

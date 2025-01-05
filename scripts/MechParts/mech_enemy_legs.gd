@@ -1,6 +1,7 @@
 extends Legs
 var curr_type : ItemData.Basic_Enemy = ItemData.Basic_Enemy.Strider
 var target : Vector2 = Vector2.ZERO
+
 @onready var navrid = get_world_2d().get_navigation_map()
 var currPath = [Vector2.ZERO,Vector2.ZERO,Vector2.ZERO]
 @export var attention_span : float
@@ -14,21 +15,21 @@ var path_update:int = 0
 var navAngle:float = 0
 var angleOffset:float = 0
 var distOffset : float = 0
+var wallOffset : float = 0
+@export var move_range=2000
 var angleOffsetCooldown:float = 0
 func _ready_custom():
 	Signals.retarget.connect(setTarget)	
 func  setTarget(_target):
 	target = _target
-	if path_type==pathing.nav&&path_update==0: 
+	if path_type==pathing.nav&&path_update==0&&global_position.distance_to(target)<move_range\
+		&&get_parent().process_mode!=Node.PROCESS_MODE_DISABLED: 
 		calc_path()
-		print(currPath)
-		print("")
-	#if(path_type==pathing.nav):
+	path_update=(path_update+1)%3
 func calc_path():
-	await 1
 	currPath = NavigationServer2D.map_get_path(navrid, global_position, target, false)
 	navAngle=currPath[1].angle_to_point(currPath[0])		
-	#path_update=(path_update+1)%3
+	#
 func _construct_custom():
 	match(curr_type):
 		ItemData.Basic_Enemy.Strider:
@@ -65,16 +66,23 @@ func _physics_process_custom(delta):
 	elif time_gained_vision>swap_time&&path_type==pathing.nav:
 		path_type=pathing.direct
 		
-	if(abs(position.distance_to(target)) < 2000):
+	if(abs(position.distance_to(target)) < move_range):
 		is_moving = true
-		if(abs(position.distance_to(target)) < 500):
+		if(abs(position.distance_to(target)) < move_range/2.0):
 			if angleOffset>0:
 				distOffset=PI/2
 			else:
 				distOffset=-PI/2
+		
 		else:
-			distOffset*=.9
-
+			distOffset*=.8
+		if(touching_wall):
+			if angleOffset>0:
+				wallOffset=-PI/2
+			else:
+				wallOffset=PI/2
+		else:
+			wallOffset*=0.8
 		
 	else:
 		is_moving = false
@@ -83,7 +91,7 @@ func _get_intended_angle():
 	
 	if(path_type==pathing.direct):
 		var direction= position.direction_to(target)
-		tempAngle = normalize(atan2(-direction.y, -direction.x) + angleOffset+distOffset)
+		tempAngle = normalize(atan2(-direction.y, -direction.x) + angleOffset+distOffset+wallOffset)
 		tempAngle+=normalize(tempAngle-normalize(angle))/6
 	elif(path_type==pathing.nav):
 		tempAngle=navAngle

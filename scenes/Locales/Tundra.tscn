@@ -1,0 +1,45 @@
+[gd_scene load_steps=7 format=3 uid="uid://b53d1lxfelmb4"]
+
+[ext_resource type="Script" path="res://LocaleController.gd" id="1_hnj60"]
+[ext_resource type="TileSet" uid="uid://bhgc7uyuhyqb2" path="res://assets/tiles/Tundra.tres" id="2_tswhg"]
+[ext_resource type="Script" path="res://Spawner.gd" id="4_k3xg5"]
+[ext_resource type="PackedScene" uid="uid://cmwtuxws5txrm" path="res://scenes/mech_enemy.tscn" id="5_ft3t0"]
+[ext_resource type="Texture2D" uid="uid://dggqs5eqnf47b" path="res://icon.svg" id="6_62a7q"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_jq5fl"]
+radius = 737.32
+
+[node name="Node2D" type="Node2D"]
+script = ExtResource("1_hnj60")
+num_levels = 2
+level_colors = Array[Color]([Color(0.0980392, 0.0980392, 0.0980392, 1), Color(0.188235, 0.188235, 0.188235, 1)])
+
+[node name="level_1" type="TileMap" parent="."]
+show_behind_parent = true
+z_index = -10
+tile_set = ExtResource("2_tswhg")
+format = 2
+layer_0/tile_data = PackedInt32Array(-589851, 131072, 0, -589850, 131072, 0, -589849, 131072, 0, -589848, 131072, 0, -589847, 131072, 0, -589846, 131072, 0, -589845, 131072, 0, -589844, 131072, 0, -589843, 131072, 0, -589842, 131072, 0, -589841, 131072, 0, -589840, 131072, 0, -589839, 131072, 0, -589838, 131072, 0, -589837, 131072, 0, -589836, 131072, 0, -589835, 131072, 0, -589834, 131072, 0, -589833, 131072, 0, -589832, 131072, 0, -589831, 131072, 0, -589830, 131072, 0, -589829, 131072, 0, -589828, 131072, 0, -589827, 131072, 0, -589826, 131072, 0, -589825, 131072, 0, -655360, 131072, 0, -655359, 131072, 0, -655358, 131072, 0)
+
+[node name="Spawner" type="Area2D" parent="."]
+visible = false
+script = ExtResource("4_k3xg5")
+enemy = ExtResource("5_ft3t0")
+enemyTypes = Array[int]([0])
+minDistance = 2500
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Spawner"]
+shape = SubResource("CircleShape2D_jq5fl")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+visible = false
+z_index = -99
+position = Vector2(-15, 43)
+scale = Vector2(30, 30)
+texture = ExtResource("6_62a7q")
+
+[node name="NavigationRegion2D" type="NavigationRegion2D" parent="."]
+
+[node name="level_0" type="TileMap" parent="."]
+process_mode = 4
+format = 2

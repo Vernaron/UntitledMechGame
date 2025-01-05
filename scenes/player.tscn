@@ -1,10 +1,12 @@
-[gd_scene load_steps=9 format=3 uid="uid://cyilq4ba3ayx5"]
+[gd_scene load_steps=11 format=3 uid="uid://cyilq4ba3ayx5"]
 
 [ext_resource type="Script" path="res://scripts/MechParts/player_legs.gd" id="1_d83hd"]
 [ext_resource type="Script" path="res://scripts/MechParts/player_body.gd" id="2_m8l1p"]
 [ext_resource type="Texture2D" uid="uid://bdm4wnsav2lh5" path="res://assets/bodies/Bulwark_body_1.png" id="3_vwayn"]
 [ext_resource type="Script" path="res://scripts/MechParts/HardpointVisualizer.gd" id="4_g4edf"]
+[ext_resource type="PackedScene" uid="uid://b2juagtqduvgs" path="res://scenes/hardpoint_visual.tscn" id="5_my5xg"]
 [ext_resource type="Script" path="res://scripts/MechParts/LegCollisionPolygon.gd" id="6_6biik"]
+[ext_resource type="Texture2D" uid="uid://vqk66u15uiqj" path="res://assets/crosshair.png" id="6_qikda"]
 [ext_resource type="PackedScene" uid="uid://j05qj0skos78" path="res://scenes/cone_light.tscn" id="7_2lxpk"]
 [ext_resource type="Script" path="res://scripts/rotateOccluder.gd" id="8_cg75g"]
 
@@ -13,9 +15,8 @@ cull_mode = 2
 
 [node name="Legs" type="CharacterBody2D"]
 z_index = 2
-collision_mask = 29
+collision_mask = 32797
 motion_mode = 1
-wall_min_slide_angle = 0.0
 script = ExtResource("1_d83hd")
 
 [node name="LegsSprite" type="AnimatedSprite2D" parent="."]
@@ -30,6 +31,16 @@ scale = Vector2(4, 4)
 texture = ExtResource("3_vwayn")
 script = ExtResource("4_g4edf")
 Reference = "bulwark_1"
+
+[node name="Hardpoint_0_2" type="Sprite2D" parent="Body/BodySprite" instance=ExtResource("5_my5xg")]
+position = Vector2(10, -8)
+scale = Vector2(0.4, 0.4)
+texture = ExtResource("6_qikda")
+
+[node name="Hardpoint_1_1" type="Sprite2D" parent="Body/BodySprite" instance=ExtResource("5_my5xg")]
+position = Vector2(-11.5, -6)
+scale = Vector2(0.4, 0.4)
+texture = ExtResource("6_qikda")
 
 [node name="cone_light" parent="Body" instance=ExtResource("7_2lxpk")]
 height = 200.0

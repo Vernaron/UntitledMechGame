@@ -10,6 +10,7 @@ func _process_custom(_delta):
 			shoot()
 	elif(Input.is_action_just_released("shoot")): release()
 	
+
 func _physics_process_custom(_delta):
 	
 	angle = position.angle_to_point((get_global_mouse_position() - global_position)) + PI/2
