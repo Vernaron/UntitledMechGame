@@ -4,19 +4,19 @@ var target : Node2D = null
 var saves = {}
 var active_save_name = ""
 var active_save_data = {}
-var active = {
-	"body":null,
-	"leg":null,
-	"leg_mod":[],
-	"body_mod":[],
-	"weapons":[]
-}
-var inventory = {
-	"legs":[],
-	"bodies":[],
-	"modules":[],
-	"weapons":[]
-}
+#var active = {
+#	"body":null,
+#	"leg":null,
+#	"leg_mod":[],
+#	"body_mod":[],
+#	"weapons":[]
+#}
+#var inventory = {
+#	"legs":[],
+#	"bodies":[],
+#	"modules":[],
+#	"weapons":[]
+#}
 var progress = {
 	
 }
@@ -71,9 +71,11 @@ func switch(_save_name):
 		saves[_save_name] = default_save
 func save_player():
 	saves[active_save_name] = active_save_data
+	print(saves[active_save_name])
+	save_to_file()
 func save_to_file():
 	for save_name in saves.keys():
-		writeFile(save_name+".data", saves[save_name])
+		writeFile(save_name, saves[save_name])
 func readFile(filename:String, default:Dictionary, using_default : bool)->Variant : 
 	var filepath = "user://"+filename+".data"
 	if(FileAccess.file_exists(filepath)&&!using_default):
@@ -83,6 +85,7 @@ func readFile(filename:String, default:Dictionary, using_default : bool)->Varian
 		return default 
 func writeFile(filename:String, value:Dictionary)->void:
 	var filepath = "user://"+filename+".data"
+	print("Saving...")
 	FileAccess.open(filepath, FileAccess.WRITE).store_string(
 			JSON.stringify(value))
 func get_active_weapons():

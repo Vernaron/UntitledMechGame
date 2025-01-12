@@ -6,6 +6,7 @@ func _ready() -> void:
 	update_images()
 	Signals.change_inventory_type.connect(change_inventory_type)
 func change_inventory_type(newType : String):
+	update_images()
 	match(newType):
 		"Weapon_1":
 			pass

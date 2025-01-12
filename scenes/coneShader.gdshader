@@ -15,7 +15,7 @@ float circpiece(vec2 _UV){
 	2.0*bottomPoint.y+_UV.x*slope(rightTopPoint, bottomPoint)-rightTopPoint.y > _UV.y&&
 	length(_UV - bottomPoint) <=length(leftTopPoint-bottomPoint)
 	){
-		
+
 		return length(_UV - bottomPoint) >=length(bottomPoint-vec2(bottomPoint.x, bottomPoint.y-innerRadius)) ?
 			 pow(_UV.y, 2)*(intensity*(.1+sin(_UV.x*PI)))/(bottomPoint.y-innerRadius):
 				0.0;
@@ -34,4 +34,3 @@ void fragment() {
 	}
 	COLOR = vec4(color.x, color.y, color.z, averageOp/9.0);
 }
-
