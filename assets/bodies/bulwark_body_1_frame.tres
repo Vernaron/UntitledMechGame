@@ -1,0 +1,14 @@
+[gd_resource type="SpriteFrames" load_steps=2 format=3 uid="uid://npa03i222c7u"]
+
+[ext_resource type="Texture2D" uid="uid://dx1lfy5uav2bt" path="res://assets/bodies/Bulwark_body_1.tres" id="1_aqdob"]
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_aqdob")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]

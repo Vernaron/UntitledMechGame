@@ -14,5 +14,3 @@ func _physics_process_custom(_delta):
 		shoot()
 	else:
 		release()
-
-

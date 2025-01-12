@@ -1,13 +1,14 @@
 extends Node
-
-signal SettingsChange;
-signal unpause;
-signal screen_shake(strength:float, duration:float);
-signal retarget(player_pos:Vector2);
-signal spawn_root(node:Node2D);
-signal spawn_primary();
-signal ascend(teleportPoint:Vector2);
-signal descend(teleportPoint:Vector2);
-signal stair_exited();
-signal teleport_player(location:Vector2)
-signal shift_background_color(newColor:Color)
+@warning_ignore("unused_signal") signal SettingsChange; 
+@warning_ignore("unused_signal") signal unpause;
+@warning_ignore("unused_signal") signal screen_shake(strength:float, duration:float);
+@warning_ignore("unused_signal") signal retarget(player_pos:Vector2);
+@warning_ignore("unused_signal") signal spawn_root(node:Node2D);
+@warning_ignore("unused_signal") signal spawn_primary();
+@warning_ignore("unused_signal") signal ascend(teleportPoint:Vector2);
+@warning_ignore("unused_signal") signal descend(teleportPoint:Vector2);
+@warning_ignore("unused_signal") signal stair_exited();
+@warning_ignore("unused_signal") signal teleport_player(location:Vector2)
+@warning_ignore("unused_signal") signal shift_background_color(newColor:Color)
+@warning_ignore("unused_signal") signal change_inventory_type(newType : String)
+@warning_ignore("unused_signal") signal update_details_screen(objname : String)

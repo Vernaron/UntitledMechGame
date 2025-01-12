@@ -4,12 +4,15 @@ var richochet_blast = preload("res://particles/bullet_richochet.tscn")
 
 @export_range(1, 1000) var SPEED : float = 1000.0
 @export_range(.1, 1) var ACCELERATION : float =1
+var control_type : Dictionary= ItemData.control_type["Mech"]
+var wobble : bool = true
 var angle : float = 0 
 var curr_move_ratio = 0
 var curr_dash_ratio = 0
 var touching_wall:bool = false
 var layer_enabled = true
 var angle_locked = 0
+var last_velocity : Vector2 = Vector2.ZERO
 var healthZero = false
 @export_range(.01, 10) var dash_time : float = 0.0
 @export_range(1, 10) var dash_cooldown:float = 0.0
@@ -47,7 +50,7 @@ func _physics_process(delta):
 		_get_intended_angle()
 		angle-=PI/2
 		curr_move_ratio=min(1.0, curr_move_ratio+ACCELERATION*delta)
-		angle+=movement_juice / 4
+		if wobble: angle+=movement_juice / 4
 	else:
 		if(curr_move_ratio>0):
 			curr_move_ratio*=1-clamp((ACCELERATION * delta)*10, 0, 1)
@@ -58,17 +61,25 @@ func _physics_process(delta):
 	var dash_boost = get_dash_vector(delta)
 	$LegsSprite.speed_scale = curr_move_ratio * SPEED/1000
 	movement_juice = sin(($LegsSprite.frame +$LegsSprite.frame_progress ) * PI / 6)
-	var currScale:Vector2=Vector2.ZERO
-	currScale.x = 4+abs(movement_juice)*.4
-	currScale.y = 4+abs(movement_juice)*.4
-	$LegsSprite.scale = currScale
-	$Body/BodySprite.scale = currScale
+	if(wobble):
+		var currScale:Vector2=Vector2.ZERO
+		currScale.x = 4+abs(movement_juice)*.4
+		currScale.y = 4+abs(movement_juice)*.4
+		$LegsSprite.scale = currScale
+		$Body/BodySprite.scale = currScale
 	if(rotation < 0):
 		rotation+=2*PI
-	velocity = (Vector2(0,-curr_move_ratio*1.5).rotated(rotation) + \
-		Vector2(0, -curr_move_ratio*.5).rotated(angle)) * SPEED + dash_boost
+	if(control_type.turns):
+		velocity = (Vector2(0,-curr_move_ratio*1.5).rotated(rotation) + \
+			Vector2(0, -curr_move_ratio*.5).rotated(angle)) * SPEED + dash_boost
+	else:
+		var new_velocity = Vector2(0, -curr_move_ratio*1).rotated(angle) * SPEED
+		velocity = new_velocity*delta*2+last_velocity*(1-delta*2) + dash_boost
+		last_velocity = velocity - dash_boost
+		
+		
 	velocity = velocity.rotated(collision_rotation_offset)
-
+		
 	if move_and_slide():
 		var forceSum = velocity
 		touching_wall = false
@@ -95,7 +106,8 @@ func get_dash_vector(delta):
 				curr_dash_ratio*=0.8
 		ItemData.DASH.JET:
 			if(jet_button_down&&!is_on_cooldown):
-				curr_dash_ratio+=ACCELERATION * delta
+				curr_dash_ratio+=ACCELERATION * 4 * delta
+				curr_dash_ratio=clamp(curr_dash_ratio, 0, 1)
 				curr_dash_time-=delta
 				if(curr_dash_time<=0):
 					curr_dash_time=0
@@ -117,10 +129,16 @@ func turn(delta):
 	diff *=turn_radius * 10
 	diff = clamp(diff, -4 * PI *(turn_radius), 4 * PI * (turn_radius))
 	rotate(diff * delta)
+	if(!control_type.turns):
+		$Body.rotate(-diff*delta)
 func normalize(value):
 	if(value > PI): return value-2*PI
 	if(value < -PI): return value+2*PI
 	return value
+func set_current_type(_type : Dictionary):
+	control_type = _type
+	$LegCollisionPolygon.track_legs = control_type.collision_track_legs
+	wobble = _type.wobbles
 func set_current_legs(_legs : Dictionary):
 	SPEED= _legs["speed"]
 	ACCELERATION = _legs["acceleration"]
@@ -132,12 +150,13 @@ func set_current_legs(_legs : Dictionary):
 	current_health = health
 	current_dash_type=_legs["dash_type"]
 	$LegsSprite.sprite_frames = _legs.sprite
+	set_current_type(ItemData.control_type[_legs.move_type])
 
 	$LegsSprite.play()
 func set_current_body(body : Dictionary):
 	$Body.set_current_body(body)
 	$LegCollisionPolygon.set_array(body["collision_array_points"])
-	$Occluder.occluder.polygon = body["collision_array_points"]
+	$Occluder.occluder.set_polygon.call_deferred(body["collision_array_points"])
 func set_weapons_from_array(weapon_array : Array):
 	$Body.set_weapons_from_array(weapon_array)
 
@@ -187,4 +206,3 @@ func _construct_custom():
 	pass
 func _take_damage(_target, _location=null, _bullet_spark=false, _laser_spark=false):
 	pass
-

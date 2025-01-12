@@ -22,8 +22,8 @@ var progress = {
 }
 var default_save = {
 	"save_ver":1.0,
-	"owned_bodies":["strider_1"],
-	"owned_legs":["strider_1"],
+	"owned_bodies":[["strider_1",1]],
+	"owned_legs":[["strider_1", 1]],
 	"owned_modules":[],
 	"owned_weapons":[["bolter",2]],
 	"saved_inventory":[],
@@ -31,7 +31,7 @@ var default_save = {
 	"active_legs":"strider_1",
 	"active_body_mods":[],
 	"active_leg_mods":[],
-	"active_weapons":["bolter","bolter"],
+	"active_weapons":["bolter","bolter","","",""],
 	"active_zones":["zone_1"],
 	"achievements":[],
 	"player_level":1,

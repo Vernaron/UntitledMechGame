@@ -1,9 +1,9 @@
 [gd_scene load_steps=10 format=3 uid="uid://taw0egbmmxs6"]
 
-[ext_resource type="Script" path="res://Spawner.gd" id="1_bodx8"]
+[ext_resource type="Script" path="res://scripts/Spawner.gd" id="1_bodx8"]
 [ext_resource type="Texture2D" uid="uid://dggqs5eqnf47b" path="res://icon.svg" id="1_v3jls"]
 [ext_resource type="TileSet" uid="uid://be0yjqjvmdvsq" path="res://assets/simple_blocks.tres" id="1_w8gdm"]
-[ext_resource type="Script" path="res://LocaleController.gd" id="1_xo6nd"]
+[ext_resource type="Script" path="res://scripts/LocaleController.gd" id="1_xo6nd"]
 [ext_resource type="PackedScene" uid="uid://bsjgqjmmgu8sm" path="res://scenes/tiles/move_layer_up.tscn" id="3_l0oew"]
 [ext_resource type="PackedScene" uid="uid://cmwtuxws5txrm" path="res://scenes/mech_enemy.tscn" id="3_m2uhh"]
 [ext_resource type="PackedScene" uid="uid://djybn4wn1kn1f" path="res://scenes/tiles/move_layer_down.tscn" id="7_ki5m8"]
@@ -35,7 +35,6 @@ teleportPoint = NodePath("../../level_0/move_layer_up")
 [node name="Spawner" type="Area2D" parent="."]
 script = ExtResource("1_bodx8")
 enemy = ExtResource("3_m2uhh")
-enemyTypes = Array[int]([0])
 minDistance = 2500
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Spawner"]

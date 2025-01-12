@@ -56,6 +56,3 @@ func start_shaking(intensity, time):
 	if intensity!=0&&time!=0:
 		shaking_list.append([intensity, time])
 	
-
-
-

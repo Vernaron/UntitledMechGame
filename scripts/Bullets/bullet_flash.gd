@@ -5,7 +5,7 @@ extends PointLight2D
 @export var shrinkspeed:float
 var isShrinking = false
 var doscale = true
-var self_flash = preload("res://scenes/bullet_flash.tscn")
+var self_flash = preload("res://scenes/Bullet_Adjacent/bullet_flash.tscn")
 var countdown
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -19,7 +19,10 @@ func init(_size, _color, _growspeed, _shrinkspeed, _doscale):
 	shrinkspeed = _shrinkspeed
 	doscale = _doscale
 	countdown = shrinkspeed+growspeed
+	gettexture()
 	return self
+func gettexture():
+	await RenderingServer.frame_post_draw
 func copy():
 	var temp_flash = self_flash.instantiate().init(size, color, growspeed, shrinkspeed, doscale)
 	temp_flash.position = position

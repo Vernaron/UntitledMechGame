@@ -4,7 +4,7 @@ class_name Item_Data
 @export var Reload : bool = false
 enum Weapon_Type{Bullet, Laser, Missile, Grenade}
 
-enum Basic_Enemy{Strider, Bulwark}
+enum Basic_Enemy{Strider, Bulwark, SmallTank, SmallHeli}
 enum DASH{BURST, JET}
 	
 class Weapon:
@@ -117,65 +117,154 @@ class Weapon:
 		tempWeapon.body = body
 		return tempWeapon
 var flashes = {
-	"light_flash" : preload("res://scenes/bullet_flash.tscn").instantiate().init(10, Color.hex(0xffa50044), .01, .1, true),
-	"medium_flash" : preload("res://scenes/bullet_flash.tscn").instantiate().init(30, Color.hex(0xffa50066), .01, .3, true)
+	"light_flash" : preload("res://scenes/Bullet_Adjacent/bullet_flash.tscn").instantiate().init(10, Color.hex(0xffa50044), .01, .1, true),
+	"medium_flash" : preload("res://scenes/Bullet_Adjacent/bullet_flash.tscn").instantiate().init(30, Color.hex(0xffa50066), .01, .3, true)
 
 }
 var weapons = {
 	#reload, damage, projectile_count, bullet, type, accuracy,size_level, area_of_effect, bullet_flash
-	"bolter": Weapon.new(.5, 5, 1, preload("res://scenes/bullet_simple_small.tscn"), Weapon_Type.Bullet, 1, 1, 0.0,flashes["light_flash"]),
-	"gatling": Weapon.new(.1, 1, 1, preload("res://scenes/bullet_simple_small.tscn"), Weapon_Type.Bullet, 5, 1,  0.0, flashes["light_flash"]),
-	"autocannon": Weapon.new(5, 15, 1, preload("res://scenes/bullet_simple_large.tscn"), Weapon_Type.Bullet, 1, 2,  0.0, flashes["medium_flash"]),
-	"laser_small": Weapon.new(-1, 2, 1, preload("res://scenes/continuous_laser_small.tscn"),Weapon_Type.Laser, 2,1, 2, flashes["light_flash"])
+	"bolter": Weapon.new(.5, 5, 1,
+		preload("res://scenes/Bullet_Adjacent/bullet_simple_small.tscn"), 
+		Weapon_Type.Bullet, 1, 1, 0.0,flashes["light_flash"]),
+	"gatling": Weapon.new(.1, 1, 1, 
+		preload("res://scenes/Bullet_Adjacent/bullet_simple_tiny.tscn"), 
+		Weapon_Type.Bullet, 5, 1,  0.0, flashes["light_flash"]),
+	"autocannon": Weapon.new(5, 15, 1, 
+		preload("res://scenes/Bullet_Adjacent/bullet_simple_large.tscn"), 
+		Weapon_Type.Bullet, 1, 2,  0.0, flashes["medium_flash"]),
+	"laser_small": Weapon.new(-1, 2, 1, 
+		preload("res://scenes/Bullet_Adjacent/continuous_laser_small.tscn"),
+		Weapon_Type.Laser, 2,1, 2, flashes["light_flash"]),
+	"tank_cannon": Weapon.new(1, 3, 1, 
+		preload("res://scenes/Bullet_Adjacent/bullet_simple_tiny.tscn"), 
+		Weapon_Type.Bullet, 1, 1, 0.0,flashes["light_flash"]),
 }
-
+var weapon_descriptions = {
+	"":["", ""],
+	"bolter": ["bolter gun stuff", "Bolter"],
+	"gatling": ["Size: S\nDamage: 1\n Reload: .1s\n Accuracy: 5°\n
+	little gun go dakka", "Gatling"],
+	"autocannon":["Size: M\nDamage: 15\nReload: 5s\nAccuracy:1°\n
+	big gun go boom", "Autocannon"],
+	"laser_small":["little laser go bzzz", "Small Laser"],
+	"tank_cannon":["tank gun go pew", "Tank Cannon"], 
+	
+}
+var body_descriptions = {
+	"":"",
+	"strider_1": "the strider class body",
+	"bulwark_1": "the bulwark class body"
+}
+var leg_descriptions = {
+	"":"",
+	"strider_1": "the strider class legs",
+	"bulwark_1": "the bulwark class legs",
+}
 var bodies = {
 	"strider_1":{
-		sprite = preload("res://assets/bodies/Strider_body_1.tres"),
+		sprite = preload("res://assets/bodies/strider_body_1_frame.tres"),
 		armor=5,
-		hardpoint_count=2,
-		turn_speed = 7,
+		turn_speed = 1,
 		collision_array_points=PackedVector2Array([Vector2(0, -52),Vector2(-28, -4),Vector2(-60, -4),\
 			Vector2(-60, 36),Vector2(0, 44),Vector2(60, 35),Vector2(60, -3),Vector2(28, -4)]),
 		hardpoints=[	
 			[Vector2(46, -1), 1],[Vector2(-46, -1), 1],	
-		]
-		
+		],
+		name = "Strider"
 	},
 	"bulwark_1":{
-		sprite = preload("res://assets/bodies/Bulwark_body_1.png"),
+		sprite = preload("res://assets/bodies/bulwark_body_1_frame.tres"),
 		armor = 10,
-		hardpoint_count = 2, 
 		turn_speed=.5,
 		collision_array_points=PackedVector2Array([Vector2(0,-36),Vector2(-60,-25),Vector2(-60,20),\
 		Vector2(-34,34),Vector2(36,34),Vector2(48,-3),Vector2(47,-31),]),
 		hardpoints=[
 			[Vector2(40, -32), 2],[Vector2(-46, -24), 1],
-		]
+		],
+		name = "Bulwark"
+	},
+	"tank_1":{
+		sprite = preload("res://assets/bodies/tank_1_turret_frame.tres"),
+		armor=3,
+		turn_speed = 2,
+		collision_array_points = PackedVector2Array([Vector2(-16,-20),Vector2(-16,24),Vector2(16,24),Vector2(16,-20),]),
+		hardpoints = [[Vector2(0, -17), 1],],
+	},
+	"heli_1":{
+		sprite = preload("res://assets/HeliSmall.tres"),
+		armor = 1,
+		turn_speed = 1,
+		collision_array_points = PackedVector2Array([Vector2(0,-24),Vector2(-15,-7),Vector2(-4,19),Vector2(-12,48),Vector2(12,49),Vector2(5,20),Vector2(16,-8),]),
+		hardpoints = [[Vector2(0, -20), 1]]
 	}
 }
 var legs = {
 	"strider_1": {
-		speed = 600,
+		move_type = "Mech",
+		speed = 500,
 		acceleration = .7,
 		dash_time=.1,
-		dash_cooldown=2,
-		dash_speed=600,
+		dash_cooldown=3,
+		dash_speed=300,
 		dash_type=ItemData.DASH.BURST,
-		turn_radius=.5,
+		turn_radius=.3,
 		health = 100,
-		sprite = preload("res://assets/Strider_Legs_1.tres")
+		sprite = preload("res://assets/Strider_Legs_1.tres"),
+		name = "Strider"
 	},
 	"bulwark_1": {
-		speed = 300,
+		move_type = "Mech",
+		speed = 200,
 		acceleration=.3,
 		dash_time=8,
 		dash_cooldown=2,
-		dash_speed=100,
+		dash_speed=50,
 		dash_type=ItemData.DASH.JET,
-		turn_radius=.3,
+		turn_radius=.2,
 		health=400,
-		sprite = preload("res://assets/Bulwark_Legs_1.tres")
+		sprite = preload("res://assets/Bulwark_Legs_1.tres"),
+		name = "Bulwark"
+	}, 
+	"tank_1":{
+		move_type = "Tank",
+		speed=150,
+		acceleration = 0.4, 
+		dash_time = 0,
+		dash_cooldown = 1,
+		dash_speed = 0,
+		dash_type=ItemData.DASH.JET,
+		turn_radius = .4,
+		health = 50,
+		sprite = preload("res://assets/Tank_tread_1.tres")
+	},
+	"heli_1":{
+		move_type = "Helicopter",
+		speed= 500,
+		acceleration=0.5,
+		dash_time=0,
+		dash_cooldown=0,
+		dash_speed=0,
+		dash_type = ItemData.DASH.JET,
+		turn_radius = 10,
+		health=50,
+		sprite = preload("res://assets/BlankFrames.tres")
+	}
+}
+var control_type = {
+	"Mech" : {
+		collision_track_legs = false,
+		wobbles = true, 
+		turns = true,
+	},
+	"Helicopter" : {
+		collision_track_legs = false,
+		wobbles = false,
+		turns = false,
+	},
+	"Tank" : {
+		collision_track_legs = true,
+		wobbles = false,
+		turns = true, 
 	}
 }
 func _process(_delta):

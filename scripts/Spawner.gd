@@ -2,15 +2,18 @@ extends Node2D
 @onready var navrid = get_world_2d().get_navigation_map()
 # Called when the node enters the scene tree for the first time.
 @export var enemy : Resource
-@export var enemyTypes:Array[ItemData.Basic_Enemy]
+@export var enemyTypes:Array[WeightedSpawn]
 @export var minDistance:int
 @onready var max_dist = minDistance*2
+var total_size:float = 0
 var active: bool = false
 var failed: bool = false
 func _ready():
 	self.body_entered.connect(_on_body_entered)
 	self.body_exited.connect(_on_body_exited)
 	Signals.spawn_primary.connect(_spawn)
+	for n in enemyTypes:
+		total_size+=n.weight
 func _spawn():
 	if(active):
 		_spawn_enemy()
@@ -19,13 +22,25 @@ func _process(_delta):
 	if(failed):
 		_spawn_enemy()
 func build_enemy_simple(pos):
-	var basic_enemy = enemy.instantiate()
-	basic_enemy.set_type(enemyTypes[randi()%enemyTypes.size()])
-	basic_enemy.construct(
-		"Enemy"
-	)
-	basic_enemy.position = pos
-	Signals.spawn_root.emit(basic_enemy)	
+	
+	var randnum = randf()*total_size
+	var type
+	var count
+	var sum = 0
+	for i in enemyTypes:
+		sum+=i.weight
+		if randnum<sum:
+			type =  i.type
+			count = i.number
+			break
+	for num in range(0, count):
+		var basic_enemy = enemy.instantiate()
+		basic_enemy.set_type(type)
+		basic_enemy.construct(
+			"Enemy"
+		)
+		basic_enemy.position = pos
+		Signals.spawn_root.emit(basic_enemy)	
 func _spawn_enemy():
 	var n = 0
 	failed = true

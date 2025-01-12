@@ -1,0 +1,186 @@
+[gd_scene load_steps=12 format=3 uid="uid://7xj7aos3v2fn"]
+
+[ext_resource type="PackedScene" uid="uid://dewdyvvv62g8a" path="res://pauseMenu.tscn" id="1_h7tr1"]
+[ext_resource type="Script" path="res://equip_screen.gd" id="2_dwcf7"]
+[ext_resource type="Texture2D" uid="uid://cduskjy0x1tqy" path="res://assets/UI_elements/MainBox.png" id="2_jr2mm"]
+[ext_resource type="Script" path="res://body_button.gd" id="4_lufga"]
+[ext_resource type="Script" path="res://hardpoint_button.gd" id="5_nxf0k"]
+[ext_resource type="Script" path="res://leg_button.gd" id="6_0bm15"]
+
+[sub_resource type="Theme" id="Theme_0b0ch"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_unr1s"]
+atlas = ExtResource("2_jr2mm")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4gr77"]
+atlas = ExtResource("2_jr2mm")
+region = Rect2(0, 64, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_j03mx"]
+atlas = ExtResource("2_jr2mm")
+region = Rect2(64, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ut3qa"]
+atlas = ExtResource("2_jr2mm")
+region = Rect2(0, 0, 64, 64)
+
+[node name="HomeBase" type="Node2D"]
+
+[node name="Camera2D" type="Camera2D" parent="."]
+
+[node name="Menu" parent="." instance=ExtResource("1_h7tr1")]
+
+[node name="EquipScreen" type="Panel" parent="."]
+offset_left = -956.0
+offset_top = -540.0
+offset_right = 965.0
+offset_bottom = 564.0
+script = ExtResource("2_dwcf7")
+
+[node name="ItemList" type="ItemList" parent="EquipScreen"]
+layout_mode = 0
+offset_left = 641.0
+offset_top = 305.0
+offset_right = 1356.0
+offset_bottom = 1038.0
+item_count = 2
+item_0/text = "Bulwark"
+item_1/text = "sprinter"
+
+[node name="Current_Item" type="Button" parent="EquipScreen"]
+layout_mode = 0
+offset_left = 647.0
+offset_top = 268.0
+offset_right = 1361.0
+offset_bottom = 299.0
+theme = SubResource("Theme_0b0ch")
+toggle_mode = true
+text = "Strider
+"
+
+[node name="Body" type="TextureButton" parent="EquipScreen"]
+layout_mode = 0
+offset_left = 275.0
+offset_top = 475.0
+offset_right = 339.0
+offset_bottom = 539.0
+scale = Vector2(3, 3)
+pivot_offset = Vector2(32, 32)
+toggle_mode = true
+texture_normal = SubResource("AtlasTexture_unr1s")
+texture_pressed = SubResource("AtlasTexture_4gr77")
+texture_hover = SubResource("AtlasTexture_j03mx")
+script = ExtResource("4_lufga")
+
+[node name="Hardpoint_1" type="TextureButton" parent="EquipScreen/Body"]
+layout_mode = 0
+offset_left = 70.0
+offset_right = 134.0
+offset_bottom = 64.0
+scale = Vector2(0.6, 0.6)
+pivot_offset = Vector2(32, 32)
+toggle_mode = true
+texture_normal = SubResource("AtlasTexture_unr1s")
+texture_pressed = SubResource("AtlasTexture_4gr77")
+texture_hover = SubResource("AtlasTexture_j03mx")
+script = ExtResource("5_nxf0k")
+
+[node name="Hardpoint_2" type="TextureButton" parent="EquipScreen/Body"]
+layout_mode = 0
+offset_left = -70.0
+offset_right = -6.0
+offset_bottom = 64.0
+scale = Vector2(0.6, 0.6)
+pivot_offset = Vector2(32, 32)
+toggle_mode = true
+texture_normal = SubResource("AtlasTexture_unr1s")
+texture_pressed = SubResource("AtlasTexture_4gr77")
+texture_hover = SubResource("AtlasTexture_j03mx")
+script = ExtResource("5_nxf0k")
+
+[node name="Hardpoint_3" type="TextureButton" parent="EquipScreen/Body"]
+layout_mode = 0
+offset_left = 55.0
+offset_top = -50.0
+offset_right = 119.0
+offset_bottom = 14.0
+scale = Vector2(0.6, 0.6)
+pivot_offset = Vector2(32, 32)
+toggle_mode = true
+texture_normal = SubResource("AtlasTexture_unr1s")
+texture_pressed = SubResource("AtlasTexture_4gr77")
+texture_hover = SubResource("AtlasTexture_j03mx")
+script = ExtResource("5_nxf0k")
+
+[node name="Hardpoint_4" type="TextureButton" parent="EquipScreen/Body"]
+layout_mode = 0
+offset_left = -55.0
+offset_top = -50.0
+offset_right = 9.0
+offset_bottom = 14.0
+scale = Vector2(0.6, 0.6)
+pivot_offset = Vector2(32, 32)
+toggle_mode = true
+texture_normal = SubResource("AtlasTexture_unr1s")
+texture_pressed = SubResource("AtlasTexture_4gr77")
+texture_hover = SubResource("AtlasTexture_j03mx")
+script = ExtResource("5_nxf0k")
+
+[node name="Hardpoint_5" type="TextureButton" parent="EquipScreen/Body"]
+layout_mode = 0
+offset_top = -70.0
+offset_right = 64.0
+offset_bottom = -6.0
+scale = Vector2(0.6, 0.6)
+pivot_offset = Vector2(32, 32)
+toggle_mode = true
+texture_normal = SubResource("AtlasTexture_unr1s")
+texture_pressed = SubResource("AtlasTexture_4gr77")
+texture_hover = SubResource("AtlasTexture_j03mx")
+script = ExtResource("5_nxf0k")
+
+[node name="Body_Sprite" type="AnimatedSprite2D" parent="EquipScreen/Body"]
+position = Vector2(32, 32)
+
+[node name="Legs" type="TextureButton" parent="EquipScreen"]
+layout_mode = 0
+offset_left = 275.0
+offset_top = 700.0
+offset_right = 339.0
+offset_bottom = 764.0
+scale = Vector2(3, 3)
+pivot_offset = Vector2(32, 32)
+toggle_mode = true
+texture_normal = SubResource("AtlasTexture_unr1s")
+texture_pressed = SubResource("AtlasTexture_4gr77")
+texture_hover = SubResource("AtlasTexture_j03mx")
+script = ExtResource("6_0bm15")
+
+[node name="Leg_Sprite" type="AnimatedSprite2D" parent="EquipScreen/Legs"]
+position = Vector2(32, 32)
+
+[node name="Details" type="ColorRect" parent="EquipScreen"]
+layout_mode = 0
+offset_left = 1429.0
+offset_top = 165.0
+offset_right = 1840.0
+offset_bottom = 1008.0
+color = Color(0.108787, 0.000176664, 0.238434, 1)
+
+[node name="Visual" type="Sprite2D" parent="EquipScreen/Details"]
+position = Vector2(216, 172)
+scale = Vector2(4.79688, 4.79688)
+texture = SubResource("AtlasTexture_ut3qa")
+
+[node name="Object" type="AnimatedSprite2D" parent="EquipScreen/Details/Visual"]
+
+[node name="Stats" type="TextEdit" parent="EquipScreen/Details"]
+layout_mode = 0
+offset_left = 32.0
+offset_top = 362.0
+offset_right = 392.0
+offset_bottom = 772.0
+text = "-blah blah
+-blah blah blah
+-blah blah blah blah"

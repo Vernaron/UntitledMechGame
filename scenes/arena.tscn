@@ -1,20 +1,17 @@
-[gd_scene load_steps=15 format=3 uid="uid://cuq7wsqmeyfeu"]
+[gd_scene load_steps=10 format=3 uid="uid://dqnudwhs81r02"]
 
 [ext_resource type="Script" path="res://scripts/arena.gd" id="1_dggth"]
 [ext_resource type="Script" path="res://scripts/Camera2D.gd" id="2_rbf87"]
-[ext_resource type="Script" path="res://scenes/BackgroundColor.gd" id="3_8102s"]
-[ext_resource type="Script" path="res://scripts/Menu.gd" id="4_k4184"]
-[ext_resource type="Script" path="res://scripts/SettingsButton.gd" id="5_dg5rs"]
-[ext_resource type="Script" path="res://scripts/MainContainer.gd" id="5_yjrli"]
-[ext_resource type="Script" path="res://scenes/settingsPanel.gd" id="6_jplw4"]
-[ext_resource type="Script" path="res://scripts/SettingsMenu.gd" id="6_jvf2h"]
-[ext_resource type="Script" path="res://scripts/ShakeIntensity.gd" id="6_riicw"]
-[ext_resource type="Script" path="res://scenes/Exit.gd" id="6_w0u4k"]
-[ext_resource type="Script" path="res://scenes/enemy_targetter.gd" id="11_ddhsv"]
-[ext_resource type="Script" path="res://scenes/mainSpawnTimer.gd" id="12_nednc"]
-[ext_resource type="PackedScene" uid="uid://b53d1lxfelmb4" path="res://scenes/Locales/Tundra.tscn" id="13_tt2bj"]
+[ext_resource type="Script" path="res://scenes/VignetteRect.gd" id="3_eeqy0"]
+[ext_resource type="Shader" path="res://scenes/vignette.gdshader" id="3_efgl7"]
+[ext_resource type="PackedScene" uid="uid://dewdyvvv62g8a" path="res://pauseMenu.tscn" id="3_vwshk"]
+[ext_resource type="Script" path="res://scripts/enemy_targetter.gd" id="10_qmkxr"]
+[ext_resource type="Script" path="res://scripts/mainSpawnTimer.gd" id="11_pmnxx"]
+[ext_resource type="Script" path="res://scripts/BackgroundColor.gd" id="12_o6aqm"]
 
-[sub_resource type="Theme" id="Theme_iflhl"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ic3iw"]
+shader = ExtResource("3_efgl7")
+shader_parameter/modifier = 1.0
 
 [node name="Arena" type="Node2D"]
 process_mode = 1
@@ -35,135 +32,52 @@ zoomShiftIntensity = 0.1
 visible = false
 color = Color(0.560784, 0.560784, 0.560784, 1)
 
-[node name="ColorRect" type="ColorRect" parent="mainCamera"]
-show_behind_parent = true
-z_index = -100
-offset_left = -4000.0
-offset_top = -3000.0
-offset_right = 4000.0
-offset_bottom = 3000.0
-mouse_filter = 2
-script = ExtResource("3_8102s")
-
-[node name="Menu" type="CanvasLayer" parent="."]
-process_mode = 3
-visible = false
-script = ExtResource("4_k4184")
-
-[node name="MainContainer" type="AspectRatioContainer" parent="Menu"]
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-script = ExtResource("5_yjrli")
-
-[node name="Control" type="CenterContainer" parent="Menu/MainContainer"]
-layout_mode = 2
-
-[node name="Control" type="Control" parent="Menu/MainContainer/Control"]
-layout_mode = 2
-
-[node name="PanelContainer" type="Panel" parent="Menu/MainContainer/Control/Control"]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -270.0
-offset_top = -490.909
-offset_right = 270.0
-offset_bottom = 490.909
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="mainMenuContainer" type="VBoxContainer" parent="Menu/MainContainer/Control/Control/PanelContainer"]
-layout_mode = 2
-offset_right = 540.0
-offset_bottom = 981.818
-mouse_filter = 2
-alignment = 1
-
-[node name="settingsButton" type="Button" parent="Menu/MainContainer/Control/Control/PanelContainer/mainMenuContainer"]
-layout_mode = 2
-mouse_filter = 1
-text = "Settings"
-script = ExtResource("5_dg5rs")
-
-[node name="Exit" type="Button" parent="Menu/MainContainer/Control/Control/PanelContainer/mainMenuContainer"]
-layout_mode = 2
-text = "Exit"
-script = ExtResource("6_w0u4k")
-
-[node name="settingsPanel" type="Panel" parent="Menu/MainContainer"]
-visible = false
-layout_mode = 2
-mouse_filter = 2
-script = ExtResource("6_jplw4")
-
-[node name="MenuButton" type="TabBar" parent="Menu/MainContainer/settingsPanel"]
-layout_mode = 2
-offset_right = 1080.0
-offset_bottom = 44.0
-tab_alignment = 1
-clip_tabs = false
-tab_count = 2
-tab_0/title = "Controls"
-tab_1/title = "Graphics"
-script = ExtResource("6_jvf2h")
-
-[node name="Graphics" type="VBoxContainer" parent="Menu/MainContainer/settingsPanel"]
-layout_mode = 0
-offset_top = 40.0
-offset_right = 1080.0
-offset_bottom = 1080.0
-mouse_filter = 2
-alignment = 1
-
-[node name="ShakeIntensity" type="HSlider" parent="Menu/MainContainer/settingsPanel/Graphics"]
-layout_mode = 2
-max_value = 300.0
-step = 25.0
-value = 100.0
-tick_count = 13
-ticks_on_borders = true
-script = ExtResource("6_riicw")
-
-[node name="RichTextLabel" type="RichTextLabel" parent="Menu/MainContainer/settingsPanel/Graphics"]
-layout_mode = 2
-mouse_filter = 2
-theme = SubResource("Theme_iflhl")
-bbcode_enabled = true
-text = "[center]Shake[/center]"
-fit_content = true
-scroll_active = false
-
-[node name="Controls" type="VBoxContainer" parent="Menu/MainContainer/settingsPanel"]
-layout_mode = 0
-offset_top = 40.0
-offset_right = 1080.0
-offset_bottom = 1080.0
-mouse_filter = 2
+[node name="Menu" parent="." instance=ExtResource("3_vwshk")]
 
 [node name="Timer" type="Timer" parent="."]
 process_callback = 0
 wait_time = 0.1
 autostart = true
-script = ExtResource("11_ddhsv")
+script = ExtResource("10_qmkxr")
 
 [node name="mainSpawnTimer" type="Timer" parent="."]
+wait_time = 5.0
 autostart = true
-script = ExtResource("12_nednc")
+script = ExtResource("11_pmnxx")
 
-[node name="Node2D" parent="." instance=ExtResource("13_tt2bj")]
+[node name="Background" type="CanvasLayer" parent="."]
+layer = -10
 
-[connection signal="item_rect_changed" from="mainCamera" to="Menu/MainContainer" method="_on_main_camera_item_rect_changed"]
-[connection signal="pressed" from="Menu/MainContainer/Control/Control/PanelContainer/mainMenuContainer/settingsButton" to="Menu" method="settings_pressed"]
-[connection signal="pressed" from="Menu/MainContainer/Control/Control/PanelContainer/mainMenuContainer/settingsButton" to="Menu/MainContainer/Control/Control/PanelContainer/mainMenuContainer/settingsButton" method="_on_pressed"]
-[connection signal="pressed" from="Menu/MainContainer/Control/Control/PanelContainer/mainMenuContainer/settingsButton" to="Menu/MainContainer/settingsPanel" method="settings_pressed"]
-[connection signal="pressed" from="Menu/MainContainer/Control/Control/PanelContainer/mainMenuContainer/Exit" to="Menu/MainContainer/Control/Control/PanelContainer/mainMenuContainer/Exit" method="_on_pressed"]
-[connection signal="tab_changed" from="Menu/MainContainer/settingsPanel/MenuButton" to="Menu/MainContainer/settingsPanel/MenuButton" method="_on_tab_changed"]
-[connection signal="drag_ended" from="Menu/MainContainer/settingsPanel/Graphics/ShakeIntensity" to="Menu/MainContainer/settingsPanel/Graphics/ShakeIntensity" method="_on_drag_ended"]
+[node name="ColorRect" type="ColorRect" parent="Background"]
+show_behind_parent = true
+offset_left = -4000.0
+offset_top = -3000.0
+offset_right = 4000.0
+offset_bottom = 3000.0
+mouse_filter = 2
+color = Color(0.227451, 0.227451, 0.298039, 1)
+script = ExtResource("12_o6aqm")
+
+[node name="Foreground" type="CanvasLayer" parent="."]
+layer = 10
+
+[node name="VignetteRect" type="ColorRect" parent="Foreground"]
+z_index = -1
+material = SubResource("ShaderMaterial_ic3iw")
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -1920.0
+offset_bottom = 1080.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(1920, 1080)
+size_flags_horizontal = 3
+size_flags_vertical = 3
+mouse_filter = 2
+color = Color(0.109804, 0.0196078, 0, 1)
+script = ExtResource("3_eeqy0")
+
+[connection signal="item_rect_changed" from="mainCamera" to="Foreground/VignetteRect" method="_on_main_camera_item_rect_changed"]
 [connection signal="timeout" from="Timer" to="Timer" method="_on_timeout"]
 [connection signal="timeout" from="mainSpawnTimer" to="mainSpawnTimer" method="_on_timeout"]

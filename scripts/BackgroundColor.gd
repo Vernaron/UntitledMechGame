@@ -1,5 +1,5 @@
 extends ColorRect
-@onready var nextColor : Color = Color(0.4, 0.4, 0.4, 1.0)
+@onready var nextColor : Color = Color(0.227, 0.227, 0.298, 1.0)
 
 func _ready():
 	Signals.shift_background_color.connect(shift_color)

@@ -1,7 +1,6 @@
 extends Legs
 var curr_type : ItemData.Basic_Enemy = ItemData.Basic_Enemy.Strider
 var target : Vector2 = Vector2.ZERO
-
 @onready var navrid = get_world_2d().get_navigation_map()
 var currPath = [Vector2.ZERO,Vector2.ZERO,Vector2.ZERO]
 @export var attention_span : float
@@ -37,7 +36,17 @@ func _construct_custom():
 			set_current_legs(ItemData.legs["strider_1"])
 			set_weapons_from_array([ItemData.weapons["bolter"],ItemData.weapons["bolter"]])
 		ItemData.Basic_Enemy.Bulwark:
-			pass
+			set_current_body(ItemData.bodies["bulwark_1"])
+			set_current_legs(ItemData.legs["bulwark_1"])
+			set_weapons_from_array([ItemData.weapons["autocannon"],ItemData.weapons["gatling"]])
+		ItemData.Basic_Enemy.SmallTank:
+			set_current_body(ItemData.bodies["tank_1"])
+			set_current_legs(ItemData.legs["tank_1"])
+			set_weapons_from_array([ItemData.weapons["tank_cannon"]])
+		ItemData.Basic_Enemy.SmallHeli:
+			set_current_body(ItemData.bodies["heli_1"])
+			set_current_legs(ItemData.legs["heli_1"])
+			set_weapons_from_array([ItemData.weapons["gatling"]])
 	
 	
 func set_type(_type: ItemData.Basic_Enemy):
@@ -66,7 +75,7 @@ func _physics_process_custom(delta):
 	elif time_gained_vision>swap_time&&path_type==pathing.nav:
 		path_type=pathing.direct
 		
-	if(abs(position.distance_to(target)) < move_range):
+	if(abs(position.distance_to(target)) < move_range*2):
 		is_moving = true
 		if(abs(position.distance_to(target)) < move_range/2.0):
 			if angleOffset>0:
@@ -91,7 +100,10 @@ func _get_intended_angle():
 	
 	if(path_type==pathing.direct):
 		var direction= position.direction_to(target)
-		tempAngle = normalize(atan2(-direction.y, -direction.x) + angleOffset+distOffset+wallOffset)
+		if(position.distance_to(target) > move_range/1.5):
+			tempAngle = normalize(atan2(-direction.y, -direction.x) + (angleOffset/2)+distOffset+wallOffset)
+		else:
+			tempAngle = normalize(atan2(-direction.y, -direction.x) + angleOffset+distOffset+wallOffset)
 		tempAngle+=normalize(tempAngle-normalize(angle))/6
 	elif(path_type==pathing.nav):
 		tempAngle=navAngle

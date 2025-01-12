@@ -44,4 +44,3 @@ func stair_exited():
 		has_exited=true
 	else:
 		first_exited = true
-

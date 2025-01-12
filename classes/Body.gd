@@ -5,7 +5,6 @@ var curr_reload = 0
 var angle = 0
 @export_range(.1, 1) var ACCELERATION : float =1
 @export var armor:float =1
-@export_range(1, 5) var hardpoints
 @export_range(0, 2) var team : int
 var hardpoint_arr = []
 var delta_buildup = 0
@@ -30,17 +29,17 @@ class Hardpoint:
 func set_current_body(body : Dictionary):
 	armor = body["armor"]
 	ACCELERATION = body["turn_speed"]
-	hardpoints = body["hardpoint_count"]
 	for hardpoint in body["hardpoints"]:
 		hardpoint_arr.append(Hardpoint.new(hardpoint[1], hardpoint[0]))
-	$BodySprite.texture = body["sprite"]
+	$BodySprite.sprite_frames = body["sprite"]
+	$BodySprite.play()
 	
 func set_weapon(weapon, index):
 	weapon.set_body(self)
 	weapon.offset = hardpoint_arr[index].offset
 	hardpoint_arr[index].set_weapon(weapon.copy())
 func set_weapons_from_array(weapon_array):
-	for i in range(0, min(weapon_array.size(), hardpoints)):
+	for i in range(0, min(weapon_array.size(), hardpoint_arr.size())):
 		set_weapon(weapon_array[i],i)
 
 func _process(delta):
@@ -76,4 +75,3 @@ func _process_custom(_delta):
 	pass
 func _physics_process_custom(_delta):
 	pass
-

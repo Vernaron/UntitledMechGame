@@ -1,11 +1,11 @@
 @tool
-extends Sprite2D
+extends AnimatedSprite2D
 var itemData_res = load("res://scripts/Globals/Item_Data.gd")
 var point_res = preload("res://scenes/hardpoint_visual.tscn")
 var printer = preload("res://addons/packedarraycopier/packedarraycopier.gd").new()
 var itemData = itemData_res.new()
 var hardpointList = []
-@export_enum("strider_1", "bulwark_1") var Reference : String 
+@export_enum("strider_1", "bulwark_1", "tank_1", "heli_1") var Reference : String 
 @export var Reload : bool
 @export var Save : bool
 var active_string = ""
@@ -26,11 +26,10 @@ func _process(delta):
 		if(Save && active_string!=""):
 			Save = false
 			notify_property_list_changed()
-			var tempLocations = ""
-			for node in get_children():
-				tempLocations+="[Vector2"+str(node.position*4)+", "+ node.name.right(1)+"],"
+#			var tempLocations = ""
+	#		for node in get_children():
+	#			tempLocations+="[Vector2"+str(node.position*4)+", "+ node.name.right(1)+"],"
 				
-			print(tempLocations)
 			printer.array = get_parent().get_parent().find_child("LegCollisionPolygon").polygon
 			printer.isActive = true
 			printer._process(delta)
@@ -46,7 +45,7 @@ func _process(delta):
 			hardpointList = []
 			notify_property_list_changed()
 			num = 0
-			texture = itemData.bodies[active_string]["sprite"]
+			sprite_frames = itemData.bodies[active_string]["sprite"]
 			get_parent().get_parent().find_child("LegCollisionPolygon").polygon = itemData.bodies[active_string]["collision_array_points"]
 			get_parent().get_parent().find_child("LegCollisionPolygon").notify_property_list_changed()
 			print(get_children())
@@ -61,5 +60,3 @@ func _process(delta):
 				hardNode.owner = get_tree().edited_scene_root
 			
 			
-
-
