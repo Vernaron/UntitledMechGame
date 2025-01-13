@@ -1,10 +1,11 @@
-[gd_scene load_steps=9 format=3 uid="uid://dewdyvvv62g8a"]
+[gd_scene load_steps=10 format=3 uid="uid://dewdyvvv62g8a"]
 
 [ext_resource type="Script" path="res://scripts/Menu.gd" id="1_u4uhp"]
 [ext_resource type="Script" path="res://scripts/MainContainer.gd" id="2_q04sg"]
 [ext_resource type="Script" path="res://scripts/SettingsButton.gd" id="3_j5sqn"]
 [ext_resource type="Script" path="res://scripts/Exit.gd" id="4_wmm2b"]
 [ext_resource type="Script" path="res://scripts/settingsPanel.gd" id="5_822hf"]
+[ext_resource type="Script" path="res://combat_button.gd" id="5_dm4sk"]
 [ext_resource type="Script" path="res://scripts/SettingsMenu.gd" id="6_fipya"]
 [ext_resource type="Script" path="res://scripts/ShakeIntensity.gd" id="7_aphuw"]
 
@@ -61,6 +62,11 @@ layout_mode = 2
 text = "Exit"
 script = ExtResource("4_wmm2b")
 
+[node name="combatButton" type="Button" parent="MainContainer/Control/Control/PanelContainer/mainMenuContainer"]
+layout_mode = 2
+text = "Return to Base"
+script = ExtResource("5_dm4sk")
+
 [node name="settingsPanel" type="Panel" parent="MainContainer"]
 visible = false
 layout_mode = 2
@@ -115,5 +121,6 @@ mouse_filter = 2
 [connection signal="pressed" from="MainContainer/Control/Control/PanelContainer/mainMenuContainer/settingsButton" to="MainContainer/Control/Control/PanelContainer/mainMenuContainer/settingsButton" method="_on_pressed"]
 [connection signal="pressed" from="MainContainer/Control/Control/PanelContainer/mainMenuContainer/settingsButton" to="MainContainer/settingsPanel" method="settings_pressed"]
 [connection signal="pressed" from="MainContainer/Control/Control/PanelContainer/mainMenuContainer/Exit" to="MainContainer/Control/Control/PanelContainer/mainMenuContainer/Exit" method="_on_pressed"]
+[connection signal="pressed" from="MainContainer/Control/Control/PanelContainer/mainMenuContainer/combatButton" to="MainContainer/Control/Control/PanelContainer/mainMenuContainer/combatButton" method="_on_pressed"]
 [connection signal="tab_changed" from="MainContainer/settingsPanel/MenuButton" to="MainContainer/settingsPanel/MenuButton" method="_on_tab_changed"]
 [connection signal="drag_ended" from="MainContainer/settingsPanel/Graphics/ShakeIntensity" to="MainContainer/settingsPanel/Graphics/ShakeIntensity" method="_on_drag_ended"]

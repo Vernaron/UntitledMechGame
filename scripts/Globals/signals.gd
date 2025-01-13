@@ -12,3 +12,5 @@ extends Node
 @warning_ignore("unused_signal") signal shift_background_color(newColor:Color)
 @warning_ignore("unused_signal") signal change_inventory_type(newType : String)
 @warning_ignore("unused_signal") signal update_details_screen(objname : String)
+@warning_ignore("unused_signal") signal start_combat_area(area_name : Arena.localeNames)
+@warning_ignore("unused_signal") signal start_base

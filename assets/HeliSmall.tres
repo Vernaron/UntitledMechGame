@@ -1,25 +1,30 @@
-[gd_resource type="SpriteFrames" load_steps=4 format=3 uid="uid://dy65tgc1ed1cm"]
+[gd_resource type="SpriteFrames" load_steps=5 format=3 uid="uid://dy65tgc1ed1cm"]
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_xu1yn"]
+[ext_resource type="Texture2D" uid="uid://0da8gumft14l" path="res://assets/HeliSmall.png" id="1_acbcm"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dxpog"]
+atlas = ExtResource("1_acbcm")
 region = Rect2(0, 0, 32, 32)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_1kcye"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_ue77g"]
+atlas = ExtResource("1_acbcm")
 region = Rect2(32, 0, 32, 32)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_uv2oo"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_5au60"]
+atlas = ExtResource("1_acbcm")
 region = Rect2(0, 32, 32, 32)
 
 [resource]
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_xu1yn")
+"texture": SubResource("AtlasTexture_dxpog")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_1kcye")
+"texture": SubResource("AtlasTexture_ue77g")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_uv2oo")
+"texture": SubResource("AtlasTexture_5au60")
 }],
 "loop": true,
 "name": &"default",

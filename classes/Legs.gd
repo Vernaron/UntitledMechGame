@@ -1,6 +1,6 @@
 extends CharacterBody2D
 class_name Legs
-var richochet_blast = preload("res://particles/bullet_richochet.tscn")
+var richochet_blast = load("res://particles/bullet_richochet.tscn")
 
 @export_range(1, 1000) var SPEED : float = 1000.0
 @export_range(.1, 1) var ACCELERATION : float =1
@@ -183,6 +183,8 @@ func resolve_particles(location, bullet_spark, laser_spark, damage):
 	if PlayerInfo.settings["particles"] <=.001: return
 	if bullet_spark:
 		var temp = richochet_blast.instantiate()
+		print(richochet_blast)
+		print(temp)
 		temp.set_damage(damage)
 		temp.rotation = location[0]
 		temp.position = location[1]

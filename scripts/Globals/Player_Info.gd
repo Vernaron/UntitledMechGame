@@ -91,7 +91,8 @@ func writeFile(filename:String, value:Dictionary)->void:
 func get_active_weapons():
 	var temp_arr = []
 	for weapon in PlayerInfo.active_save_data["active_weapons"]:
-		temp_arr.push_front(ItemData.weapons[weapon])
+		if weapon!="":
+			temp_arr.push_front(ItemData.weapons[weapon])
 	return temp_arr
 func get_active_legs():
 	return ItemData.legs[PlayerInfo.active_save_data["active_legs"]]

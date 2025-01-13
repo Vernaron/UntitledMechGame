@@ -11,7 +11,7 @@
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ic3iw"]
 shader = ExtResource("3_efgl7")
-shader_parameter/modifier = 1.0
+shader_parameter/modifier = 0.65
 
 [node name="Arena" type="Node2D"]
 process_mode = 1
@@ -33,6 +33,7 @@ visible = false
 color = Color(0.560784, 0.560784, 0.560784, 1)
 
 [node name="Menu" parent="." instance=ExtResource("3_vwshk")]
+isCombatZone = true
 
 [node name="Timer" type="Timer" parent="."]
 process_callback = 0

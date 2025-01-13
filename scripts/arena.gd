@@ -1,4 +1,5 @@
 extends Node2D
+class_name Arena
 var player_res = preload("res://scenes/player.tscn")
 var active_player
 var basic_enemy_res = preload("res://scenes/mech_enemy.tscn")

@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=3 uid="uid://7xj7aos3v2fn"]
+[gd_scene load_steps=23 format=3 uid="uid://7xj7aos3v2fn"]
 
 [ext_resource type="PackedScene" uid="uid://dewdyvvv62g8a" path="res://pauseMenu.tscn" id="1_h7tr1"]
 [ext_resource type="Script" path="res://equip_screen.gd" id="2_dwcf7"]
@@ -10,6 +10,7 @@
 [ext_resource type="Script" path="res://leg_button.gd" id="6_0bm15"]
 [ext_resource type="Script" path="res://details_screen.gd" id="8_3qsoc"]
 [ext_resource type="Script" path="res://equip_button.gd" id="10_yycxb"]
+[ext_resource type="Script" path="res://LocationButton.gd" id="11_7yw60"]
 
 [sub_resource type="Theme" id="Theme_gi1uo"]
 
@@ -58,9 +59,10 @@ theme_override_font_sizes/font_size = 60
 theme_override_styles/tabbar_background = SubResource("StyleBoxFlat_k1og1")
 theme_override_styles/panel = SubResource("StyleBoxFlat_pidq5")
 tab_alignment = 1
-current_tab = 0
+current_tab = 2
 
 [node name="Equip" type="Control" parent="TabContainer"]
+visible = false
 layout_mode = 2
 metadata/_tab_index = 0
 
@@ -238,9 +240,30 @@ layout_mode = 2
 metadata/_tab_index = 1
 
 [node name="Map" type="Control" parent="TabContainer"]
-visible = false
 layout_mode = 2
 metadata/_tab_index = 2
+
+[node name="TundraButton" type="Button" parent="TabContainer/Map"]
+layout_mode = 0
+offset_left = 1290.0
+offset_top = 270.0
+offset_right = 1412.0
+offset_bottom = 342.0
+theme_override_font_sizes/font_size = 30
+text = "Tundra"
+script = ExtResource("11_7yw60")
+Location = 1
+
+[node name="DefaultButton" type="Button" parent="TabContainer/Map"]
+layout_mode = 0
+offset_left = 544.0
+offset_top = 292.0
+offset_right = 666.0
+offset_bottom = 364.0
+theme_override_font_sizes/font_size = 30
+text = "Default
+"
+script = ExtResource("11_7yw60")
 
 [connection signal="item_clicked" from="TabContainer/Equip/EquipScreen/ItemList" to="TabContainer/Equip/EquipScreen/ItemList" method="_on_item_clicked"]
 [connection signal="pressed" from="TabContainer/Equip/EquipScreen/Current_Item" to="TabContainer/Equip/EquipScreen/Current_Item" method="_on_pressed"]
