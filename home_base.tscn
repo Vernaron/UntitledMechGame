@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://7xj7aos3v2fn"]
+[gd_scene load_steps=22 format=3 uid="uid://7xj7aos3v2fn"]
 
 [ext_resource type="PackedScene" uid="uid://dewdyvvv62g8a" path="res://pauseMenu.tscn" id="1_h7tr1"]
 [ext_resource type="Script" path="res://equip_screen.gd" id="2_dwcf7"]
@@ -12,6 +12,10 @@
 [ext_resource type="Script" path="res://equip_button.gd" id="10_yycxb"]
 
 [sub_resource type="Theme" id="Theme_gi1uo"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_k1og1"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pidq5"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_g6387"]
 
@@ -50,16 +54,18 @@ offset_top = -526.0
 offset_right = 952.0
 offset_bottom = 541.0
 theme = SubResource("Theme_gi1uo")
-theme_override_font_sizes/font_size = 80
+theme_override_font_sizes/font_size = 60
+theme_override_styles/tabbar_background = SubResource("StyleBoxFlat_k1og1")
+theme_override_styles/panel = SubResource("StyleBoxFlat_pidq5")
 tab_alignment = 1
 current_tab = 0
 
 [node name="Equip" type="Control" parent="TabContainer"]
-z_index = -1
 layout_mode = 2
 metadata/_tab_index = 0
 
 [node name="EquipScreen" type="Panel" parent="TabContainer/Equip"]
+layout_mode = 0
 offset_left = 4.0
 offset_top = -130.0
 offset_right = 1925.0
