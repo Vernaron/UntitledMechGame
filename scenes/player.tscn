@@ -1,14 +1,12 @@
-[gd_scene load_steps=12 format=3 uid="uid://cyilq4ba3ayx5"]
+[gd_scene load_steps=10 format=3 uid="uid://cyilq4ba3ayx5"]
 
 [ext_resource type="Script" path="res://scripts/MechParts/player_legs.gd" id="1_d83hd"]
 [ext_resource type="SpriteFrames" uid="uid://b7pcxsly3ljal" path="res://assets/Tank_tread_1.tres" id="2_d0kvn"]
 [ext_resource type="Script" path="res://scripts/MechParts/player_body.gd" id="2_m8l1p"]
-[ext_resource type="SpriteFrames" uid="uid://dy65tgc1ed1cm" path="res://assets/HeliSmall.tres" id="4_47vko"]
 [ext_resource type="Script" path="res://scripts/MechParts/HardpointVisualizer.gd" id="4_g4edf"]
+[ext_resource type="SpriteFrames" uid="uid://ts2ppatk62y5" path="res://assets/bodies/strider_body_1_frame.tres" id="4_j83af"]
 [ext_resource type="Script" path="res://scripts/MechParts/LegCollisionPolygon.gd" id="6_6biik"]
-[ext_resource type="PackedScene" uid="uid://b2juagtqduvgs" path="res://scenes/hardpoint_visual.tscn" id="6_fp7rs"]
 [ext_resource type="PackedScene" uid="uid://j05qj0skos78" path="res://scenes/cone_light.tscn" id="7_2lxpk"]
-[ext_resource type="Texture2D" uid="uid://vqk66u15uiqj" path="res://assets/crosshair.png" id="7_cxng5"]
 [ext_resource type="Script" path="res://scripts/rotateOccluder.gd" id="8_cg75g"]
 
 [sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_vu108"]
@@ -30,20 +28,15 @@ script = ExtResource("2_m8l1p")
 
 [node name="BodySprite" type="AnimatedSprite2D" parent="Body"]
 scale = Vector2(4, 4)
-sprite_frames = ExtResource("4_47vko")
+sprite_frames = ExtResource("4_j83af")
 script = ExtResource("4_g4edf")
-Reference = "heli_1"
-
-[node name="Hardpoint_0_1" type="Sprite2D" parent="Body/BodySprite" instance=ExtResource("6_fp7rs")]
-position = Vector2(0, -5)
-scale = Vector2(0.4, 0.4)
-texture = ExtResource("7_cxng5")
+Reference = "strider_1"
 
 [node name="cone_light" parent="Body" instance=ExtResource("7_2lxpk")]
 height = 200.0
 
 [node name="LegCollisionPolygon" type="CollisionPolygon2D" parent="."]
-polygon = PackedVector2Array(0, -24, -15, -7, -4, 19, -12, 48, 12, 49, 5, 20, 16, -8)
+polygon = PackedVector2Array(0, -52, -28, -4, -60, -4, -60, 36, 0, 44, 60, 35, 60, -3, 28, -4)
 script = ExtResource("6_6biik")
 
 [node name="Occluder" type="LightOccluder2D" parent="."]

@@ -1,6 +1,6 @@
 extends Panel
 var current_type = "Body"
-
+signal body_changed()
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	update_images()
@@ -9,24 +9,33 @@ func change_inventory_type(newType : String):
 	update_images()
 	match(newType):
 		"Weapon_1":
-			pass
+			resolve_hardpoint_size(0)
 		"Weapon_2":
-			pass
+			resolve_hardpoint_size(1)
 		"Weapon_3":
-			pass
+			resolve_hardpoint_size(2)
 		"Weapon_4":
-			pass
+			resolve_hardpoint_size(3)
 		"Weapon_5":
-			pass
+			resolve_hardpoint_size(4)
 		"Body":
+			$SelectedName.text = "[center] Mech Body [/center]"
 			$Details/Visual/Object.sprite_frames = ItemData.bodies[PlayerInfo.active_save_data["active_body"]].sprite
 		"Leg":
+			$SelectedName.text = "[center] Mech Legs [/center]"
 			$Details/Visual/Object.sprite_frames = ItemData.legs[PlayerInfo.active_save_data["active_legs"]].sprite
+func resolve_hardpoint_size(number):
+	var h_size = ItemData.bodies[PlayerInfo.active_save_data["active_body"]].hardpoints[number][1]
+	var size_class = ""
+	match(h_size):
+		1: size_class = "S"
+		2: size_class = "M"
+		3: size_class = "L"
+		4: size_class = "XL"
+		5: size_class = "XXL"
+	print(h_size)
+	$SelectedName.text = "[center] "+size_class + " Hardpoint [/center]"
 func update_images():
-#	print(PlayerInfo.active_save_data["active_body"])
+
 	$Body/Body_Sprite.sprite_frames = ItemData.bodies[PlayerInfo.active_save_data["active_body"]].sprite
 	$Legs/Leg_Sprite.sprite_frames = ItemData.legs[PlayerInfo.active_save_data["active_legs"]].sprite
-#	update_details()
-#func update_details():
-#	$Details/Visual/Object.sprite_frames = ItemData.bodies[PlayerInfo.active_save_data["active_body"]].sprite
-	

@@ -19,7 +19,6 @@ func update_list(item:String):
 				under_array.push_back([i, false])
 	elif(item=="Body"):
 		for i in PlayerInfo.active_save_data["owned_bodies"]:
-			print(i)
 			add_item(ItemData.legs[i[0]].name+" x"+ str(i[1]))
 			under_array.push_back([i[0], true])
 		add_item(ItemData.bodies[PlayerInfo.active_save_data["active_body"]].name+ "   (Equipped)", null, false)
@@ -34,10 +33,9 @@ func update_list(item:String):
 func _on_item_clicked(index: int, at_position: Vector2, mouse_button_index: int) -> void:
 	Signals.update_details_screen.emit(under_array[index][0])
 	curr_index = index
+	get_parent().get_node("Current_Item").button_pressed = false
 func equip():
-	print("ping2")
-	if curr_index!=-1:
-		print("pong")
+	if curr_index!=-1&&under_array!=[]:
 		if under_array[curr_index][1]==true:
 			match(target_type):
 				"Weapon_1":
@@ -57,22 +55,34 @@ func equip():
 			Signals.change_inventory_type.emit(target_type)
 			PlayerInfo.save_player()
 func equip_weapon(weapon_slot:int, value:String):
+	var hardpoint_size = ItemData.bodies[PlayerInfo.active_save_data["active_body"]].hardpoints[weapon_slot][1]
+	print(hardpoint_size, " ", ItemData.weapons[value].size_level)
+	print(weapon_slot)
+	if(hardpoint_size<ItemData.weapons[value].size_level):
+		return
 	for obj in PlayerInfo.active_save_data["owned_weapons"]:
-		if obj[1]>0&&obj[0]==value: 
-			add_or_append(PlayerInfo.active_save_data["owned_weapons"], PlayerInfo.active_save_data["active_weapons"][weapon_slot])
+		if obj[1]>0&&obj[0]==value:
+
+			if PlayerInfo.active_save_data["active_weapons"][weapon_slot]!="":add_or_append(PlayerInfo.active_save_data["owned_weapons"], PlayerInfo.active_save_data["active_weapons"][weapon_slot])
 			subtract_from_array(PlayerInfo.active_save_data["owned_weapons"], value)
 			PlayerInfo.active_save_data["active_weapons"][weapon_slot] = value
 			break
-			
+func unequip_weapon(weapon_slot:int):	
+	
+	if PlayerInfo.active_save_data["active_weapons"][weapon_slot]!="": 
+		add_or_append(PlayerInfo.active_save_data["owned_weapons"], PlayerInfo.active_save_data["active_weapons"][weapon_slot])
+		PlayerInfo.active_save_data["active_weapons"][weapon_slot] = ""
 func equip_mech(mech_part:String, active_part:String, value:String):
-	print(mech_part, ", ", active_part, ", ", value)
 	for obj in PlayerInfo.active_save_data[mech_part]:
 		if obj[1]>0&&obj[0]==value: 
 			add_or_append(PlayerInfo.active_save_data[mech_part], PlayerInfo.active_save_data[active_part])
 			subtract_from_array(PlayerInfo.active_save_data[mech_part], value)
 			PlayerInfo.active_save_data[active_part] = value
 			break
-			
+	update_hardpoints()		
+
+	if(active_part=="active_body"):
+		get_parent().body_changed.emit()
 func subtract_from_array(array_ref:Array, value:String):
 	for n in array_ref:
 		if n[0]==value:
@@ -90,3 +100,10 @@ func add_or_append(array_ref:Array, value : String):
 	if !found:
 		array_ref.push_back([value, 1])
 	
+func update_hardpoints():
+	for n in range(0, PlayerInfo.active_save_data["active_weapons"].size()):
+		var hardpoint_size = ItemData.bodies[PlayerInfo.active_save_data["active_body"]].hardpoints[n][1]
+
+		if(PlayerInfo.active_save_data["active_weapons"][n]!=""&&hardpoint_size<ItemData.weapons[
+				PlayerInfo.active_save_data["active_weapons"][n]].size_level):
+			unequip_weapon(n)

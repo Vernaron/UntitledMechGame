@@ -1,5 +1,5 @@
-extends ColorRect
-var current_type : String = "Leg"
+extends Panel
+var current_type : String = ""
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:

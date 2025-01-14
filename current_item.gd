@@ -37,5 +37,6 @@ func update_item(item : String):
 
 
 func _on_pressed() -> void:
-	print(underitem)
 	Signals.update_details_screen.emit(underitem)
+	get_parent().get_node("ItemList").curr_index=-1
+	get_parent().get_node("ItemList").deselect_all()

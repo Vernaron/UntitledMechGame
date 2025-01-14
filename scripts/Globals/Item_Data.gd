@@ -5,7 +5,7 @@ class_name Item_Data
 enum Weapon_Type{Bullet, Laser, Missile, Grenade}
 enum Basic_Enemy{Strider, Bulwark, SmallTank, SmallHeli}
 enum DASH{BURST, JET}
-	
+var nullhardpoint = [Vector2.ZERO, -1]
 class Weapon:
 	var bullet_flash: Node2D
 	#var root_scene : Node2D
@@ -167,7 +167,7 @@ var bodies = {
 		collision_array_points=PackedVector2Array([Vector2(0, -52),Vector2(-28, -4),Vector2(-60, -4),\
 			Vector2(-60, 36),Vector2(0, 44),Vector2(60, 35),Vector2(60, -3),Vector2(28, -4)]),
 		hardpoints=[	
-			[Vector2(46, -1), 1],[Vector2(-46, -1), 1],	
+			[Vector2(46, -1), 1],[Vector2(-46, -1), 1],	nullhardpoint,nullhardpoint,nullhardpoint
 		],
 		name = "Strider"
 	},
@@ -178,7 +178,7 @@ var bodies = {
 		collision_array_points=PackedVector2Array([Vector2(0,-36),Vector2(-60,-25),Vector2(-60,20),\
 		Vector2(-34,34),Vector2(36,34),Vector2(48,-3),Vector2(47,-31),]),
 		hardpoints=[
-			[Vector2(40, -32), 2],[Vector2(-46, -24), 1],
+			[Vector2(40, -33), 1],[Vector2(-48, -26), 2],nullhardpoint,nullhardpoint,nullhardpoint
 		],
 		name = "Bulwark"
 	},
@@ -187,14 +187,14 @@ var bodies = {
 		armor=3,
 		turn_speed = 2,
 		collision_array_points = PackedVector2Array([Vector2(-16,-20),Vector2(-16,24),Vector2(16,24),Vector2(16,-20),]),
-		hardpoints = [[Vector2(0, -17), 1],],
+		hardpoints = [[Vector2(0, -17), 1],nullhardpoint,nullhardpoint,nullhardpoint,nullhardpoint]
 	},
 	"heli_1":{
 		sprite = preload("res://assets/HeliSmall.tres"),
 		armor = 1,
 		turn_speed = 1,
 		collision_array_points = PackedVector2Array([Vector2(0,-24),Vector2(-15,-7),Vector2(-4,19),Vector2(-12,48),Vector2(12,49),Vector2(5,20),Vector2(16,-8),]),
-		hardpoints = [[Vector2(0, -20), 1]]
+		hardpoints = [[Vector2(0, -20), 1],nullhardpoint,nullhardpoint,nullhardpoint,nullhardpoint]
 	}
 }
 var legs = {

@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=3 uid="uid://7xj7aos3v2fn"]
+[gd_scene load_steps=35 format=3 uid="uid://7xj7aos3v2fn"]
 
 [ext_resource type="PackedScene" uid="uid://dewdyvvv62g8a" path="res://pauseMenu.tscn" id="1_h7tr1"]
 [ext_resource type="Script" path="res://equip_screen.gd" id="2_dwcf7"]
@@ -6,23 +6,65 @@
 [ext_resource type="Script" path="res://current_item.gd" id="3_8yqm2"]
 [ext_resource type="Script" path="res://main_inventory.gd" id="3_y65bp"]
 [ext_resource type="Script" path="res://body_button.gd" id="4_lufga"]
+[ext_resource type="StyleBox" uid="uid://g6y4pkm8jcnu" path="res://BoxOutlineLighter.tres" id="5_kgi8a"]
 [ext_resource type="Script" path="res://hardpoint_button.gd" id="5_nxf0k"]
 [ext_resource type="Script" path="res://leg_button.gd" id="6_0bm15"]
+[ext_resource type="StyleBox" uid="uid://cmgaabwbe2n4l" path="res://BoxOutlineLightest.tres" id="6_60261"]
 [ext_resource type="Script" path="res://details_screen.gd" id="8_3qsoc"]
+[ext_resource type="StyleBox" uid="uid://d06yl6y6lseqa" path="res://EquipButtonNormal.tres" id="10_tvdu8"]
 [ext_resource type="Script" path="res://equip_button.gd" id="10_yycxb"]
 [ext_resource type="Script" path="res://LocationButton.gd" id="11_7yw60"]
+[ext_resource type="StyleBox" uid="uid://csc0g3olal123" path="res://BoxOutline.tres" id="11_i1ya4"]
 
 [sub_resource type="Theme" id="Theme_gi1uo"]
+default_base_scale = 0.2
+default_font_size = 60
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ojxal"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_k1og1"]
+bg_color = Color(0.054902, 0.129412, 0.32549, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pidq5"]
+bg_color = Color(0.0529422, 0.129839, 0.325816, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4wpq3"]
+content_margin_left = 30.0
+content_margin_top = 10.0
+content_margin_right = 30.0
+content_margin_bottom = 10.0
+bg_color = Color(0.450648, 0.450648, 0.450648, 1)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+border_color = Color(0.31802, 0.31802, 0.31802, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_n73rl"]
+bg_color = Color(0.237539, 0.237539, 0.237539, 1)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+border_color = Color(0.133333, 0.133333, 0.133333, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6gw5r"]
+content_margin_left = 10.0
+content_margin_right = 10.0
+bg_color = Color(0.205117, 0.205117, 0.205117, 1)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+border_color = Color(0.133196, 0.133196, 0.133196, 1)
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_g6387"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_exi1l"]
 
 [sub_resource type="Theme" id="Theme_0b0ch"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_qhypw"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_unr1s"]
 atlas = ExtResource("2_jr2mm")
@@ -36,12 +78,19 @@ region = Rect2(0, 64, 64, 64)
 atlas = ExtResource("2_jr2mm")
 region = Rect2(64, 0, 64, 64)
 
+[sub_resource type="Theme" id="Theme_ulefm"]
+/styles/a = ExtResource("5_kgi8a")
+
 [sub_resource type="AtlasTexture" id="AtlasTexture_ut3qa"]
 atlas = ExtResource("2_jr2mm")
 region = Rect2(0, 0, 64, 64)
 
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_anu67"]
+
 [sub_resource type="Theme" id="Theme_gyrl1"]
 default_font_size = 50
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_wwvu2"]
 
 [node name="HomeBase" type="Node2D"]
 
@@ -51,18 +100,20 @@ default_font_size = 50
 
 [node name="TabContainer" type="TabContainer" parent="."]
 offset_left = -962.0
-offset_top = -526.0
-offset_right = 952.0
+offset_top = -542.0
+offset_right = 962.0
 offset_bottom = 541.0
 theme = SubResource("Theme_gi1uo")
-theme_override_font_sizes/font_size = 60
+theme_override_styles/tab_focus = SubResource("StyleBoxEmpty_ojxal")
 theme_override_styles/tabbar_background = SubResource("StyleBoxFlat_k1og1")
 theme_override_styles/panel = SubResource("StyleBoxFlat_pidq5")
+theme_override_styles/tab_selected = SubResource("StyleBoxFlat_4wpq3")
+theme_override_styles/tab_hovered = SubResource("StyleBoxFlat_n73rl")
+theme_override_styles/tab_unselected = SubResource("StyleBoxFlat_6gw5r")
 tab_alignment = 1
-current_tab = 2
+current_tab = 0
 
 [node name="Equip" type="Control" parent="TabContainer"]
-visible = false
 layout_mode = 2
 metadata/_tab_index = 0
 
@@ -82,16 +133,27 @@ offset_left = 641.0
 offset_top = 305.0
 offset_right = 1356.0
 offset_bottom = 1038.0
+theme_override_constants/v_separation = 0
+theme_override_constants/h_separation = 30
+theme_override_font_sizes/font_size = 25
 theme_override_styles/focus = SubResource("StyleBoxEmpty_exi1l")
+theme_override_styles/panel = ExtResource("11_i1ya4")
+item_count = 1
 script = ExtResource("3_y65bp")
 
 [node name="Current_Item" type="Button" parent="TabContainer/Equip/EquipScreen"]
 layout_mode = 0
-offset_left = 647.0
-offset_top = 268.0
-offset_right = 1361.0
-offset_bottom = 299.0
+offset_left = 641.0
+offset_top = 260.0
+offset_right = 1356.0
+offset_bottom = 291.0
 theme = SubResource("Theme_0b0ch")
+theme_override_constants/h_separation = 30
+theme_override_font_sizes/font_size = 25
+theme_override_styles/focus = SubResource("StyleBoxEmpty_qhypw")
+theme_override_styles/hover = ExtResource("5_kgi8a")
+theme_override_styles/pressed = ExtResource("6_60261")
+theme_override_styles/normal = ExtResource("11_i1ya4")
 toggle_mode = true
 script = ExtResource("3_8yqm2")
 
@@ -110,6 +172,7 @@ texture_hover = SubResource("AtlasTexture_j03mx")
 script = ExtResource("4_lufga")
 
 [node name="Hardpoint_1" type="TextureButton" parent="TabContainer/Equip/EquipScreen/Body"]
+z_index = 3
 layout_mode = 0
 offset_left = 70.0
 offset_right = 134.0
@@ -122,7 +185,16 @@ texture_pressed = SubResource("AtlasTexture_4gr77")
 texture_hover = SubResource("AtlasTexture_j03mx")
 script = ExtResource("5_nxf0k")
 
+[node name="Line" type="Line2D" parent="TabContainer/Equip/EquipScreen/Body/Hardpoint_1"]
+z_index = -1
+width = 3.0
+default_color = Color(0.700432, 0.70319, 1, 1)
+end_cap_mode = 2
+round_precision = 30
+antialiased = true
+
 [node name="Hardpoint_2" type="TextureButton" parent="TabContainer/Equip/EquipScreen/Body"]
+z_index = 3
 layout_mode = 0
 offset_left = -70.0
 offset_right = -6.0
@@ -136,7 +208,16 @@ texture_hover = SubResource("AtlasTexture_j03mx")
 script = ExtResource("5_nxf0k")
 number = 2
 
+[node name="Line" type="Line2D" parent="TabContainer/Equip/EquipScreen/Body/Hardpoint_2"]
+z_index = -1
+width = 3.0
+default_color = Color(0.700432, 0.70319, 1, 1)
+end_cap_mode = 2
+round_precision = 30
+antialiased = true
+
 [node name="Hardpoint_3" type="TextureButton" parent="TabContainer/Equip/EquipScreen/Body"]
+z_index = 3
 layout_mode = 0
 offset_left = 55.0
 offset_top = -50.0
@@ -151,7 +232,16 @@ texture_hover = SubResource("AtlasTexture_j03mx")
 script = ExtResource("5_nxf0k")
 number = 3
 
+[node name="Line" type="Line2D" parent="TabContainer/Equip/EquipScreen/Body/Hardpoint_3"]
+z_index = -1
+width = 3.0
+default_color = Color(0.700432, 0.70319, 1, 1)
+end_cap_mode = 2
+round_precision = 30
+antialiased = true
+
 [node name="Hardpoint_4" type="TextureButton" parent="TabContainer/Equip/EquipScreen/Body"]
+z_index = 3
 layout_mode = 0
 offset_left = -55.0
 offset_top = -50.0
@@ -166,7 +256,16 @@ texture_hover = SubResource("AtlasTexture_j03mx")
 script = ExtResource("5_nxf0k")
 number = 4
 
+[node name="Line" type="Line2D" parent="TabContainer/Equip/EquipScreen/Body/Hardpoint_4"]
+z_index = -1
+width = 3.0
+default_color = Color(0.700432, 0.70319, 1, 1)
+end_cap_mode = 2
+round_precision = 30
+antialiased = true
+
 [node name="Hardpoint_5" type="TextureButton" parent="TabContainer/Equip/EquipScreen/Body"]
+z_index = 3
 layout_mode = 0
 offset_top = -70.0
 offset_right = 64.0
@@ -179,6 +278,14 @@ texture_pressed = SubResource("AtlasTexture_4gr77")
 texture_hover = SubResource("AtlasTexture_j03mx")
 script = ExtResource("5_nxf0k")
 number = 5
+
+[node name="Line" type="Line2D" parent="TabContainer/Equip/EquipScreen/Body/Hardpoint_5"]
+z_index = -1
+width = 3.0
+default_color = Color(0.700432, 0.70319, 1, 1)
+end_cap_mode = 2
+round_precision = 30
+antialiased = true
 
 [node name="Body_Sprite" type="AnimatedSprite2D" parent="TabContainer/Equip/EquipScreen/Body"]
 position = Vector2(32, 32)
@@ -200,28 +307,41 @@ script = ExtResource("6_0bm15")
 [node name="Leg_Sprite" type="AnimatedSprite2D" parent="TabContainer/Equip/EquipScreen/Legs"]
 position = Vector2(32, 32)
 
-[node name="Details" type="ColorRect" parent="TabContainer/Equip/EquipScreen"]
+[node name="Details" type="Panel" parent="TabContainer/Equip/EquipScreen"]
 layout_mode = 0
 offset_left = 1433.0
 offset_top = 190.0
 offset_right = 1844.0
 offset_bottom = 1033.0
-color = Color(0.108787, 0.000176664, 0.238434, 1)
+theme = SubResource("Theme_ulefm")
+theme_override_styles/panel = ExtResource("5_kgi8a")
 script = ExtResource("8_3qsoc")
 
 [node name="Visual" type="Sprite2D" parent="TabContainer/Equip/EquipScreen/Details"]
-position = Vector2(216, 172)
-scale = Vector2(4.79688, 4.79688)
+position = Vector2(210, 172)
+scale = Vector2(4.7, 4.7)
 texture = SubResource("AtlasTexture_ut3qa")
 
 [node name="Object" type="AnimatedSprite2D" parent="TabContainer/Equip/EquipScreen/Details/Visual"]
 
 [node name="Stats" type="TextEdit" parent="TabContainer/Equip/EquipScreen/Details"]
 layout_mode = 0
-offset_left = 32.0
+offset_left = 30.0
 offset_top = 362.0
-offset_right = 392.0
+offset_right = 380.0
 offset_bottom = 772.0
+theme_override_font_sizes/font_size = 20
+theme_override_styles/normal = ExtResource("11_i1ya4")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_anu67")
+editable = false
+context_menu_enabled = false
+shortcut_keys_enabled = false
+selecting_enabled = false
+deselect_on_focus_loss_enabled = false
+drag_and_drop_selection_enabled = false
+virtual_keyboard_enabled = false
+middle_mouse_paste_enabled = false
+use_default_word_separators = false
 
 [node name="EquipButton" type="Button" parent="TabContainer/Equip/EquipScreen" node_paths=PackedStringArray("equipper_target")]
 layout_mode = 0
@@ -230,9 +350,24 @@ offset_top = 95.0
 offset_right = 1784.0
 offset_bottom = 173.0
 theme = SubResource("Theme_gyrl1")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_wwvu2")
+theme_override_styles/hover = ExtResource("10_tvdu8")
+theme_override_styles/normal = ExtResource("10_tvdu8")
 text = "Equip"
 script = ExtResource("10_yycxb")
 equipper_target = NodePath("../ItemList")
+
+[node name="SelectedName" type="RichTextLabel" parent="TabContainer/Equip/EquipScreen"]
+layout_mode = 0
+offset_left = 84.0
+offset_top = 186.0
+offset_right = 532.0
+offset_bottom = 226.0
+theme_override_font_sizes/normal_font_size = 30
+theme_override_styles/normal = ExtResource("11_i1ya4")
+bbcode_enabled = true
+text = "1"
+fit_content = true
 
 [node name="Build" type="Control" parent="TabContainer"]
 visible = false
@@ -240,6 +375,7 @@ layout_mode = 2
 metadata/_tab_index = 1
 
 [node name="Map" type="Control" parent="TabContainer"]
+visible = false
 layout_mode = 2
 metadata/_tab_index = 2
 

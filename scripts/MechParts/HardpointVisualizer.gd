@@ -26,13 +26,15 @@ func _process(delta):
 		if(Save && active_string!=""):
 			Save = false
 			notify_property_list_changed()
-#			var tempLocations = ""
-	#		for node in get_children():
-	#			tempLocations+="[Vector2"+str(node.position*4)+", "+ node.name.right(1)+"],"
+			var tempLocations = ""
+			for node in get_children():
+				tempLocations+="[Vector2"+str(node.position*4)+", "+ node.name.right(1)+"],"
 				
+			
 			printer.array = get_parent().get_parent().find_child("LegCollisionPolygon").polygon
 			printer.isActive = true
 			printer._process(delta)
+			print(tempLocations)
 		if Reference!=active_string && Reference != "" || Reload:
 			itemData = itemData_res.new()
 			Reload = false
@@ -50,13 +52,14 @@ func _process(delta):
 			get_parent().get_parent().find_child("LegCollisionPolygon").notify_property_list_changed()
 			print(get_children())
 			for hardpoint in itemData.bodies[active_string]["hardpoints"]:
-				var hardNode = point_res.instantiate()
-				hardNode.position = hardpoint[0]/4
-				hardNode.name = "Hardpoint_" +str(num)+"_"+str(hardpoint[1]) 
-				num+=1
-				hardpointList.push_back(hardNode)
-				
-				add_child(hardNode)
-				hardNode.owner = get_tree().edited_scene_root
+				if hardpoint[1]!=-1:
+					var hardNode = point_res.instantiate()
+					hardNode.position = hardpoint[0]/4
+					hardNode.name = "Hardpoint_" +str(num)+"_"+str(hardpoint[1]) 
+					num+=1
+					hardpointList.push_back(hardNode)
+					
+					add_child(hardNode)
+					hardNode.owner = get_tree().edited_scene_root
 			
 			
