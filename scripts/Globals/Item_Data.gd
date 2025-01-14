@@ -184,7 +184,7 @@ var bodies = {
 	},
 	"tank_1":{
 		sprite = preload("res://assets/bodies/tank_1_turret_frame.tres"),
-		armor=3,
+		armor=2,
 		turn_speed = 2,
 		collision_array_points = PackedVector2Array([Vector2(-16,-20),Vector2(-16,24),Vector2(16,24),Vector2(16,-20),]),
 		hardpoints = [[Vector2(0, -17), 1],nullhardpoint,nullhardpoint,nullhardpoint,nullhardpoint]
@@ -233,7 +233,7 @@ var legs = {
 		dash_speed = 0,
 		dash_type=ItemData.DASH.JET,
 		turn_radius = .4,
-		health = 50,
+		health = 30,
 		sprite = preload("res://assets/Tank_tread_1.tres")
 	},
 	"heli_1":{
@@ -245,7 +245,7 @@ var legs = {
 		dash_speed=0,
 		dash_type = ItemData.DASH.JET,
 		turn_radius = 10,
-		health=50,
+		health=10,
 		sprite = preload("res://assets/BlankFrames.tres")
 	}
 }

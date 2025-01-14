@@ -60,8 +60,6 @@ func _physics_process_custom(delta):
 		if angleOffset<=0:angleOffset=PI/6+(2*PI/6)*randf()
 		else:angleOffset=-PI/6-(2*PI/6)*randf()
 	$Body/playerPointer.target_position.y = -target.distance_to($Body/playerPointer.global_position)
-	if(healthZero):
-		queue_free()
 	if($Body/playerPointer.get_collider()!=null):
 		time_lost_vision+=delta
 		time_gained_vision=0
@@ -112,3 +110,5 @@ func _take_damage(damage, location=null, bullet_spark=false, laser_spark=false):
 	damage_inflict(damage)
 	resolve_particles(location, bullet_spark, laser_spark, damage)
 	Signals.screen_shake.emit(damage/2, .2)
+func _on_kill():
+	queue_free()

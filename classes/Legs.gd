@@ -177,14 +177,14 @@ func set_team(_team):
 
 func damage_inflict(damage):
 	current_health -=damage * 20/($Body.armor + 20)
+	print(current_health)
 	if(current_health <= 0):
-		healthZero = true
+	#	healthZero = true
+		_on_kill()
 func resolve_particles(location, bullet_spark, laser_spark, damage):
 	if PlayerInfo.settings["particles"] <=.001: return
 	if bullet_spark:
 		var temp = richochet_blast.instantiate()
-		print(richochet_blast)
-		print(temp)
 		temp.set_damage(damage)
 		temp.rotation = location[0]
 		temp.position = location[1]
@@ -207,4 +207,6 @@ func _get_intended_angle():
 func _construct_custom():
 	pass
 func _take_damage(_target, _location=null, _bullet_spark=false, _laser_spark=false):
+	pass
+func _on_kill():
 	pass
