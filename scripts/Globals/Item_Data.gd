@@ -245,7 +245,7 @@ var legs = {
 		dash_speed=0,
 		dash_type = ItemData.DASH.JET,
 		turn_radius = 10,
-		health=10,
+		health=1,
 		sprite = preload("res://assets/BlankFrames.tres")
 	}
 }

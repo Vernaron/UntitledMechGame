@@ -1,0 +1,6 @@
+[gd_resource type="Resource" script_class="WeightedDrops" load_steps=2 format=3 uid="uid://dhldpf1k0eh0q"]
+
+[ext_resource type="Script" path="res://classes/weighted_drop_cluster.gd" id="1_dbouf"]
+
+[resource]
+script = ExtResource("1_dbouf")

@@ -1,5 +1,6 @@
 extends Legs
 var curr_type : ItemData.Basic_Enemy = ItemData.Basic_Enemy.Strider
+var loot_res = preload("res://scenes/LootCollectable.tscn")
 var target : Vector2 = Vector2.ZERO
 @onready var navrid = get_world_2d().get_navigation_map()
 var currPath = [Vector2.ZERO,Vector2.ZERO,Vector2.ZERO]
@@ -17,6 +18,40 @@ var distOffset : float = 0
 var wallOffset : float = 0
 @export var move_range=2000
 var angleOffsetCooldown:float = 0
+var dropTables = {
+	ItemData.Basic_Enemy.Strider:{
+		"materialChance" : 0.7,
+		"equipmentChance":0.2,
+		"materials":{
+			"screws":WeightedDrops.new("screws", Vector2(1, 4), .5),
+			"plates":WeightedDrops.new("plates", Vector2(2, 5), .5),
+			
+		},
+		"equipment":{
+			"bolter":WeightedDrops.new("weapon_bolter", Vector2(1, 2), .6), 
+			"strider_1_body":WeightedDrops.new("body_strider_1", Vector2(1, 1), .2),
+			"strider_1_legs":WeightedDrops.new("legs_strider_1",Vector2(1, 1), .2),
+		}
+		
+	}, 
+	ItemData.Basic_Enemy.Bulwark:{},
+	ItemData.Basic_Enemy.SmallTank:{},
+	ItemData.Basic_Enemy.SmallHeli:{
+		"materialChance" : 0.7,
+		"equipmentChance":0.2,
+		"materials":{
+			"screws":WeightedDrops.new("screws", Vector2(1, 4), .5),
+			"plates":WeightedDrops.new("plates", Vector2(2, 5), .5),
+			
+		},
+		"equipment":{
+			"gatling":WeightedDrops.new("weapon_gatling", Vector2(1, 2), .6), 
+		}
+		
+	},
+	
+}
+var totalDrops = []
 func _ready_custom():
 	Signals.retarget.connect(setTarget)	
 func  setTarget(_target):
@@ -111,4 +146,47 @@ func _take_damage(damage, location=null, bullet_spark=false, laser_spark=false):
 	resolve_particles(location, bullet_spark, laser_spark, damage)
 	Signals.screen_shake.emit(damage/2, .2)
 func _on_kill():
+	roll_drops()
+	print(totalDrops)
+	for n in totalDrops:
+		var loot = loot_res.instantiate()
+		loot.setval(n[0], n[1])
+		loot.position = global_position
+		Signals.spawn_root.emit(loot)
 	queue_free()
+func add_or_append(array_ref:Array, value : String):
+	var found = false
+	for n in array_ref:
+		if n[0]==value:
+			n[1]+=1
+			found=true
+			break
+	if !found:
+		array_ref.push_back([value, 1])
+func roll_drops():
+	var drops = dropTables[curr_type]
+	for i in range(0, 4):
+		var dropType = randf()
+		if(dropType<drops["materialChance"]):
+			var totalnum =0
+			for n in drops["materials"]:
+				var obj = drops["materials"][n]
+				totalnum+=obj.chance
+			var selector = randf()*totalnum
+			var curr_val = 0
+			for n in drops["materials"]:
+				var obj = drops["materials"][n]
+				curr_val+=obj.chance
+				if curr_val>=selector:
+					totalDrops.push_back([obj.name, obj.get_random_amount()])
+		elif(dropType<drops["materialChance"]+drops["equipmentChance"]):
+			var totalnum =0
+			for n in drops["equipment"]:
+				totalnum+=drops["equipment"][n].chance
+			var selector = randf()*totalnum
+			var curr_val = 0
+			for n in drops["equipment"]:
+				var obj = drops["equipment"][n]
+				curr_val+=obj.chance
+				if curr_val>=selector:
+					totalDrops.push_back([obj.name, obj.get_random_amount()])
