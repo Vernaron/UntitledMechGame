@@ -1,37 +1,28 @@
-[gd_scene load_steps=6 format=3 uid="uid://cxjpyf48o8tn8"]
+[gd_scene load_steps=5 format=3 uid="uid://cxjpyf48o8tn8"]
 
 [ext_resource type="Script" path="res://scripts/Bullets/bullet_flash.gd" id="1_54dre"]
-[ext_resource type="Shader" path="res://scenes/coneShader.gdshader" id="2_unws4"]
+[ext_resource type="Texture2D" uid="uid://45ypor6k6iy6" path="res://assets/bullet_flash.png" id="1_e3u3l"]
 
-[sub_resource type="Gradient" id="Gradient_jk42c"]
-offsets = PackedFloat32Array(0, 0.3, 1)
-colors = PackedColorArray(1, 1, 1, 0.784314, 1, 1, 1, 0.784314, 1, 1, 1, 0)
+[sub_resource type="Gradient" id="Gradient_edxeh"]
+colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 0)
 
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_pv3yh"]
-gradient = SubResource("Gradient_jk42c")
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_bgymp"]
+gradient = SubResource("Gradient_edxeh")
+width = 512
+height = 512
 fill = 1
 fill_from = Vector2(0.5, 0.5)
 fill_to = Vector2(1, 0.5)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_f1ey8"]
-resource_local_to_scene = true
-shader = ExtResource("2_unws4")
-shader_parameter/leftTopPoint = Vector2(0, 0.3)
-shader_parameter/rightTopPoint = Vector2(1, 0.3)
-shader_parameter/bottomPoint = Vector2(0.5, 1)
-shader_parameter/innerRadius = 0.05
-shader_parameter/intensity = 1.0
-shader_parameter/color = Color(1, 1, 1, 1)
-
 [node name="bullet_flash" type="PointLight2D"]
-color = Color(0.282353, 0.733333, 0.478431, 1)
-texture = SubResource("GradientTexture2D_pv3yh")
-texture_scale = 0.01
+color = Color(0.784807, 0.534126, 0.202056, 1)
+energy = 0.5
+texture = SubResource("GradientTexture2D_bgymp")
+offset = Vector2(0, -5)
 script = ExtResource("1_54dre")
 
-[node name="SubViewport" type="SubViewport" parent="."]
-
-[node name="ColorRect" type="ColorRect" parent="SubViewport"]
-material = SubResource("ShaderMaterial_f1ey8")
-offset_right = 512.0
-offset_bottom = 512.0
+[node name="sprite" type="Sprite2D" parent="."]
+modulate = Color(1, 1, 1, 0.784314)
+position = Vector2(0, -28)
+scale = Vector2(0.1, 0.1)
+texture = ExtResource("1_e3u3l")

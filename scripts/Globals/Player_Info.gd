@@ -34,6 +34,7 @@ var default_save = {
 	"active_weapons":["bolter","bolter","","",""],
 	"active_zones":["zone_1"],
 	"achievements":[],
+	"materials":[],
 	"player_level":1,
 	"completed_tutorial":false
 }
@@ -98,3 +99,32 @@ func get_active_legs():
 	return ItemData.legs[PlayerInfo.active_save_data["active_legs"]]
 func get_active_body():
 	return ItemData.bodies[PlayerInfo.active_save_data["active_body"]]
+func collect_drop(item : String, number : int):
+	print("    ", item)
+	if(item.find("weapon_")!=-1):
+		item = item.substr(7)
+		add_or_append(active_save_data["owned_weapons"], item)
+	elif(item.find("body_")!=-1):
+		item = item.substr(5)	
+		add_or_append(active_save_data["owned_bodies"], item)
+	elif(item.find("legs_")!=-1):
+		item = item.substr(5)
+		add_or_append(active_save_data["owned_legs"], item)
+	else:
+		add_or_append(active_save_data["materials"], item)
+func subtract_from_array(array_ref:Array, value:String):
+	for n in array_ref:
+		if n[0]==value:
+			n[1]-=1
+			if n[1]==0:
+				array_ref.remove_at(array_ref.find(n))
+			
+func add_or_append(array_ref:Array, value : String):
+	var found = false
+	for n in array_ref:
+		if n[0]==value:
+			n[1]+=1
+			found=true
+			break
+	if !found:
+		array_ref.push_back([value, 1])

@@ -16,3 +16,8 @@ modulate = Color(0.792157, 0.792157, 0.792157, 1)
 scale = Vector2(6, 6)
 texture = ExtResource("2_q4cxr")
 offset = Vector2(0, -2)
+
+[node name="ray" type="RayCast2D" parent="."]
+position = Vector2(0, 10)
+target_position = Vector2(0, -60)
+collision_mask = 32768

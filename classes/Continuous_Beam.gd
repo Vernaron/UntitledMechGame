@@ -30,7 +30,7 @@ func _process(_delta):
 		target_hit=target_hit_2 
 	if(target_hit!={}):
 		final_position =target_hit.position
-		if(target_hit.collider is Legs && target_hit.collider.get_collision_layer_value(target)==true):
+		if(target_hit.collider!=null&&target_hit.collider is Legs && target_hit.collider.get_collision_layer_value(target)==true):
 			enemy_coll = target_hit.collider
 	else:
 		final_position = global_position+Vector2(0, -10000).rotated(rotation)
@@ -45,7 +45,7 @@ func _physics_process(_delta):
 	rotation_offset+= rotation_offset_accel*accuracy_rad*_delta
 	rotation_offset = clamp(rotation_offset, -accuracy_rad/2, accuracy_rad/2)
 	$Beam.set_length(final_position.distance_to(global_position))
-	$BeamLight.texture.height = clamp(final_position.distance_to(global_position), 0, 2000)
+	$BeamLight.texture.height = clamp(final_position.distance_to(global_position), 0, 4000)
 	$BeamLight.position.y = -$BeamLight.texture.height/2
 	$tipLight.position.y = -final_position.distance_to(global_position)+5
 	if(target_hit!={} && target_hit.collider is Legs && target_hit.collider.get_collision_layer_value(target)==true):

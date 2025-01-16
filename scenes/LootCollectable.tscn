@@ -1,31 +1,21 @@
-[gd_scene load_steps=5 format=3 uid="uid://c00v2muawixm8"]
+[gd_scene load_steps=4 format=3 uid="uid://c00v2muawixm8"]
 
 [ext_resource type="Script" path="res://scenes/loot_collectable.gd" id="1_e7mhw"]
+[ext_resource type="Texture2D" uid="uid://dbuk8fjmm7dv" path="res://assets/ItemPickup.png" id="2_vavho"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_wbcrh"]
 radius = 20.0
 
-[sub_resource type="Gradient" id="Gradient_jw1ed"]
-interpolation_mode = 2
-offsets = PackedFloat32Array(0, 0.1, 1)
-colors = PackedColorArray(1, 1, 1, 1, 0.73187, 0.78796, 1, 1, 1, 1, 1, 0)
-
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_qa7av"]
-gradient = SubResource("Gradient_jw1ed")
-fill = 2
-fill_from = Vector2(0.5, 0.5)
-
 [node name="LootCollectable" type="Area2D"]
-collision_layer = 524288
-collision_mask = 524288
+collision_layer = 0
+collision_mask = 557056
 script = ExtResource("1_e7mhw")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_wbcrh")
 
-[node name="PointLight2D" type="PointLight2D" parent="."]
-energy = 2.0
-texture = SubResource("GradientTexture2D_qa7av")
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_vavho")
 
 [connection signal="area_entered" from="." to="." method="_on_area_entered"]
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]

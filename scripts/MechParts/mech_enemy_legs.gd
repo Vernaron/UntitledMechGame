@@ -28,14 +28,41 @@ var dropTables = {
 			
 		},
 		"equipment":{
-			"bolter":WeightedDrops.new("weapon_bolter", Vector2(1, 2), .6), 
+			"autocannon":WeightedDrops.new("weapon_autocannon", Vector2(1, 1), .6),
+			"gatling":WeightedDrops.new("weapon_gatling", Vector2(1, 1), .6), 
 			"strider_1_body":WeightedDrops.new("body_strider_1", Vector2(1, 1), .2),
 			"strider_1_legs":WeightedDrops.new("legs_strider_1",Vector2(1, 1), .2),
 		}
 		
 	}, 
-	ItemData.Basic_Enemy.Bulwark:{},
-	ItemData.Basic_Enemy.SmallTank:{},
+	ItemData.Basic_Enemy.Bulwark:{
+		"materialChance" : 0.7,
+		"equipmentChance":0.2,
+		"materials":{
+			"screws":WeightedDrops.new("screws", Vector2(1, 4), .5),
+			"plates":WeightedDrops.new("plates", Vector2(2, 5), .5),
+			
+		},
+		"equipment":{
+			"bolter":WeightedDrops.new("weapon_bolter", Vector2(1, 2), .6), 
+			"strider_1_body":WeightedDrops.new("body_strider_1", Vector2(1, 1), .2),
+			"strider_1_legs":WeightedDrops.new("legs_strider_1",Vector2(1, 1), .2),
+		}
+		
+	},
+	ItemData.Basic_Enemy.SmallTank:{
+		"materialChance" : 0.7,
+		"equipmentChance":0.2,
+		"materials":{
+			"screws":WeightedDrops.new("screws", Vector2(1, 4), .5),
+			"plates":WeightedDrops.new("plates", Vector2(2, 5), .5),
+			
+		},
+		"equipment":{
+			"gatling":WeightedDrops.new("weapon_tank_cannon", Vector2(1, 2), .6), 
+		}
+		
+	},
 	ItemData.Basic_Enemy.SmallHeli:{
 		"materialChance" : 0.7,
 		"equipmentChance":0.2,
@@ -165,7 +192,10 @@ func add_or_append(array_ref:Array, value : String):
 		array_ref.push_back([value, 1])
 func roll_drops():
 	var drops = dropTables[curr_type]
-	for i in range(0, 4):
+	print("predrop")
+	print(totalDrops)
+	for i in range(0, 1+randi()%4):
+		print("drop")
 		var dropType = randf()
 		if(dropType<drops["materialChance"]):
 			var totalnum =0
@@ -179,6 +209,7 @@ func roll_drops():
 				curr_val+=obj.chance
 				if curr_val>=selector:
 					totalDrops.push_back([obj.name, obj.get_random_amount()])
+					break
 		elif(dropType<drops["materialChance"]+drops["equipmentChance"]):
 			var totalnum =0
 			for n in drops["equipment"]:
@@ -190,3 +221,5 @@ func roll_drops():
 				curr_val+=obj.chance
 				if curr_val>=selector:
 					totalDrops.push_back([obj.name, obj.get_random_amount()])
+					break
+	print(totalDrops)

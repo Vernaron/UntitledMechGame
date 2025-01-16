@@ -57,8 +57,9 @@ class Weapon:
 						temp_bullet.rotation = body.global_rotation + (randf()*accuracy - accuracy/2)*PI/180
 						temp_bullet.position=offset.rotated(body.global_rotation)+body.global_position
 						
-						
-						body.add_child(bullet_flash.copy())
+						var temp_flash = bullet_flash.copy()
+						temp_flash.position = offset
+						body.add_child(temp_flash.copy())
 						Signals.spawn_root.emit(temp_bullet)
 						curr_reload=reload	
 						if(body.team ==1):
@@ -116,8 +117,8 @@ class Weapon:
 		tempWeapon.body = body
 		return tempWeapon
 var flashes = {
-	"light_flash" : preload("res://scenes/Bullet_Adjacent/bullet_flash.tscn").instantiate().init(10, Color.hex(0xffa50044), .01, .1, true),
-	"medium_flash" : preload("res://scenes/Bullet_Adjacent/bullet_flash.tscn").instantiate().init(30, Color.hex(0xffa50066), .01, .3, true)
+	"light_flash" : preload("res://scenes/Bullet_Adjacent/bullet_flash.tscn").instantiate().init(1, Color.hex(0xc88834FF), .01, .1, true),
+	"medium_flash" : preload("res://scenes/Bullet_Adjacent/bullet_flash.tscn").instantiate().init(2, Color.hex(0xc88834FF), .01, .3, true)
 
 }
 var weapons = {
@@ -133,7 +134,7 @@ var weapons = {
 		Weapon_Type.Bullet, 1, 2,  0.0, flashes["medium_flash"]),
 	"laser_small": Weapon.new(-1, 2, 1, 
 		preload("res://scenes/Bullet_Adjacent/continuous_laser_small.tscn"),
-		Weapon_Type.Laser, 2,1, 2, flashes["light_flash"]),
+		Weapon_Type.Laser, 2,3, 2, flashes["light_flash"]),
 	"tank_cannon": Weapon.new(1, 3, 1, 
 		preload("res://scenes/Bullet_Adjacent/bullet_simple_tiny.tscn"), 
 		Weapon_Type.Bullet, 1, 1, 0.0,flashes["light_flash"]),
@@ -193,7 +194,7 @@ var bodies = {
 		sprite = preload("res://assets/HeliSmall.tres"),
 		armor = 1,
 		turn_speed = 1,
-		collision_array_points = PackedVector2Array([Vector2(0,-24),Vector2(-15,-7),Vector2(-4,19),Vector2(-12,48),Vector2(12,49),Vector2(5,20),Vector2(16,-8),]),
+		collision_array_points = PackedVector2Array([Vector2(0,-26),Vector2(-35,0),Vector2(-4,19),Vector2(-12,48),Vector2(12,49),Vector2(5,20),Vector2(37,0),]),
 		hardpoints = [[Vector2(0, -20), 1],nullhardpoint,nullhardpoint,nullhardpoint,nullhardpoint]
 	}
 }
@@ -207,7 +208,7 @@ var legs = {
 		dash_speed=300,
 		dash_type=ItemData.DASH.BURST,
 		turn_radius=.3,
-		health = 100,
+		health = 15,
 		sprite = preload("res://assets/Strider_Legs_1.tres"),
 		name = "Strider"
 	},
@@ -220,7 +221,7 @@ var legs = {
 		dash_speed=50,
 		dash_type=ItemData.DASH.JET,
 		turn_radius=.2,
-		health=400,
+		health=30,
 		sprite = preload("res://assets/Bulwark_Legs_1.tres"),
 		name = "Bulwark"
 	}, 
@@ -233,7 +234,7 @@ var legs = {
 		dash_speed = 0,
 		dash_type=ItemData.DASH.JET,
 		turn_radius = .4,
-		health = 30,
+		health = 4,
 		sprite = preload("res://assets/Tank_tread_1.tres")
 	},
 	"heli_1":{

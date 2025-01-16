@@ -177,7 +177,6 @@ func set_team(_team):
 
 func damage_inflict(damage):
 	current_health -=damage * 20/($Body.armor + 20)
-	print(current_health)
 	if(current_health <= 0):
 	#	healthZero = true
 		_on_kill()

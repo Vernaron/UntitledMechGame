@@ -23,6 +23,7 @@ func start_arena(arenaName : Arena.localeNames):
 	temp_arena.load_locale(arenaName)
 	switch_primary_scene(temp_arena)
 func start_base():
+	PlayerInfo.save_player()
 	var temp_base = base_res.instantiate()
 	switch_primary_scene(temp_base)
 func switch_primary_scene(newScene):
