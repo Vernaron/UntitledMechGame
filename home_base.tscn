@@ -1,4 +1,4 @@
-[gd_scene load_steps=36 format=3 uid="uid://7xj7aos3v2fn"]
+[gd_scene load_steps=37 format=3 uid="uid://7xj7aos3v2fn"]
 
 [ext_resource type="PackedScene" uid="uid://dewdyvvv62g8a" path="res://pauseMenu.tscn" id="1_h7tr1"]
 [ext_resource type="Script" path="res://equip_screen.gd" id="2_dwcf7"]
@@ -15,6 +15,7 @@
 [ext_resource type="Script" path="res://equip_button.gd" id="10_yycxb"]
 [ext_resource type="Script" path="res://LocationButton.gd" id="11_7yw60"]
 [ext_resource type="StyleBox" uid="uid://csc0g3olal123" path="res://BoxOutline.tres" id="11_i1ya4"]
+[ext_resource type="Script" path="res://RecipeList.gd" id="15_epcki"]
 
 [sub_resource type="Theme" id="Theme_gi1uo"]
 default_base_scale = 0.2
@@ -113,10 +114,9 @@ theme_override_styles/tab_selected = SubResource("StyleBoxFlat_4wpq3")
 theme_override_styles/tab_hovered = SubResource("StyleBoxFlat_n73rl")
 theme_override_styles/tab_unselected = SubResource("StyleBoxFlat_6gw5r")
 tab_alignment = 1
-current_tab = 1
+current_tab = 0
 
 [node name="Equip" type="Control" parent="TabContainer"]
-visible = false
 layout_mode = 2
 metadata/_tab_index = 0
 
@@ -372,6 +372,7 @@ bbcode_enabled = true
 fit_content = true
 
 [node name="Build" type="Control" parent="TabContainer"]
+visible = false
 layout_mode = 2
 metadata/_tab_index = 1
 
@@ -400,6 +401,7 @@ theme_override_font_sizes/font_size = 25
 theme_override_styles/focus = SubResource("StyleBoxEmpty_exi1l")
 theme_override_styles/panel = ExtResource("11_i1ya4")
 item_count = 1
+script = ExtResource("15_epcki")
 
 [node name="ItemList2" type="ItemList" parent="TabContainer/Build"]
 layout_mode = 0

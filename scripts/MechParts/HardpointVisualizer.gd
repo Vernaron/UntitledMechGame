@@ -5,7 +5,7 @@ var point_res = preload("res://scenes/hardpoint_visual.tscn")
 var printer = preload("res://addons/packedarraycopier/packedarraycopier.gd").new()
 var itemData = itemData_res.new()
 var hardpointList = []
-@export_enum("strider_1", "bulwark_1", "tank_1", "heli_1") var Reference : String 
+@export_enum("strider_1", "bulwark_1", "tank_1", "heli_1", "roamer_1") var Reference : String 
 @export var Reload : bool
 @export var Save : bool
 var active_string = ""

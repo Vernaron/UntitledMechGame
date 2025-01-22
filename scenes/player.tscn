@@ -4,7 +4,7 @@
 [ext_resource type="SpriteFrames" uid="uid://b7pcxsly3ljal" path="res://assets/Tank_tread_1.tres" id="2_d0kvn"]
 [ext_resource type="Script" path="res://scripts/MechParts/player_body.gd" id="2_m8l1p"]
 [ext_resource type="Script" path="res://scripts/MechParts/HardpointVisualizer.gd" id="4_g4edf"]
-[ext_resource type="SpriteFrames" uid="uid://ts2ppatk62y5" path="res://assets/bodies/strider_body_1_frame.tres" id="4_j83af"]
+[ext_resource type="SpriteFrames" uid="uid://cnw6jxfpoka2x" path="res://assets/bodies/roamer_body_1_frame.tres" id="4_nqvpy"]
 [ext_resource type="Script" path="res://scripts/MechParts/LegCollisionPolygon.gd" id="6_6biik"]
 [ext_resource type="PackedScene" uid="uid://b2juagtqduvgs" path="res://scenes/hardpoint_visual.tscn" id="6_puhkx"]
 [ext_resource type="PackedScene" uid="uid://j05qj0skos78" path="res://scenes/cone_light.tscn" id="7_2lxpk"]
@@ -22,6 +22,8 @@ radius = 350.0
 z_index = 2
 collision_mask = 32797
 motion_mode = 1
+platform_floor_layers = 4294967040
+platform_wall_layers = 5
 script = ExtResource("1_d83hd")
 
 [node name="LegsSprite" type="AnimatedSprite2D" parent="."]
@@ -34,17 +36,12 @@ script = ExtResource("2_m8l1p")
 
 [node name="BodySprite" type="AnimatedSprite2D" parent="Body"]
 scale = Vector2(4, 4)
-sprite_frames = ExtResource("4_j83af")
+sprite_frames = ExtResource("4_nqvpy")
 script = ExtResource("4_g4edf")
-Reference = "strider_1"
+Reference = "roamer_1"
 
 [node name="Hardpoint_0_1" type="Sprite2D" parent="Body/BodySprite" instance=ExtResource("6_puhkx")]
-position = Vector2(11.5, -0.25)
-scale = Vector2(0.4, 0.4)
-texture = ExtResource("7_8caf2")
-
-[node name="Hardpoint_1_1" type="Sprite2D" parent="Body/BodySprite" instance=ExtResource("6_puhkx")]
-position = Vector2(-11.5, -0.25)
+position = Vector2(5.25, -5.75)
 scale = Vector2(0.4, 0.4)
 texture = ExtResource("7_8caf2")
 
@@ -53,7 +50,7 @@ height = 200.0
 script = ExtResource("9_trnmh")
 
 [node name="LegCollisionPolygon" type="CollisionPolygon2D" parent="."]
-polygon = PackedVector2Array(0, -52, -28, -4, -60, -4, -60, 36, 0, 44, 60, 35, 60, -3, 28, -4)
+polygon = PackedVector2Array(-9, -42, -23, -35, -32, -15, -32, 24, 29, 25, 33, 19, 33, -23, 9, -25, 7, -36)
 script = ExtResource("6_6biik")
 
 [node name="Occluder" type="LightOccluder2D" parent="."]
@@ -67,5 +64,5 @@ collision_layer = 524288
 collision_mask = 0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
-position = Vector2(-5, 1)
+position = Vector2(-26, -17)
 shape = SubResource("CircleShape2D_l42nn")

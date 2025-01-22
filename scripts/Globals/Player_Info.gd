@@ -35,6 +35,7 @@ var default_save = {
 	"active_zones":["zone_1"],
 	"achievements":[],
 	"materials":[],
+	"found_materials":[],
 	"player_level":1,
 	"completed_tutorial":false
 }
@@ -111,6 +112,7 @@ func collect_drop(item : String, number : int):
 		item = item.substr(5)
 		add_or_append(active_save_data["owned_legs"], item)
 	else:
+		register_new_material(item)
 		add_or_append(active_save_data["materials"], item)
 func subtract_from_array(array_ref:Array, value:String):
 	for n in array_ref:
@@ -128,3 +130,6 @@ func add_or_append(array_ref:Array, value : String):
 			break
 	if !found:
 		array_ref.push_back([value, 1])
+func register_new_material(obj:String):
+	if active_save_data["found_materials"].find(obj)==-1:
+		active_save_data["found_materials"].push_back(obj)

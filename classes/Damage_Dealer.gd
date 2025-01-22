@@ -18,10 +18,8 @@ func _ready():
 func set_team(_team : int):
 	team = _team
 	if team == 0||team==2:
-		print("There")
 		_set_collide(3, true)
 	if team == 1||team==2:
-		print("Here")
 		_set_collide(1, true)
 	_team_set()
 # Called every frame. 'delta' is the elapsed time since the previous frame.

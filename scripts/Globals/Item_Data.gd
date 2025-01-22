@@ -3,7 +3,7 @@ extends Node
 class_name Item_Data
 @export var Reload : bool = false
 enum Weapon_Type{Bullet, Laser, Missile, Grenade}
-enum Basic_Enemy{Strider, Bulwark, SmallTank, SmallHeli}
+enum Basic_Enemy{Strider, Bulwark, SmallTank, SmallHeli, Roamer}
 enum DASH{BURST, JET}
 var nullhardpoint = [Vector2.ZERO, -1]
 class Weapon:
@@ -83,12 +83,13 @@ class Weapon:
 						projectiles.push_back(temp_bullet)
 						Signals.spawn_root.emit(temp_bullet)
 				else:
+					var accadjusted = accuracy * PI / 180
 					for i in range(0, projectiles.size()):
-						var target = (randf()*2*accuracy - accuracy)*PI/180
+						var target = randf()*2*accadjusted -accadjusted
 						if(projectiles[i].rotation>target):
-							projectiles[i].rotation-=accuracy/10 * PI/180* delta
+							projectiles[i].rotation-=accadjusted/10 * delta
 						else:
-							projectiles[i].rotation+=accuracy/10 * PI/180* delta
+							projectiles[i].rotation+=accadjusted/10 * delta
 			Weapon_Type.Grenade:
 				pass
 			Weapon_Type.Missile:
@@ -134,7 +135,7 @@ var weapons = {
 		Weapon_Type.Bullet, 1, 2,  0.0, flashes["medium_flash"]),
 	"laser_small": Weapon.new(-1, 2, 1, 
 		preload("res://scenes/Bullet_Adjacent/continuous_laser_small.tscn"),
-		Weapon_Type.Laser, 2,3, 2, flashes["light_flash"]),
+		Weapon_Type.Laser, 2,1, 2, flashes["light_flash"]),
 	"tank_cannon": Weapon.new(1, 3, 1, 
 		preload("res://scenes/Bullet_Adjacent/bullet_simple_tiny.tscn"), 
 		Weapon_Type.Bullet, 1, 1, 0.0,flashes["light_flash"]),
@@ -153,12 +154,14 @@ var weapon_descriptions = {
 var body_descriptions = {
 	"":"",
 	"strider_1": "the strider class body",
-	"bulwark_1": "the bulwark class body"
+	"bulwark_1": "the bulwark class body",
+	"roamer_1" : "the roamer class body"
 }
 var leg_descriptions = {
 	"":"",
 	"strider_1": "the strider class legs",
 	"bulwark_1": "the bulwark class legs",
+	"roamer_1" : "the roamer class legs"
 }
 var bodies = {
 	"strider_1":{
@@ -196,7 +199,17 @@ var bodies = {
 		turn_speed = 1,
 		collision_array_points = PackedVector2Array([Vector2(0,-26),Vector2(-35,0),Vector2(-4,19),Vector2(-12,48),Vector2(12,49),Vector2(5,20),Vector2(37,0),]),
 		hardpoints = [[Vector2(0, -20), 1],nullhardpoint,nullhardpoint,nullhardpoint,nullhardpoint]
-	}
+	},
+	"roamer_1":{
+		sprite = preload("res://assets/bodies/roamer_body_1_frame.tres"),
+		armor=3,
+		turn_speed = 2,
+		collision_array_points=PackedVector2Array([Vector2(-9,-42),Vector2(-23,-35),Vector2(-32,-15),Vector2(-32,24),Vector2(29,25),Vector2(33,19),Vector2(33,-23),Vector2(9,-25),Vector2(7,-36),]),
+		hardpoints=[	
+			[Vector2(21, -23), 1],nullhardpoint,	nullhardpoint,nullhardpoint,nullhardpoint
+		],
+		name = "Roamer"
+	},
 }
 var legs = {
 	"strider_1": {
@@ -246,9 +259,22 @@ var legs = {
 		dash_speed=0,
 		dash_type = ItemData.DASH.JET,
 		turn_radius = 10,
-		health=1,
+		health=2,
 		sprite = preload("res://assets/BlankFrames.tres")
-	}
+	},
+	"roamer_1": {
+		move_type = "Mech",
+		speed = 600,
+		acceleration = .8,
+		dash_time=.1,
+		dash_cooldown=3,
+		dash_speed=200,
+		dash_type=ItemData.DASH.BURST,
+		turn_radius=.4,
+		health = 10,
+		sprite = preload("res://assets/Roamer_Legs_1.tres"),
+		name = "Roamer"
+	},
 }
 var control_type = {
 	"Mech" : {

@@ -1,0 +1,14 @@
+[gd_resource type="SpriteFrames" load_steps=2 format=3 uid="uid://cnw6jxfpoka2x"]
+
+[ext_resource type="Texture2D" uid="uid://bim226t32htmh" path="res://assets/bodies/Roamer_body_1.png" id="1_qtfjf"]
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_qtfjf")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]

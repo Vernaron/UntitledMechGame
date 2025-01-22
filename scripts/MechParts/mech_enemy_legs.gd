@@ -76,6 +76,20 @@ var dropTables = {
 		}
 		
 	},
+	ItemData.Basic_Enemy.Roamer:{
+		"materialChance" : 0.7,
+		"equipmentChance":0.2,
+		"materials":{
+			"screws":WeightedDrops.new("screws", Vector2(1, 4), .5),
+			"plates":WeightedDrops.new("plates", Vector2(2, 5), .5),
+			
+		},
+		"equipment":{
+			"laser_small":WeightedDrops.new("weapon_laser_small", Vector2(1, 1), .6), 
+			"roamer_1_body":WeightedDrops.new("body_roamer_1", Vector2(1, 1), .2),
+			"roamer_1_legs":WeightedDrops.new("legs_roamer_1",Vector2(1, 1), .2),
+		}
+	}
 	
 }
 var totalDrops = []
@@ -109,6 +123,10 @@ func _construct_custom():
 			set_current_body(ItemData.bodies["heli_1"])
 			set_current_legs(ItemData.legs["heli_1"])
 			set_weapons_from_array([ItemData.weapons["gatling"]])
+		ItemData.Basic_Enemy.Roamer:
+			set_current_body(ItemData.bodies["roamer_1"])
+			set_current_legs(ItemData.legs["roamer_1"])
+			set_weapons_from_array([ItemData.weapons["laser_small"]])
 	
 	
 func set_type(_type: ItemData.Basic_Enemy):
