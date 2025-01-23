@@ -114,7 +114,7 @@ func _construct_custom():
 		ItemData.Basic_Enemy.Bulwark:
 			set_current_body(ItemData.bodies["bulwark_1"])
 			set_current_legs(ItemData.legs["bulwark_1"])
-			set_weapons_from_array([ItemData.weapons["autocannon"],ItemData.weapons["gatling"]])
+			set_weapons_from_array([ItemData.weapons["gatling"], ItemData.weapons["autocannon"]])
 		ItemData.Basic_Enemy.SmallTank:
 			set_current_body(ItemData.bodies["tank_1"])
 			set_current_legs(ItemData.legs["tank_1"])

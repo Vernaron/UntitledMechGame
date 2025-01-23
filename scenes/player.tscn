@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://cyilq4ba3ayx5"]
+[gd_scene load_steps=12 format=3 uid="uid://cyilq4ba3ayx5"]
 
 [ext_resource type="Script" path="res://scripts/MechParts/player_legs.gd" id="1_d83hd"]
 [ext_resource type="SpriteFrames" uid="uid://b7pcxsly3ljal" path="res://assets/Tank_tread_1.tres" id="2_d0kvn"]
@@ -6,9 +6,7 @@
 [ext_resource type="Script" path="res://scripts/MechParts/HardpointVisualizer.gd" id="4_g4edf"]
 [ext_resource type="SpriteFrames" uid="uid://cnw6jxfpoka2x" path="res://assets/bodies/roamer_body_1_frame.tres" id="4_nqvpy"]
 [ext_resource type="Script" path="res://scripts/MechParts/LegCollisionPolygon.gd" id="6_6biik"]
-[ext_resource type="PackedScene" uid="uid://b2juagtqduvgs" path="res://scenes/hardpoint_visual.tscn" id="6_puhkx"]
 [ext_resource type="PackedScene" uid="uid://j05qj0skos78" path="res://scenes/cone_light.tscn" id="7_2lxpk"]
-[ext_resource type="Texture2D" uid="uid://vqk66u15uiqj" path="res://assets/crosshair.png" id="7_8caf2"]
 [ext_resource type="Script" path="res://scripts/rotateOccluder.gd" id="8_cg75g"]
 [ext_resource type="Script" path="res://scenes/cone_light.gd" id="9_trnmh"]
 
@@ -39,11 +37,6 @@ scale = Vector2(4, 4)
 sprite_frames = ExtResource("4_nqvpy")
 script = ExtResource("4_g4edf")
 Reference = "roamer_1"
-
-[node name="Hardpoint_0_1" type="Sprite2D" parent="Body/BodySprite" instance=ExtResource("6_puhkx")]
-position = Vector2(5.25, -5.75)
-scale = Vector2(0.4, 0.4)
-texture = ExtResource("7_8caf2")
 
 [node name="cone_light" parent="Body" instance=ExtResource("7_2lxpk")]
 height = 200.0
