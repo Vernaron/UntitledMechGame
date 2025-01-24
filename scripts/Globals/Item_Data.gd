@@ -140,29 +140,7 @@ var weapons = {
 		preload("res://scenes/Bullet_Adjacent/bullet_simple_tiny.tscn"), 
 		Weapon_Type.Bullet, 1, 1, 0.0,flashes["light_flash"]),
 }
-var weapon_descriptions = {
-	"":["", ""],
-	"bolter": ["bolter gun stuff", "Bolter"],
-	"gatling": ["Size: S\nDamage: 1\n Reload: .1s\n Accuracy: 5°\n
-	little gun go dakka", "Gatling"],
-	"autocannon":["Size: M\nDamage: 15\nReload: 5s\nAccuracy:1°\n
-	big gun go boom", "Autocannon"],
-	"laser_small":["little laser go bzzz", "Small Laser"],
-	"tank_cannon":["tank gun go pew", "Tank Cannon"], 
-	
-}
-var body_descriptions = {
-	"":"",
-	"strider_1": "the strider class body",
-	"bulwark_1": "the bulwark class body",
-	"roamer_1" : "the roamer class body"
-}
-var leg_descriptions = {
-	"":"",
-	"strider_1": "the strider class legs",
-	"bulwark_1": "the bulwark class legs",
-	"roamer_1" : "the roamer class legs"
-}
+
 var bodies = {
 	"strider_1":{
 		sprite = preload("res://assets/bodies/strider_body_1_frame.tres"),
@@ -299,3 +277,26 @@ func _process(_delta):
 			Reload=false
 			notify_property_list_changed()
 			
+var weapon_descriptions = {
+	"":["", ""],
+	"bolter": ["bolter gun stuff", "Bolter"],
+	"gatling": ["Size: S\nDamage: 1\n Reload: .1s\n Accuracy: 5°\n
+	little gun go dakka", "Gatling"],
+	"autocannon":["Size: M\nDamage: 15\nReload: 5s\nAccuracy:1°\n
+	big gun go boom", "Autocannon"],
+	"laser_small":["little laser go bzzz", "Small Laser"],
+	"tank_cannon":["tank gun go pew", "Tank Cannon"], 
+	
+}
+var body_descriptions = {
+	"":"",
+	"strider_1": "the strider class body",
+	"bulwark_1": "the bulwark class body",
+	"roamer_1" : "the roamer class body"
+}
+var leg_descriptions = {
+	"":"",
+	"strider_1": "the strider class legs",
+	"bulwark_1": "the bulwark class legs",
+	"roamer_1" : "the roamer class legs"
+}

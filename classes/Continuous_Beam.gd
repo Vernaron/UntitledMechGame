@@ -14,26 +14,7 @@ func _process(_delta):
 
 	position=body.global_position+offset.rotated(body.global_rotation)
 	rotation = body.global_rotation + rotation_offset
-	#var target_hit_1 = get_world_2d().direct_space_state.\
-		#intersect_ray(PhysicsRayQueryParameters2D.\
-		#create(global_position+Vector2(aoe/2, 0).rotated(global_rotation), global_position+Vector2(aoe/2, 0).rotated(global_rotation)+Vector2(0, -4000).rotated(global_rotation)))
-	#var target_hit_2 = get_world_2d().direct_space_state.\
-		#intersect_ray(PhysicsRayQueryParameters2D.\
-	#	create(global_position+Vector2(-aoe/2, 0).rotated(global_rotation), global_position+Vector2(aoe/2, 0).rotated(global_rotation)+Vector2(0, -4000).rotated(global_rotation)))
-	#if(target_hit_1!={}&&target_hit_2!={}):
-	#	if(global_position.distance_squared_to(target_hit_1.position)<global_position.distance_squared_to(target_hit_2.position)):
-	#		target_hit=target_hit_1
-	
-	#	else:
-
-	#		target_hit=target_hit_2
-#	elif(target_hit_1!={}):
-#		target_hit=target_hit_1
-#	else:
-#		target_hit=target_hit_2 
 	if $ray_1.get_collider()!=null&&$ray_2.get_collider()!=null:
-		print($ray_1.get_collider())
-		print($ray_2.get_collider())
 		if global_position.distance_to($ray_1.get_collider().position)>global_position.distance_to($ray_1.get_collider().position):
 			target_hit=$ray_2.get_collider()
 			final_position=$ray_2.get_collision_point()

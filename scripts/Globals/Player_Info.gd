@@ -73,7 +73,6 @@ func switch(_save_name):
 		saves[_save_name] = default_save
 func save_player():
 	saves[active_save_name] = active_save_data
-	print(saves[active_save_name])
 	save_to_file()
 func save_to_file():
 	for save_name in saves.keys():
@@ -87,7 +86,6 @@ func readFile(filename:String, default:Dictionary, using_default : bool)->Varian
 		return default 
 func writeFile(filename:String, value:Dictionary)->void:
 	var filepath = "user://"+filename+".data"
-	print("Saving...")
 	FileAccess.open(filepath, FileAccess.WRITE).store_string(
 			JSON.stringify(value))
 func get_active_weapons():
@@ -101,7 +99,6 @@ func get_active_legs():
 func get_active_body():
 	return ItemData.bodies[PlayerInfo.active_save_data["active_body"]]
 func collect_drop(item : String, number : int):
-	print("    ", item)
 	if(item.find("weapon_")!=-1):
 		item = item.substr(7)
 		add_or_append(active_save_data["owned_weapons"], item)
