@@ -114,10 +114,9 @@ theme_override_styles/tab_selected = SubResource("StyleBoxFlat_4wpq3")
 theme_override_styles/tab_hovered = SubResource("StyleBoxFlat_n73rl")
 theme_override_styles/tab_unselected = SubResource("StyleBoxFlat_6gw5r")
 tab_alignment = 1
-current_tab = 1
+current_tab = 0
 
 [node name="Equip" type="Control" parent="TabContainer"]
-visible = false
 layout_mode = 2
 metadata/_tab_index = 0
 
@@ -373,6 +372,7 @@ bbcode_enabled = true
 fit_content = true
 
 [node name="Craft" type="Control" parent="TabContainer"]
+visible = false
 layout_mode = 2
 metadata/_tab_index = 1
 
@@ -389,6 +389,10 @@ texture_normal = SubResource("AtlasTexture_unr1s")
 texture_pressed = SubResource("AtlasTexture_4gr77")
 texture_hover = SubResource("AtlasTexture_j03mx")
 
+[node name="Sprite2D" type="AnimatedSprite2D" parent="TabContainer/Craft/Item"]
+z_index = 1
+position = Vector2(32.3333, 35.3333)
+
 [node name="ItemList" type="ItemList" parent="TabContainer/Craft" node_paths=PackedStringArray("details", "item_window", "materials")]
 layout_mode = 0
 offset_left = 647.0
@@ -403,7 +407,7 @@ theme_override_styles/panel = ExtResource("11_i1ya4")
 item_count = 1
 script = ExtResource("15_epcki")
 details = NodePath("../Details")
-item_window = NodePath("../Item")
+item_window = NodePath("../Item/Sprite2D")
 materials = NodePath("../Materials")
 
 [node name="Materials" type="ItemList" parent="TabContainer/Craft"]
@@ -430,6 +434,7 @@ theme_override_styles/normal = ExtResource("10_tvdu8")
 text = "Craft"
 
 [node name="Details" type="Panel" parent="TabContainer/Craft"]
+layout_mode = 0
 offset_left = 1439.0
 offset_top = 40.0
 offset_right = 1850.0

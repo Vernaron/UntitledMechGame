@@ -14,9 +14,7 @@ func _ready():
 	PlayerInfo.get_saves(default_saves)
 	start_base()
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(_delta):
-	pass
+
 func start_arena(arenaName : Arena.localeNames):
 	var temp_arena = arena_res.instantiate()
 	temp_arena.name = "Arena"

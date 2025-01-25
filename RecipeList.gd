@@ -1,7 +1,7 @@
 extends ItemList
 var underarray : Array
 @export var details : Control
-@export var item_window : Control
+@export var item_window : AnimatedSprite2D
 @export var materials : Control
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -32,8 +32,10 @@ func _on_item_activated(index: int) -> void:
 		materials.add_item(obj.disp_name)
 	match(curritem.type):
 		"body":
-			pass
+			print(curritem.res_name)
+			item_window.sprite_frames = ItemData.bodies[curritem.res_name]["sprite"]
 		"legs":
-			pass
+			print(curritem.res_name)
+			item_window.sprite_frames = ItemData.legs[curritem.res_name]["sprite"]
 		"weapons":
 			pass
