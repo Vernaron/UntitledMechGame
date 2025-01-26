@@ -8,16 +8,8 @@ func _ready() -> void:
 func change_inventory_type(newType : String):
 	update_images()
 	match(newType):
-		"Weapon_1":
-			resolve_hardpoint_size(0)
-		"Weapon_2":
-			resolve_hardpoint_size(1)
-		"Weapon_3":
-			resolve_hardpoint_size(2)
-		"Weapon_4":
-			resolve_hardpoint_size(3)
-		"Weapon_5":
-			resolve_hardpoint_size(4)
+		"Weapon_1","Weapon_2","Weapon_3","Weapon_4","Weapon_5":
+			resolve_hardpoint_size(newType[newType.length()-1].to_int()-1)	
 		"Body":
 			$SelectedName.text = "[center] Mech Body [/center]"
 			$Details/Visual/Object.sprite_frames = ItemData.bodies[PlayerInfo.active_save_data["active_body"]].sprite

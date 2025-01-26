@@ -114,9 +114,10 @@ theme_override_styles/tab_selected = SubResource("StyleBoxFlat_4wpq3")
 theme_override_styles/tab_hovered = SubResource("StyleBoxFlat_n73rl")
 theme_override_styles/tab_unselected = SubResource("StyleBoxFlat_6gw5r")
 tab_alignment = 1
-current_tab = 0
+current_tab = 1
 
 [node name="Equip" type="Control" parent="TabContainer"]
+visible = false
 layout_mode = 2
 metadata/_tab_index = 0
 
@@ -372,7 +373,6 @@ bbcode_enabled = true
 fit_content = true
 
 [node name="Craft" type="Control" parent="TabContainer"]
-visible = false
 layout_mode = 2
 metadata/_tab_index = 1
 
@@ -399,6 +399,7 @@ offset_left = 647.0
 offset_top = 83.0
 offset_right = 1362.0
 offset_bottom = 816.0
+tooltip_text = "  "
 theme_override_constants/v_separation = 0
 theme_override_constants/h_separation = 30
 theme_override_font_sizes/font_size = 25
@@ -496,7 +497,9 @@ text = "Default
 "
 script = ExtResource("11_7yw60")
 
+[connection signal="item_activated" from="TabContainer/Equip/EquipScreen/ItemList" to="TabContainer/Equip/EquipScreen/ItemList" method="_on_item_activated"]
 [connection signal="item_clicked" from="TabContainer/Equip/EquipScreen/ItemList" to="TabContainer/Equip/EquipScreen/ItemList" method="_on_item_clicked"]
 [connection signal="pressed" from="TabContainer/Equip/EquipScreen/Current_Item" to="TabContainer/Equip/EquipScreen/Current_Item" method="_on_pressed"]
 [connection signal="pressed" from="TabContainer/Equip/EquipScreen/EquipButton" to="TabContainer/Equip/EquipScreen/EquipButton" method="_on_pressed"]
 [connection signal="item_activated" from="TabContainer/Craft/ItemList" to="TabContainer/Craft/ItemList" method="_on_item_activated"]
+[connection signal="pressed" from="TabContainer/Craft/Button" to="TabContainer/Craft/ItemList" method="craft"]

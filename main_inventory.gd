@@ -10,24 +10,25 @@ func update_list(item:String):
 	under_array = []
 	target_type = item
 	if(item.find("Weapon")!=-1):
+		var type = item.substr(0, item.length()-2)
 		for i in PlayerInfo.active_save_data["owned_weapons"]:
-			add_item(ItemData.weapon_descriptions[i[0]][1]+" x"+ str(i[1]))
+			add_item(ItemData.get_display_name(i[0],type)+" x"+ str(i[1]))
 			under_array.push_back([i[0], true])
 		for i in PlayerInfo.active_save_data["active_weapons"]:
 			if i!="":
-				add_item(ItemData.weapon_descriptions[i][1]+ "   (Equipped)", null, false)
+				add_item(ItemData.get_display_name(i,type)+ "   (Equipped)", null, false)
 				under_array.push_back([i, false])
 	elif(item=="Body"):
 		for i in PlayerInfo.active_save_data["owned_bodies"]:
-			add_item(ItemData.legs[i[0]].name+" x"+ str(i[1]))
+			add_item(ItemData.get_display_name(i[0],item)+" x"+ str(i[1]))
 			under_array.push_back([i[0], true])
-		add_item(ItemData.bodies[PlayerInfo.active_save_data["active_body"]].name+ "   (Equipped)", null, false)
+		add_item(ItemData.get_display_name(PlayerInfo.active_save_data["active_body"],item)+ "   (Equipped)", null, false)
 		under_array.push_back([PlayerInfo.active_save_data["active_body"], false])
 	else:
 		for i in PlayerInfo.active_save_data["owned_legs"]:
-			add_item(ItemData.legs[i[0]].name+" x"+ str(i[1]))
+			add_item(ItemData.get_display_name(i[0],item)+" x"+ str(i[1]))
 			under_array.push_back([i[0], true])
-		add_item(ItemData.legs[PlayerInfo.active_save_data["active_legs"]].name+ "   (Equipped)", null, false)
+		add_item(ItemData.get_display_name(PlayerInfo.active_save_data["active_legs"],item)+ "   (Equipped)", null, false)
 		under_array.push_back([PlayerInfo.active_save_data["active_legs"], false])
 
 func _on_item_clicked(index: int, at_position: Vector2, mouse_button_index: int) -> void:
@@ -107,3 +108,7 @@ func update_hardpoints():
 		if(PlayerInfo.active_save_data["active_weapons"][n]!=""&&hardpoint_size<ItemData.weapons[
 				PlayerInfo.active_save_data["active_weapons"][n]].size_level):
 			unequip_weapon(n)
+
+
+func _on_item_activated(index: int) -> void:
+	equip()

@@ -6,6 +6,31 @@ enum Weapon_Type{Bullet, Laser, Missile, Grenade}
 enum Basic_Enemy{Strider, Bulwark, SmallTank, SmallHeli, Roamer}
 enum DASH{BURST, JET}
 var nullhardpoint = [Vector2.ZERO, -1]
+
+func get_display_name(equip_name : String, equip_type : String)->String:
+	print(equip_name)
+	print(equip_type)
+	if(equip_name==""):
+		return "Empty"
+	return resolve_dictionary(equip_type)[equip_name].display_name
+func get_description(equip_name : String, equip_type : String)->String:
+	if(equip_name==""):
+		return ""
+	return resolve_dictionary(equip_type)[equip_name].description
+func get_image(equip_name:String,equip_type:String)->Resource:
+	if(equip_name==""):
+		return preload("res://assets/BlankFrames.tres")
+	return resolve_dictionary(equip_type)[equip_name].sprite
+	
+func resolve_dictionary(equip_type : String)->Dictionary:
+	match(equip_type):
+		"Body":
+			return bodies
+		"Leg":
+			return legs
+		"Weapon":
+			return weapons
+	return {}
 class Weapon:
 	var bullet_flash: Node2D
 	#var root_scene : Node2D
@@ -23,7 +48,22 @@ class Weapon:
 	var curr_reload : float = 0
 	var shake_coeff : float 
 	var size_level : int
-	func _init(_reload, _damage: float, _projectile_count, _bullet, _type, _accuracy, _size_level, _area_of_effect = 0.0, flash = "no_flash"):
+	var description : String
+	var display_name : String
+	var sprite : Resource
+	func _init(_reload : float, 
+		_damage: float, 
+		_projectile_count : int, 
+		_bullet : Resource, 
+		_type : Weapon_Type, 
+		_accuracy :float,
+		 _size_level:int,
+		_description:String,
+		_display_name:String,
+		_display_image:Resource,
+		 _area_of_effect:float = 0.0,
+		 flash:Node2D = null
+		):
 		projectile_count = _projectile_count
 		reload = _reload
 		damage = _damage
@@ -33,6 +73,9 @@ class Weapon:
 		accuracy = _accuracy
 		area_of_effect=_area_of_effect
 		size_level = _size_level
+		description = _description
+		display_name = _display_name
+		sprite = _display_image
 		Signals.SettingsChange.connect(settingsChanged)
 		if(PlayerInfo.settings!={}):
 			shake_coeff = damage * PlayerInfo.settings["intensity"]
@@ -112,33 +155,44 @@ class Weapon:
 			i-=1
 		projectiles.clear()
 	func copy():
-		var tempWeapon = Weapon.new(reload, damage, projectile_count, bullet, type, accuracy,size_level, area_of_effect, bullet_flash)
+		var tempWeapon = Weapon.new(reload, damage, projectile_count, bullet, type, accuracy, size_level,description,display_name, sprite,area_of_effect, bullet_flash)
 		tempWeapon.offset = offset
-#		tempWeapon.root_scene = root_scene
 		tempWeapon.body = body
 		return tempWeapon
+
 var flashes = {
 	"light_flash" : preload("res://scenes/Bullet_Adjacent/bullet_flash.tscn").instantiate().init(1, Color.hex(0xc88834FF), .01, .1, true),
 	"medium_flash" : preload("res://scenes/Bullet_Adjacent/bullet_flash.tscn").instantiate().init(2, Color.hex(0xc88834FF), .01, .3, true)
-
 }
 var weapons = {
 	#reload, damage, projectile_count, bullet, type, accuracy,size_level, area_of_effect, bullet_flash
 	"bolter": Weapon.new(.5, 5, 1,
 		preload("res://scenes/Bullet_Adjacent/bullet_simple_small.tscn"), 
-		Weapon_Type.Bullet, 1, 1, 0.0,flashes["light_flash"]),
+		Weapon_Type.Bullet, 1, 1,
+		"bolter gun stuff","Bolter",preload("res://assets/BlankFrames.tres"),
+		0.0,flashes["light_flash"]),
 	"gatling": Weapon.new(.1, 1, 1, 
 		preload("res://scenes/Bullet_Adjacent/bullet_simple_tiny.tscn"), 
-		Weapon_Type.Bullet, 5, 1,  0.0, flashes["light_flash"]),
+		Weapon_Type.Bullet, 5, 1,
+		"Size: S\nDamage: 1\n Reload: .1s\n Accuracy: 5°\n
+		little gun go dakka","Gatling", preload("res://assets/BlankFrames.tres"),
+		0.0, flashes["light_flash"]),
 	"autocannon": Weapon.new(5, 15, 1, 
 		preload("res://scenes/Bullet_Adjacent/bullet_simple_large.tscn"), 
-		Weapon_Type.Bullet, 1, 2,  0.0, flashes["medium_flash"]),
+		Weapon_Type.Bullet, 1, 2,
+		"Size: M\nDamage: 15\nReload: 5s\nAccuracy:1°\n
+	big gun go boom","Autocannon",preload("res://assets/BlankFrames.tres"),
+	 0.0, flashes["medium_flash"]),
 	"laser_small": Weapon.new(-1, 2, 1, 
 		preload("res://scenes/Bullet_Adjacent/continuous_laser_small.tscn"),
-		Weapon_Type.Laser, 2,1, 2, flashes["light_flash"]),
+		Weapon_Type.Laser, 2,1,
+		"little laser go bzzz","Small Laser",preload("res://assets/BlankFrames.tres"),
+		 2, flashes["light_flash"]),
 	"tank_cannon": Weapon.new(1, 3, 1, 
 		preload("res://scenes/Bullet_Adjacent/bullet_simple_tiny.tscn"), 
-		Weapon_Type.Bullet, 1, 1, 0.0,flashes["light_flash"]),
+		Weapon_Type.Bullet, 1, 1,
+		"tank gun go pew","Tank Cannon", preload("res://assets/BlankFrames.tres"),
+		0.0,flashes["light_flash"]),
 }
 
 var bodies = {
@@ -151,7 +205,8 @@ var bodies = {
 		hardpoints=[	
 			[Vector2(46, -1), 1],[Vector2(-46, -1), 1],	nullhardpoint,nullhardpoint,nullhardpoint
 		],
-		name = "Strider"
+		display_name = "Strider",
+		description = "the strider class body",
 	},
 	"bulwark_1":{
 		sprite = preload("res://assets/bodies/bulwark_body_1_frame.tres"),
@@ -162,21 +217,26 @@ var bodies = {
 		hardpoints=[
 			[Vector2(40, -33), 1],[Vector2(-48, -26), 2],nullhardpoint,nullhardpoint,nullhardpoint
 		],
-		name = "Bulwark"
+		display_name = "Bulwark",
+		description = "the bulwark class body",
 	},
 	"tank_1":{
 		sprite = preload("res://assets/bodies/tank_1_turret_frame.tres"),
 		armor=2,
 		turn_speed = 2,
 		collision_array_points = PackedVector2Array([Vector2(-16,-20),Vector2(-16,24),Vector2(16,24),Vector2(16,-20),]),
-		hardpoints = [[Vector2(0, -17), 1],nullhardpoint,nullhardpoint,nullhardpoint,nullhardpoint]
+		hardpoints = [[Vector2(0, -17), 1],nullhardpoint,nullhardpoint,nullhardpoint,nullhardpoint],
+		display_name = "Tank",
+		description = "the tank class body",
 	},
 	"heli_1":{
 		sprite = preload("res://assets/HeliSmall.tres"),
 		armor = 1,
 		turn_speed = 1,
 		collision_array_points = PackedVector2Array([Vector2(0,-26),Vector2(-35,0),Vector2(-4,19),Vector2(-12,48),Vector2(12,49),Vector2(5,20),Vector2(37,0),]),
-		hardpoints = [[Vector2(0, -20), 1],nullhardpoint,nullhardpoint,nullhardpoint,nullhardpoint]
+		hardpoints = [[Vector2(0, -20), 1],nullhardpoint,nullhardpoint,nullhardpoint,nullhardpoint],
+		display_name = "Heli",
+		description = "the heli class body",
 	},
 	"roamer_1":{
 		sprite = preload("res://assets/bodies/roamer_body_1_frame.tres"),
@@ -186,7 +246,8 @@ var bodies = {
 		hardpoints=[	
 			[Vector2(21, -23), 1],nullhardpoint,	nullhardpoint,nullhardpoint,nullhardpoint
 		],
-		name = "Roamer"
+		display_name = "Roamer",
+		description = "the roamer class body",
 	},
 }
 var legs = {
@@ -201,7 +262,8 @@ var legs = {
 		turn_radius=.3,
 		health = 15,
 		sprite = preload("res://assets/Strider_Legs_1.tres"),
-		name = "Strider"
+		display_name = "Strider",
+		description = "the strider class legs"
 	},
 	"bulwark_1": {
 		move_type = "Mech",
@@ -214,7 +276,8 @@ var legs = {
 		turn_radius=.2,
 		health=30,
 		sprite = preload("res://assets/Bulwark_Legs_1.tres"),
-		name = "Bulwark"
+		display_name = "Bulwark",
+		description = "the bulwark class legs"
 	}, 
 	"tank_1":{
 		move_type = "Tank",
@@ -226,7 +289,9 @@ var legs = {
 		dash_type=ItemData.DASH.JET,
 		turn_radius = .4,
 		health = 4,
-		sprite = preload("res://assets/Tank_tread_1.tres")
+		sprite = preload("res://assets/Tank_tread_1.tres"),
+		display_name = "tank",
+		description = "the tank class legs"
 	},
 	"heli_1":{
 		move_type = "Helicopter",
@@ -238,7 +303,10 @@ var legs = {
 		dash_type = ItemData.DASH.JET,
 		turn_radius = 10,
 		health=2,
-		sprite = preload("res://assets/BlankFrames.tres")
+		sprite = preload("res://assets/BlankFrames.tres"),
+		display_name = "heli",
+		description = "the heli's invisible legs"
+		
 	},
 	"roamer_1": {
 		move_type = "Mech",
@@ -251,7 +319,8 @@ var legs = {
 		turn_radius=.4,
 		health = 10,
 		sprite = preload("res://assets/Roamer_Legs_1.tres"),
-		name = "Roamer"
+		display_name = "Roamer",
+		description = "the roamer class legs",
 	},
 }
 var control_type = {
@@ -277,26 +346,3 @@ func _process(_delta):
 			Reload=false
 			notify_property_list_changed()
 			
-var weapon_descriptions = {
-	"":["", ""],
-	"bolter": ["bolter gun stuff", "Bolter"],
-	"gatling": ["Size: S\nDamage: 1\n Reload: .1s\n Accuracy: 5°\n
-	little gun go dakka", "Gatling"],
-	"autocannon":["Size: M\nDamage: 15\nReload: 5s\nAccuracy:1°\n
-	big gun go boom", "Autocannon"],
-	"laser_small":["little laser go bzzz", "Small Laser"],
-	"tank_cannon":["tank gun go pew", "Tank Cannon"], 
-	
-}
-var body_descriptions = {
-	"":"",
-	"strider_1": "the strider class body",
-	"bulwark_1": "the bulwark class body",
-	"roamer_1" : "the roamer class body"
-}
-var leg_descriptions = {
-	"":"",
-	"strider_1": "the strider class legs",
-	"bulwark_1": "the bulwark class legs",
-	"roamer_1" : "the roamer class legs"
-}
