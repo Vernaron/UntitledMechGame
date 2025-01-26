@@ -1,6 +1,10 @@
-[gd_resource type="TileSet" load_steps=15 format=3 uid="uid://bhgc7uyuhyqb2"]
+[gd_resource type="TileSet" load_steps=16 format=3 uid="uid://bhgc7uyuhyqb2"]
 
 [ext_resource type="Texture2D" uid="uid://de1uqsox3wf3i" path="res://assets/tiles/Tundra_tiles.png" id="1_6g8ky"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_gc5w5"]
+friction = 0.0
+bounce = 0.25
 
 [sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_lh7ad"]
 polygon = PackedVector2Array(-32, -32, 32, -32, 32, 32, -32, 32)
@@ -142,4 +146,5 @@ texture_region_size = Vector2i(64, 64)
 tile_size = Vector2i(64, 64)
 occlusion_layer_0/light_mask = 1
 physics_layer_0/collision_layer = 32768
+physics_layer_0/physics_material = SubResource("PhysicsMaterial_gc5w5")
 sources/0 = SubResource("TileSetAtlasSource_w6gr0")

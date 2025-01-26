@@ -135,6 +135,7 @@ func set_type(_type: ItemData.Basic_Enemy):
 
 func _physics_process_custom(delta):
 	angleOffsetCooldown-=delta
+	
 	if(angleOffsetCooldown<=0):
 		angleOffsetCooldown+=1+randf()*3
 		if angleOffset<=0:angleOffset=PI/6+(2*PI/6)*randf()
@@ -163,28 +164,36 @@ func _physics_process_custom(delta):
 		
 		else:
 			distOffset*=.8
-		if(touching_wall):
-			if angleOffset>0:
-				wallOffset=-PI/2
-			else:
-				wallOffset=PI/2
-		else:
-			wallOffset*=0.8
+		#if(touching_wall):
+		#	if angleOffset<0:
+		#		wallOffset=-PI/2
+		#	else:
+	#			wallOffset=PI/2
+	#	else:
+	#		wallOffset*=0.8
 		
 	else:
 		is_moving = false
 func _get_intended_angle():
 	var tempAngle=0
+	var predictiveoffset = 0
 	
 	if(path_type==pathing.direct):
 		var direction= position.direction_to(target)
-		if(position.distance_to(target) > move_range/1.5):
-			tempAngle = normalize(atan2(-direction.y, -direction.x) + (angleOffset/2)+distOffset+wallOffset)
-		else:
-			tempAngle = normalize(atan2(-direction.y, -direction.x) + angleOffset+distOffset+wallOffset)
+		var farDistMod = 1
+		if(position.distance_to(target) > move_range/1.5||$collChecker.is_colliding()):
+			print("Here")
+			farDistMod = 4
+		tempAngle = normalize(atan2(-direction.y, -direction.x) + 
+				((angleOffset+distOffset)/farDistMod))
+			#$collChecker.rotation=tempAngle 
 		tempAngle+=normalize(tempAngle-normalize(angle))/6
+		
 	elif(path_type==pathing.nav):
 		tempAngle=navAngle
+	
+	#if $collChecker.is_colliding():
+	#	predictiveoffset = PI	
 	angle = tempAngle
 func _take_damage(damage, location=null, bullet_spark=false, laser_spark=false):
 	damage_inflict(damage)
@@ -192,7 +201,6 @@ func _take_damage(damage, location=null, bullet_spark=false, laser_spark=false):
 	Signals.screen_shake.emit(damage/2, .2)
 func _on_kill():
 	roll_drops()
-	print(totalDrops)
 	for n in totalDrops:
 		var loot = loot_res.instantiate()
 		loot.setval(n[0], n[1])
@@ -210,10 +218,7 @@ func add_or_append(array_ref:Array, value : String):
 		array_ref.push_back([value, 1])
 func roll_drops():
 	var drops = dropTables[curr_type]
-	print("predrop")
-	print(totalDrops)
 	for i in range(0, 1+randi()%4):
-		print("drop")
 		var dropType = randf()
 		if(dropType<drops["materialChance"]):
 			var totalnum =0
@@ -240,4 +245,4 @@ func roll_drops():
 				if curr_val>=selector:
 					totalDrops.push_back([obj.name, obj.get_random_amount()])
 					break
-	print(totalDrops)
+	

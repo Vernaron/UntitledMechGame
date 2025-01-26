@@ -40,21 +40,14 @@ var default_settings = {
 func get_number_in_inventory(equipment_name : String, equipment_type : String)->int:
 	var finalval : int = 0
 	if equipment_type.find("Weapon") !=-1:
-		#for n in active_save_data["active_weapons"]:
-		#	if n==equipment_name:
-		#		finalval+=1
 		for i in active_save_data["owned_weapons"]:
 			if i[0]==equipment_name:
 				finalval+=i[1]
 	elif equipment_type == "Body":
-		#if active_save_data["active_body"]==equipment_name:
-		#	finalval+=1
 		for i in active_save_data["owned_bodies"]:
 			if i[0]==equipment_name:
 				finalval+=i[1]
 	else:
-		#if active_save_data["active_legs"]==equipment_name:
-		#	finalval+=1
 		for i in active_save_data["owned_legs"]:
 			if i[0]==equipment_name:
 				finalval+=i[1]

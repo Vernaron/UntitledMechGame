@@ -17,10 +17,9 @@ collision_layer = 4
 collision_mask = 32791
 motion_mode = 1
 wall_min_slide_angle = 0.0
-platform_on_leave = 2
 platform_floor_layers = 4294901760
 platform_wall_layers = 32773
-safe_margin = 0.001
+safe_margin = 5.0
 script = ExtResource("1_nswqw")
 attention_span = 3.0
 swap_time = 0.5
@@ -56,5 +55,5 @@ target_desired_distance = 40.0
 script = ExtResource("6_bpjtb")
 
 [node name="collChecker" type="RayCast2D" parent="."]
-target_position = Vector2(0, -100)
+target_position = Vector2(0, -200)
 collision_mask = 32768

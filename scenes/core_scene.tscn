@@ -1,7 +1,17 @@
-[gd_scene load_steps=2 format=3 uid="uid://bmlxiimebv5fi"]
+[gd_scene load_steps=3 format=3 uid="uid://bmlxiimebv5fi"]
 
 [ext_resource type="Script" path="res://scripts/core_scene.gd" id="1_tg742"]
+[ext_resource type="Script" path="res://scenes/dialogue_box.gd" id="2_s7jh5"]
 
 [node name="root" type="Node2D"]
 script = ExtResource("1_tg742")
 default_settings = true
+
+[node name="DialogueBox" type="CanvasLayer" parent="."]
+script = ExtResource("2_s7jh5")
+
+[node name="InputCatcher" type="Panel" parent="DialogueBox"]
+offset_left = -8.0
+offset_top = -11.0
+offset_right = 1939.0
+offset_bottom = 1113.0

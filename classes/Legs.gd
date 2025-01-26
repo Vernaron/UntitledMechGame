@@ -87,7 +87,7 @@ func _physics_process(delta):
 			var coll = get_slide_collision(n)
 			if(coll.get_collider().is_class("CharacterBody2D")):
 				forceSum+= coll.get_collider_velocity()
-			if(coll.get_collider().is_class("TileMap")):
+			if(coll.get_collider().is_class("TileMapLayer")):
 				touching_wall = true
 		collision_rotation_offset = velocity.angle()-forceSum.angle()
 	else:collision_rotation_offset = 0
