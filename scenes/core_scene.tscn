@@ -1,8 +1,13 @@
-[gd_scene load_steps=6 format=3 uid="uid://bmlxiimebv5fi"]
+[gd_scene load_steps=11 format=3 uid="uid://bmlxiimebv5fi"]
 
 [ext_resource type="Script" path="res://scripts/core_scene.gd" id="1_tg742"]
 [ext_resource type="Script" path="res://scenes/dialogue_box.gd" id="2_s7jh5"]
 [ext_resource type="StyleBox" uid="uid://csc0g3olal123" path="res://BoxOutline.tres" id="3_efd2o"]
+[ext_resource type="Script" path="res://scenes/blurb_box.gd" id="4_btja4"]
+[ext_resource type="Texture2D" uid="uid://bnqnr5mgqaxfn" path="res://assets/portraits/generic_portrait.png" id="5_f0rtb"]
+[ext_resource type="Texture2D" uid="uid://b5rvnm1jo01tp" path="res://assets/portraits/generic_portrait_white.png" id="6_l6yju"]
+[ext_resource type="StyleBox" uid="uid://qmbhqml5xev4" path="res://Nameplate.tres" id="7_w0fkd"]
+[ext_resource type="StyleBox" uid="uid://cil5nuagugxb" path="res://NameplateDark.tres" id="8_b3n3o"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_qv0at"]
 
@@ -15,25 +20,87 @@ default_settings = true
 [node name="DialogueBox" type="CanvasLayer" parent="."]
 script = ExtResource("2_s7jh5")
 
-[node name="InputCatcher" type="Panel" parent="DialogueBox"]
+[node name="Screen" type="Panel" parent="DialogueBox"]
+z_index = -5
 offset_left = -8.0
 offset_top = -11.0
-offset_right = 1939.0
-offset_bottom = 1113.0
+offset_right = 1946.0
+offset_bottom = 1097.0
+mouse_filter = 2
 
-[node name="TextEdit" type="TextEdit" parent="DialogueBox/InputCatcher"]
-layout_mode = 0
-offset_left = 119.0
-offset_top = 820.0
-offset_right = 1835.0
-offset_bottom = 1086.0
+[node name="Text" type="TextEdit" parent="DialogueBox"]
+offset_left = 111.0
+offset_top = 809.0
+offset_right = 1827.0
+offset_bottom = 1075.0
+mouse_filter = 2
+theme_override_font_sizes/font_size = 20
 theme_override_styles/normal = ExtResource("3_efd2o")
 theme_override_styles/focus = SubResource("StyleBoxEmpty_qv0at")
 theme_override_styles/read_only = SubResource("StyleBoxEmpty_wsytl")
+editable = false
+context_menu_enabled = false
+shortcut_keys_enabled = false
+selecting_enabled = false
+deselect_on_focus_loss_enabled = false
+drag_and_drop_selection_enabled = false
+virtual_keyboard_enabled = false
+middle_mouse_paste_enabled = false
+script = ExtResource("4_btja4")
+process_speed = 0.1
 
-[node name="Sprite2D" type="Sprite2D" parent="DialogueBox/InputCatcher"]
-position = Vector2(127, 820)
+[node name="spriteL" type="Sprite2D" parent="DialogueBox"]
+position = Vector2(119, 809)
+scale = Vector2(2, 2)
+texture = ExtResource("5_f0rtb")
+offset = Vector2(64, -64)
 
-[node name="Sprite2D2" type="Sprite2D" parent="DialogueBox/InputCatcher"]
-position = Vector2(1822, 825)
-scale = Vector2(-1, 1)
+[node name="nameL" type="Label" parent="DialogueBox/spriteL"]
+z_index = 1
+offset_left = 128.0
+offset_top = -23.0
+offset_right = 426.0
+offset_bottom = 29.0
+scale = Vector2(0.5, 0.5)
+theme_override_font_sizes/font_size = 30
+theme_override_styles/normal = ExtResource("7_w0fkd")
+text = "Name1
+"
+horizontal_alignment = 1
+
+[node name="ColorRect2" type="ColorRect" parent="DialogueBox/spriteL/nameL"]
+z_index = -1
+layout_mode = 0
+offset_left = -3.0
+offset_top = 15.134
+offset_right = 295.0
+offset_bottom = 55.134
+color = Color(0.0784314, 0.164706, 0.4, 1)
+
+[node name="spriteR" type="Sprite2D" parent="DialogueBox"]
+position = Vector2(1814, 814)
+scale = Vector2(2, 2)
+texture = ExtResource("6_l6yju")
+offset = Vector2(-64, -64)
+flip_h = true
+
+[node name="nameR" type="Label" parent="DialogueBox/spriteR"]
+z_index = 2
+offset_left = -279.0
+offset_top = -25.567
+offset_right = 19.0
+offset_bottom = 26.433
+scale = Vector2(0.5, 0.5)
+theme_override_font_sizes/font_size = 30
+theme_override_styles/normal = ExtResource("8_b3n3o")
+text = "Name12222222"
+horizontal_alignment = 1
+
+[node name="ColorRect" type="ColorRect" parent="DialogueBox/spriteR/nameR"]
+z_index = -1
+layout_mode = 0
+offset_left = 2.0
+offset_top = 15.134
+offset_right = 300.0
+offset_bottom = 55.134
+color = Color(0.0784314, 0.164706, 0.4, 1)
