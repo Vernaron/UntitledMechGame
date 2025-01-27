@@ -1,7 +1,12 @@
-[gd_scene load_steps=3 format=3 uid="uid://bmlxiimebv5fi"]
+[gd_scene load_steps=6 format=3 uid="uid://bmlxiimebv5fi"]
 
 [ext_resource type="Script" path="res://scripts/core_scene.gd" id="1_tg742"]
 [ext_resource type="Script" path="res://scenes/dialogue_box.gd" id="2_s7jh5"]
+[ext_resource type="StyleBox" uid="uid://csc0g3olal123" path="res://BoxOutline.tres" id="3_efd2o"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_qv0at"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_wsytl"]
 
 [node name="root" type="Node2D"]
 script = ExtResource("1_tg742")
@@ -15,3 +20,20 @@ offset_left = -8.0
 offset_top = -11.0
 offset_right = 1939.0
 offset_bottom = 1113.0
+
+[node name="TextEdit" type="TextEdit" parent="DialogueBox/InputCatcher"]
+layout_mode = 0
+offset_left = 119.0
+offset_top = 820.0
+offset_right = 1835.0
+offset_bottom = 1086.0
+theme_override_styles/normal = ExtResource("3_efd2o")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_qv0at")
+theme_override_styles/read_only = SubResource("StyleBoxEmpty_wsytl")
+
+[node name="Sprite2D" type="Sprite2D" parent="DialogueBox/InputCatcher"]
+position = Vector2(127, 820)
+
+[node name="Sprite2D2" type="Sprite2D" parent="DialogueBox/InputCatcher"]
+position = Vector2(1822, 825)
+scale = Vector2(-1, 1)

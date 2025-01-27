@@ -5,6 +5,7 @@ class blurb:
 	var right_speaker : Resource = null
 	var highlighted : String = "both" #left right both neither
 	var text : String = ""
+	var nextblurb : String = ""
 	func _init(_left_speaker, _right_speaker, _highlighted, _text):
 		left_speaker = _left_speaker
 		right_speaker = _right_speaker
@@ -19,4 +20,5 @@ func _ready() -> void:
 
 
 func process_dialogue(name : String):
-	pass
+	var currblurb = dialogues[name]
+	
