@@ -164,14 +164,6 @@ func _physics_process_custom(delta):
 		
 		else:
 			distOffset*=.8
-		#if(touching_wall):
-		#	if angleOffset<0:
-		#		wallOffset=-PI/2
-		#	else:
-	#			wallOffset=PI/2
-	#	else:
-	#		wallOffset*=0.8
-		
 	else:
 		is_moving = false
 func _get_intended_angle():
