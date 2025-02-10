@@ -6,6 +6,7 @@ var first_exited : bool = false
 # Called when the node enters the scene tree for the first time.
 @onready var list_of_levels = []
 @export var level_colors : Array[Color] = []
+var ally_res = preload("res://scenes/mech_ally.tscn")
 func _ready():
 	for n in range(0, num_levels):
 		list_of_levels.push_back(get_node("level_"+str(n)))
@@ -13,6 +14,11 @@ func _ready():
 	Signals.ascend.connect(ascend)
 	Signals.descend.connect(descend)
 	Signals.stair_exited.connect(stair_exited)
+	var temp_ally = ally_res.instantiate()
+	temp_ally.set_type(ItemData.Loadouts.Strider)
+	temp_ally.construct("Ally")
+	temp_ally.position = Vector2(848, -160)
+	spawn(temp_ally)
 	#remove_child(list_of_levels[1])
 	#list_of_levels[1].process_mode = PROCESS_MODE_DISABLED
 func spawn(node):

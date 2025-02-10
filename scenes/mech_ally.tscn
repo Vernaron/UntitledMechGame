@@ -1,22 +1,22 @@
-[gd_scene load_steps=12 format=3 uid="uid://cmwtuxws5txrm"]
+[gd_scene load_steps=12 format=3 uid="uid://dt2bojqc5rxrn"]
 
-[ext_resource type="Script" path="res://scripts/MechParts/mech_enemy_legs.gd" id="1_nswqw"]
-[ext_resource type="SpriteFrames" uid="uid://cqborks534jmw" path="res://assets/Strider_Legs_1.tres" id="2_dwem5"]
-[ext_resource type="Script" path="res://scripts/MechParts/LegCollisionPolygon.gd" id="3_ae3vx"]
-[ext_resource type="Script" path="res://scripts/MechParts/mech_enemy_body.gd" id="4_8u50x"]
-[ext_resource type="Script" path="res://scripts/rotateOccluder.gd" id="6_8lcdg"]
-[ext_resource type="Script" path="res://scripts/Pather.gd" id="6_bpjtb"]
-[ext_resource type="Script" path="res://scenes/mini_health_bar.gd" id="7_lbigy"]
+[ext_resource type="Script" path="res://scripts/MechParts/mech_enemy_legs.gd" id="1_p3p44"]
+[ext_resource type="SpriteFrames" uid="uid://cqborks534jmw" path="res://assets/Strider_Legs_1.tres" id="2_ht6aw"]
+[ext_resource type="Script" path="res://scripts/MechParts/LegCollisionPolygon.gd" id="3_l626v"]
+[ext_resource type="Script" path="res://scripts/MechParts/mech_enemy_body.gd" id="4_8tjrn"]
+[ext_resource type="Script" path="res://scripts/rotateOccluder.gd" id="5_52t84"]
+[ext_resource type="Script" path="res://scripts/Pather.gd" id="6_t3use"]
+[ext_resource type="Script" path="res://scenes/mini_health_bar.gd" id="7_7yvnt"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_aot11"]
+radius = 2000.0
 
 [sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_3sggo"]
 resource_local_to_scene = true
 cull_mode = 2
 polygon = PackedVector2Array(-27, -5, -62, -4, -61, 35, -3, 44, 60, 34, 62, -2, 29, -4, 0, -51)
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_l805t"]
-radius = 2000.0
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fs3mn"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_u52a5"]
 bg_color = Color(0.252028, 0.252028, 0.252028, 1)
 border_width_left = 3
 border_width_top = 3
@@ -28,33 +28,40 @@ expand_margin_top = 3.0
 expand_margin_right = 3.0
 expand_margin_bottom = 3.0
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hcd3n"]
-bg_color = Color(0.71, 0, 0, 1)
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wmosm"]
+bg_color = Color(0.176646, 0.376479, 0.867359, 1)
 
 [node name="Legs" type="CharacterBody2D"]
-collision_layer = 4
 collision_mask = 32791
 motion_mode = 1
 wall_min_slide_angle = 0.0
 platform_floor_layers = 4294901760
 platform_wall_layers = 32773
 safe_margin = 5.0
-script = ExtResource("1_nswqw")
+script = ExtResource("1_p3p44")
+drops_loot = false
 attention_span = 3.0
 swap_time = 0.5
 
 [node name="LegsSprite" type="AnimatedSprite2D" parent="."]
 scale = Vector2(4, 4)
-sprite_frames = ExtResource("2_dwem5")
+sprite_frames = ExtResource("2_ht6aw")
 
 [node name="LegCollisionPolygon" type="CollisionPolygon2D" parent="."]
 z_index = 5
 polygon = PackedVector2Array(0, -52, -28, -4, -60, -4, -60, 36, 0, 44, 60, 35, 60, -3, 28, -4)
-script = ExtResource("3_ae3vx")
+script = ExtResource("3_l626v")
+
+[node name="target_detector" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="target_detector"]
+shape = SubResource("CircleShape2D_aot11")
 
 [node name="Body" type="Node2D" parent="."]
 z_index = 5
-script = ExtResource("4_8u50x")
+script = ExtResource("4_8tjrn")
 team = 1
 
 [node name="BodySprite" type="AnimatedSprite2D" parent="Body"]
@@ -66,22 +73,16 @@ collision_mask = 32768
 [node name="Occluder" type="LightOccluder2D" parent="."]
 show_behind_parent = true
 occluder = SubResource("OccluderPolygon2D_3sggo")
-script = ExtResource("6_8lcdg")
+script = ExtResource("5_52t84")
 
 [node name="Pather" type="NavigationAgent2D" parent="."]
 path_desired_distance = 40.0
 target_desired_distance = 40.0
-script = ExtResource("6_bpjtb")
+script = ExtResource("6_t3use")
 
 [node name="collChecker" type="RayCast2D" parent="."]
 target_position = Vector2(0, -200)
 collision_mask = 32768
-
-[node name="target_detector" type="Area2D" parent="."]
-collision_layer = 0
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="target_detector"]
-shape = SubResource("CircleShape2D_l805t")
 
 [node name="pick_target" type="Timer" parent="."]
 autostart = true
@@ -95,11 +96,11 @@ offset_left = -82.0
 offset_top = -136.0
 offset_right = 78.0
 offset_bottom = -122.0
-theme_override_styles/background = SubResource("StyleBoxFlat_fs3mn")
-theme_override_styles/fill = SubResource("StyleBoxFlat_hcd3n")
+theme_override_styles/background = SubResource("StyleBoxFlat_u52a5")
+theme_override_styles/fill = SubResource("StyleBoxFlat_wmosm")
 value = 100.0
 show_percentage = false
-script = ExtResource("7_lbigy")
+script = ExtResource("7_7yvnt")
 metadata/_edit_use_anchors_ = true
 
 [node name="RemoteTransform2D" type="RemoteTransform2D" parent="."]

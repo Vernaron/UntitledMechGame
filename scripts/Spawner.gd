@@ -39,7 +39,7 @@ func build_enemy_simple(pos):
 		basic_enemy.construct(
 			"Enemy"
 		)
-		basic_enemy.position = pos
+		basic_enemy.position = pos + Vector2(50,0).rotated(randf()*2*PI)
 		Signals.spawn_root.emit(basic_enemy)	
 func _spawn_enemy():
 	var n = 0
@@ -53,7 +53,11 @@ func _spawn_enemy():
 		var attempt_location =PlayerInfo.target.global_position+Vector2(0, distance).rotated(angle)
 		var adjusted_location =  NavigationServer2D.map_get_closest_point(navrid, attempt_location)
 		if(attempt_location!=adjusted_location):
-			attempt_location=adjusted_location+Vector2(0, 0).rotated(attempt_location.angle_to_point(adjusted_location))
+			print("Attempt Start:")
+			print(attempt_location)
+			print(adjusted_location)
+			attempt_location=adjusted_location+Vector2(400, 0).rotated(attempt_location.angle_to_point(adjusted_location))
+			print(attempt_location)
 		if(PlayerInfo.target.position.distance_to(attempt_location)<=minDistance):
 			continue
 		var path = NavigationServer2D.map_get_path(navrid, PlayerInfo.target.position, attempt_location, false)

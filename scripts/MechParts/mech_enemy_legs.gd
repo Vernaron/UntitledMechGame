@@ -1,7 +1,10 @@
 extends Legs
-var curr_type : ItemData.Basic_Enemy = ItemData.Basic_Enemy.Strider
+@export var drops_loot : bool = true
+var valid_targets : Array[Node2D] = []
+var curr_type : ItemData.Loadouts = ItemData.Loadouts.Strider
 var loot_res = preload("res://scenes/LootCollectable.tscn")
-var target : Vector2 = Vector2.ZERO
+var target : Node2D = null
+signal update_health
 @onready var navrid = get_world_2d().get_navigation_map()
 var currPath = [Vector2.ZERO,Vector2.ZERO,Vector2.ZERO]
 @export var attention_span : float
@@ -19,7 +22,7 @@ var wallOffset : float = 0
 @export var move_range=2000
 var angleOffsetCooldown:float = 0
 var dropTables = {
-	ItemData.Basic_Enemy.Strider:{
+	ItemData.Loadouts.Strider:{
 		"materialChance" : 0.7,
 		"equipmentChance":0.2,
 		"materials":{
@@ -35,7 +38,7 @@ var dropTables = {
 		}
 		
 	}, 
-	ItemData.Basic_Enemy.Bulwark:{
+	ItemData.Loadouts.Bulwark:{
 		"materialChance" : 0.7,
 		"equipmentChance":0.2,
 		"materials":{
@@ -50,7 +53,7 @@ var dropTables = {
 		}
 		
 	},
-	ItemData.Basic_Enemy.SmallTank:{
+	ItemData.Loadouts.SmallTank:{
 		"materialChance" : 0.7,
 		"equipmentChance":0.2,
 		"materials":{
@@ -63,7 +66,7 @@ var dropTables = {
 		}
 		
 	},
-	ItemData.Basic_Enemy.SmallHeli:{
+	ItemData.Loadouts.SmallHeli:{
 		"materialChance" : 0.7,
 		"equipmentChance":0.2,
 		"materials":{
@@ -76,7 +79,7 @@ var dropTables = {
 		}
 		
 	},
-	ItemData.Basic_Enemy.Roamer:{
+	ItemData.Loadouts.Roamer:{
 		"materialChance" : 0.7,
 		"equipmentChance":0.2,
 		"materials":{
@@ -95,41 +98,43 @@ var dropTables = {
 var totalDrops = []
 func _ready_custom():
 	Signals.retarget.connect(setTarget)	
-func  setTarget(_target):
-	target = _target
-	if path_type==pathing.nav&&path_update==0&&global_position.distance_to(target)<move_range\
+func setTarget():
+	if target!=null&&path_type==pathing.nav&&path_update==0&&\
+		global_position.distance_to(target.global_position)<move_range\
 		&&get_parent().process_mode!=Node.PROCESS_MODE_DISABLED: 
 		calc_path()
 	path_update=(path_update+1)%3
 func calc_path():
-	currPath = NavigationServer2D.map_get_path(navrid, global_position, target, false)
-	navAngle=currPath[1].angle_to_point(currPath[0])		
+	if target!=null:
+		currPath = NavigationServer2D.map_get_path(navrid, global_position, target.global_position, false)
+		navAngle=currPath[1].angle_to_point(currPath[0])		
 	#
 func _construct_custom():
 	match(curr_type):
-		ItemData.Basic_Enemy.Strider:
+		ItemData.Loadouts.Strider:
 			set_current_body(ItemData.bodies["strider_1"])
 			set_current_legs(ItemData.legs["strider_1"])
 			set_weapons_from_array([ItemData.weapons["bolter"],ItemData.weapons["bolter"]])
-		ItemData.Basic_Enemy.Bulwark:
+		ItemData.Loadouts.Bulwark:
 			set_current_body(ItemData.bodies["bulwark_1"])
 			set_current_legs(ItemData.legs["bulwark_1"])
 			set_weapons_from_array([ItemData.weapons["gatling"], ItemData.weapons["autocannon"]])
-		ItemData.Basic_Enemy.SmallTank:
+		ItemData.Loadouts.SmallTank:
 			set_current_body(ItemData.bodies["tank_1"])
 			set_current_legs(ItemData.legs["tank_1"])
 			set_weapons_from_array([ItemData.weapons["tank_cannon"]])
-		ItemData.Basic_Enemy.SmallHeli:
+		ItemData.Loadouts.SmallHeli:
 			set_current_body(ItemData.bodies["heli_1"])
 			set_current_legs(ItemData.legs["heli_1"])
 			set_weapons_from_array([ItemData.weapons["gatling"]])
-		ItemData.Basic_Enemy.Roamer:
+		ItemData.Loadouts.Roamer:
 			set_current_body(ItemData.bodies["roamer_1"])
 			set_current_legs(ItemData.legs["roamer_1"])
 			set_weapons_from_array([ItemData.weapons["laser_small"]])
+	update_health.emit()
 	
 	
-func set_type(_type: ItemData.Basic_Enemy):
+func set_type(_type: ItemData.Loadouts):
 	curr_type = _type
 	_construct_custom()
 
@@ -140,7 +145,7 @@ func _physics_process_custom(delta):
 		angleOffsetCooldown+=1+randf()*3
 		if angleOffset<=0:angleOffset=PI/6+(2*PI/6)*randf()
 		else:angleOffset=-PI/6-(2*PI/6)*randf()
-	$Body/playerPointer.target_position.y = -target.distance_to($Body/playerPointer.global_position)
+	if target!=null:$Body/playerPointer.target_position.y = -target.position.distance_to($Body/playerPointer.global_position)
 	if($Body/playerPointer.get_collider()!=null):
 		time_lost_vision+=delta
 		time_gained_vision=0
@@ -154,9 +159,9 @@ func _physics_process_custom(delta):
 	elif time_gained_vision>swap_time&&path_type==pathing.nav:
 		path_type=pathing.direct
 		
-	if(abs(position.distance_to(target)) < move_range*2):
+	if(target!=null&&abs(position.distance_to(target.position)) < move_range*2):
 		is_moving = true
-		if(abs(position.distance_to(target)) < move_range/2.0):
+		if(abs(position.distance_to(target.position)) < move_range/2.0):
 			if angleOffset>0:
 				distOffset=PI/2
 			else:
@@ -171,10 +176,10 @@ func _get_intended_angle():
 	var predictiveoffset = 0
 	
 	if(path_type==pathing.direct):
-		var direction= position.direction_to(target)
+		var direction= position.direction_to(target.position)
 		var farDistMod = 1
-		if(position.distance_to(target) > move_range/1.5||$collChecker.is_colliding()):
-			print("Here")
+		if(position.distance_to(target.position) > move_range/1.5||$collChecker.is_colliding()):
+			
 			farDistMod = 4
 		tempAngle = normalize(atan2(-direction.y, -direction.x) + 
 				((angleOffset+distOffset)/farDistMod))
@@ -191,13 +196,15 @@ func _take_damage(damage, location=null, bullet_spark=false, laser_spark=false):
 	damage_inflict(damage)
 	resolve_particles(location, bullet_spark, laser_spark, damage)
 	Signals.screen_shake.emit(damage/2, .2)
+	update_health.emit()
 func _on_kill():
-	roll_drops()
-	for n in totalDrops:
-		var loot = loot_res.instantiate()
-		loot.setval(n[0], n[1])
-		loot.position = global_position
-		Signals.spawn_root.emit(loot)
+	if drops_loot:
+		roll_drops()
+		for n in totalDrops:
+			var loot = loot_res.instantiate()
+			loot.setval(n[0], n[1])
+			loot.position = global_position
+			Signals.spawn_root.emit(loot)
 	queue_free()
 func add_or_append(array_ref:Array, value : String):
 	var found = false
@@ -237,4 +244,26 @@ func roll_drops():
 				if curr_val>=selector:
 					totalDrops.push_back([obj.name, obj.get_random_amount()])
 					break
+	
+
+
+func _on_target_detector_body_entered(body: Node2D) -> void:
+	valid_targets.push_back(body)
+
+
+func _on_target_detector_body_exited(body: Node2D) -> void:
+	valid_targets.erase(body)
+
+
+func _on_pick_target_timeout() -> void:
+	var temp_target : Node2D = null
+	var min_dist : float = -1
+	for n in valid_targets:
+		if min_dist>0&&min_dist>global_position.distance_squared_to(n.global_position):
+			temp_target = n
+			min_dist = global_position.distance_squared_to(n.global_position)
+		else:
+			temp_target = n
+			min_dist = global_position.distance_squared_to(n.global_position)
+	target = temp_target
 	

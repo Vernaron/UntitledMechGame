@@ -3,7 +3,7 @@ extends Node
 class_name Item_Data
 @export var Reload : bool = false
 enum Weapon_Type{Bullet, Laser, Missile, Grenade}
-enum Basic_Enemy{Strider, Bulwark, SmallTank, SmallHeli, Roamer}
+enum Loadouts{Strider, Bulwark, SmallTank, SmallHeli, Roamer}
 enum DASH{BURST, JET}
 var nullhardpoint = [Vector2.ZERO, -1]
 
