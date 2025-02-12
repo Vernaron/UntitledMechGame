@@ -193,6 +193,9 @@ var weapons = {
 		Weapon_Type.Bullet, 1, 1,
 		"tank gun go pew","Tank Cannon", preload("res://assets/BlankFrames.tres"),
 		0.0,flashes["light_flash"]),
+	"auto_shotgun":Weapon.new(.2,1,4,preload("res://scenes/Bullet_Adjacent/bullet_simple_small.tscn"),
+		Weapon_Type.Bullet,5,1,"rapid fire auto shotgun", "Auto Shotgun",preload("res://assets/BlankFrames.tres")
+		,0,flashes["light_flash"]),
 }
 
 var bodies = {

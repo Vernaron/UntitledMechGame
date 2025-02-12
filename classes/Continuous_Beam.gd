@@ -10,7 +10,9 @@ func _ready_custom():
 	$ray_1.position.x = -aoe/2
 	$ray_2.position.x = aoe/2
 func _process(_delta):
-	
+	if(!(is_instance_valid(body))):
+		queue_free()
+		return
 
 	position=body.global_position+offset.rotated(body.global_rotation)
 	rotation = body.global_rotation + rotation_offset
