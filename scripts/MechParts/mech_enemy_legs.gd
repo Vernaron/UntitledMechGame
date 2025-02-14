@@ -3,6 +3,7 @@ extends Legs
 var valid_targets : Array[Node2D] = []
 var curr_type : ItemData.Loadouts = ItemData.Loadouts.Strider
 var loot_res = preload("res://scenes/LootCollectable.tscn")
+var death_explosion = preload("res://assets/effects/explosion_normal.tscn")
 var target : Node2D = null
 signal update_health
 @onready var navrid = get_world_2d().get_navigation_map()
@@ -205,6 +206,10 @@ func _on_kill():
 			loot.setval(n[0], n[1])
 			loot.position = global_position
 			Signals.spawn_root.emit(loot)
+	var temp_explosion = death_explosion.instantiate()
+	temp_explosion.position = global_position
+	Signals.spawn_root.emit(temp_explosion)
+	Signals.screen_shake.emit(5,.2)
 	queue_free()
 func add_or_append(array_ref:Array, value : String):
 	var found = false
