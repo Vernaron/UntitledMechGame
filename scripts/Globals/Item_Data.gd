@@ -134,7 +134,24 @@ class Weapon:
 						else:
 							projectiles[i].rotation+=accadjusted/10 * delta
 			Weapon_Type.Grenade:
-				pass
+				curr_reload-=delta
+				if(curr_reload<=0):
+					for num in range(0, projectile_count):
+						var temp_bullet = bullet.instantiate()
+						temp_bullet.set_team(body.team)
+						temp_bullet.DAMAGE = damage
+						temp_bullet.rotation = body.global_rotation + (randf()*accuracy - accuracy/2)*PI/180
+						temp_bullet.position=offset.rotated(body.global_rotation)+body.global_position
+						temp_bullet.aoe = area_of_effect
+						var temp_flash = bullet_flash.copy()
+						temp_flash.position = offset
+						body.add_child(temp_flash.copy())
+						Signals.spawn_root.emit(temp_bullet)
+						curr_reload=reload	
+						if(body.team ==1):
+							Signals.screen_shake.emit(shake_coeff/4, .2)
+						else:
+							Signals.screen_shake.emit(shake_coeff/2, .2)
 			Weapon_Type.Missile:
 				pass				
 	func release():
@@ -196,6 +213,11 @@ var weapons = {
 	"auto_shotgun":Weapon.new(.2,1,4,preload("res://scenes/Bullet_Adjacent/bullet_simple_small.tscn"),
 		Weapon_Type.Bullet,5,1,"rapid fire auto shotgun", "Auto Shotgun",preload("res://assets/BlankFrames.tres")
 		,0,flashes["light_flash"]),
+	"thumper": Weapon.new(1, 5, 1,
+		preload("res://scenes/Bullet_Adjacent/bullet_explosive_small.tscn"), 
+		Weapon_Type.Grenade, 1, 1,
+		"thumper gun stuff","Thumper",preload("res://assets/BlankFrames.tres"),
+		175,flashes["light_flash"]),
 }
 
 var bodies = {

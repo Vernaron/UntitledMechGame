@@ -34,7 +34,7 @@ number = 1.0
 [sub_resource type="Resource" id="Resource_jiocw"]
 script = ExtResource("5_gj0lm")
 type = 2
-weight = 3.0
+weight = 300.0
 number = 4.0
 
 [sub_resource type="Resource" id="Resource_p1g2d"]
