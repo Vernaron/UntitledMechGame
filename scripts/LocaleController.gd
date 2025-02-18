@@ -50,3 +50,7 @@ func stair_exited():
 		has_exited=true
 	else:
 		first_exited = true
+func setMainQuest(_quest : String):
+	pass
+func setSubQuests(_quest : String):
+	pass

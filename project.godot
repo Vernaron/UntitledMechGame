@@ -21,6 +21,7 @@ Signals="*res://scripts/Globals/signals.gd"
 PlayerInfo="*res://scripts/Globals/Player_Info.gd"
 ItemData="*res://scripts/Globals/Item_Data.gd"
 Crafting="*res://scripts/Globals/Crafting.gd"
+QuestData="*res://scripts/Globals/Quest_Data.gd"
 
 [debug]
 

@@ -25,7 +25,9 @@ var default_save = {
 	"materials":[],
 	"found_materials":[],
 	"player_level":1,
-	"completed_tutorial":false
+	"completed_tutorial":false,
+	"active_main_quest":[],
+	"active_side_quest":[],
 }
 var settings = {}
 var default_settings = {

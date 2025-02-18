@@ -34,7 +34,7 @@ number = 1.0
 [sub_resource type="Resource" id="Resource_jiocw"]
 script = ExtResource("5_gj0lm")
 type = 2
-weight = 300.0
+weight = 3.0
 number = 4.0
 
 [sub_resource type="Resource" id="Resource_p1g2d"]
@@ -96,3 +96,26 @@ navigation_polygon = SubResource("NavigationPolygon_scq2o")
 process_mode = 4
 visible = false
 format = 2
+
+[node name="Random_Subquests" type="Node2D" parent="."]
+
+[node name="Node2D" type="Node2D" parent="Random_Subquests"]
+position = Vector2(3021, -4315)
+
+[node name="Node2D2" type="Node2D" parent="Random_Subquests"]
+position = Vector2(7775, -3282)
+
+[node name="Node2D3" type="Node2D" parent="Random_Subquests"]
+position = Vector2(1939, -9878)
+
+[node name="Node2D4" type="Node2D" parent="Random_Subquests"]
+position = Vector2(2155, -14044)
+
+[node name="Node2D5" type="Node2D" parent="Random_Subquests"]
+position = Vector2(8513, -10201)
+
+[node name="Node2D6" type="Node2D" parent="Random_Subquests"]
+position = Vector2(9231, -16595)
+
+[node name="Node2D7" type="Node2D" parent="Random_Subquests"]
+position = Vector2(13254, -13685)
