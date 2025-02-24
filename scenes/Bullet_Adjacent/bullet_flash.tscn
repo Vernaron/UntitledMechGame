@@ -19,6 +19,7 @@ color = Color(0.784807, 0.534126, 0.202056, 1)
 energy = 0.5
 texture = SubResource("GradientTexture2D_bgymp")
 offset = Vector2(0, -5)
+texture_scale = 0.1
 script = ExtResource("1_54dre")
 
 [node name="sprite" type="Sprite2D" parent="."]

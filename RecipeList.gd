@@ -10,18 +10,18 @@ var active_recipe : Crafting.CraftingRecipe
 func _ready() -> void:
 	Signals.change_inventory_type.connect(update_type)
 	update_crafting_list()
-func update_type(newtype):
+func update_type(newtype:String)->void:
 	curr_type = newtype
 	update_crafting_information()
-func update_crafting_information():
+func update_crafting_information()->void:
 	if curritem!=null:
 		materials.clear()
-		var tooltip_index = 0
+		var tooltip_index :int= 0
 		for obj in curritem.recipe:
-			var res_found = false
-			var res_num = 0
+			var res_found := false
+			var res_num :int= 0
 			if obj.is_material:
-				for n in PlayerInfo.active_save_data["materials"]:
+				for n :Array in PlayerInfo.active_save_data["materials"]:
 					if n[0]==obj.res_name:
 						res_found=true
 						res_num=n[1]
@@ -36,7 +36,7 @@ func update_crafting_information():
 			tooltip_index+=1
 		details.set_index_dictionary(curritem.type)
 		details.update_details(curritem.res_name)
-func update_crafting_list():
+func update_crafting_list()->void:
 	clear()
 	for obj in Crafting.recipes:
 		var avail: bool = true
@@ -45,13 +45,13 @@ func update_crafting_list():
 				avail = false 
 		if avail:
 			underarray.push_back(obj)
-	var tooltip_index = 0
-	for item in underarray:
+	var tooltip_index :int= 0
+	for item :Crafting.CraftingRecipe in underarray:
 		add_item(item.vis_name)
 		set_item_tooltip_enabled(tooltip_index,false)
 		tooltip_index+=1
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	pass
 
 
@@ -62,14 +62,14 @@ func _on_item_activated(index: int) -> void:
 	update_crafting_information()
 	item_window.sprite_frames = ItemData.get_image(curritem.res_name, curritem.type)
 	
-func craft():
-	var isCraftable = true
+func craft()->void:
+	var isCraftable := true
 	for obj in active_recipe.recipe:
-		var res_found = false
-		var res_num = 0
-		var less_than=true
+		var res_found := false
+		#var res_num :int= 0
+		var less_than:=true
 		if obj.is_material:
-			for n in PlayerInfo.active_save_data["materials"]:
+			for n :Array in PlayerInfo.active_save_data["materials"]:
 				if n[0]==obj.res_name:
 					res_found=true
 					if n[1]>=obj.count:

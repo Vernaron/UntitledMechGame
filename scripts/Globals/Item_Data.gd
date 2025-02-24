@@ -5,7 +5,7 @@ class_name Item_Data
 enum Weapon_Type{Bullet, Laser, Missile, Grenade}
 enum Loadouts{Strider, Bulwark, SmallTank, SmallHeli, Roamer}
 enum DASH{BURST, JET}
-var nullhardpoint = [Vector2.ZERO, -1]
+var nullhardpoint:Array = [Vector2.ZERO, -1]
 
 func get_display_name(equip_name : String, equip_type : String)->String:
 	print(equip_name)
@@ -39,12 +39,12 @@ class Weapon:
 	var damage : float
 	var offset : Vector2 = Vector2.ZERO
 	var bullet : Resource
-	var projectile_count : float
+	var projectile_count : int
 	var accuracy : float
 	var area_of_effect: float
 	var type : Weapon_Type
 	var projectiles : Array = []
-	var is_firing = false
+	var is_firing := false
 	var curr_reload : float = 0
 	var shake_coeff : float 
 	var size_level : int
@@ -63,7 +63,7 @@ class Weapon:
 		_display_image:Resource,
 		 _area_of_effect:float = 0.0,
 		 flash:Node2D = null
-		):
+		)->void:
 		projectile_count = _projectile_count
 		reload = _reload
 		damage = _damage
@@ -81,26 +81,26 @@ class Weapon:
 			shake_coeff = damage * PlayerInfo.settings["intensity"]
 		else:
 			shake_coeff = damage
-	func setOffset(new_offset: Vector2):
+	func setOffset(new_offset: Vector2)->void:
 		offset = new_offset
-	func settingsChanged():
+	func settingsChanged()->void:
 		shake_coeff = damage * PlayerInfo.settings["intensity"]
-	func set_body(_body):
+	func set_body(_body:Body)->void:
 		body = _body
-	func shoot(delta):
+	func shoot(delta:float)->void:
 		
 		match(type):
 			Weapon_Type.Bullet:
 				curr_reload-=delta
 				if(curr_reload<=0):
 					for num in range(0, projectile_count):
-						var temp_bullet = bullet.instantiate()
+						var temp_bullet :Damage_Dealer= bullet.instantiate()
 						temp_bullet.set_team(body.team)
 						temp_bullet.DAMAGE = damage
 						temp_bullet.rotation = body.global_rotation + (randf()*accuracy - accuracy/2)*PI/180
 						temp_bullet.position=offset.rotated(body.global_rotation)+body.global_position
 						
-						var temp_flash = bullet_flash.copy()
+						var temp_flash :PointLight2D= bullet_flash.copy()
 						temp_flash.position = offset
 						body.add_child(temp_flash.copy())
 						Signals.spawn_root.emit(temp_bullet)
@@ -113,7 +113,7 @@ class Weapon:
 				if !is_firing:
 					is_firing = true
 					for num in range(0, projectile_count):
-						var temp_bullet = bullet.instantiate()
+						var temp_bullet:Damage_Dealer = bullet.instantiate()
 						temp_bullet.set_team(body.team)
 						temp_bullet.DAMAGE = damage
 						temp_bullet.rotation = body.global_rotation
@@ -126,9 +126,9 @@ class Weapon:
 						projectiles.push_back(temp_bullet)
 						Signals.spawn_root.emit(temp_bullet)
 				else:
-					var accadjusted = accuracy * PI / 180
+					var accadjusted := accuracy * PI / 180
 					for i in range(0, projectiles.size()):
-						var target = randf()*2*accadjusted -accadjusted
+						var target := randf()*2*accadjusted -accadjusted
 						if(projectiles[i].rotation>target):
 							projectiles[i].rotation-=accadjusted/10 * delta
 						else:
@@ -137,13 +137,13 @@ class Weapon:
 				curr_reload-=delta
 				if(curr_reload<=0):
 					for num in range(0, projectile_count):
-						var temp_bullet = bullet.instantiate()
+						var temp_bullet :Damage_Dealer= bullet.instantiate()
 						temp_bullet.set_team(body.team)
 						temp_bullet.DAMAGE = damage
 						temp_bullet.rotation = body.global_rotation + (randf()*accuracy - accuracy/2)*PI/180
 						temp_bullet.position=offset.rotated(body.global_rotation)+body.global_position
 						temp_bullet.aoe = area_of_effect
-						var temp_flash = bullet_flash.copy()
+						var temp_flash :PointLight2D = bullet_flash.copy()
 						temp_flash.position = offset
 						body.add_child(temp_flash.copy())
 						Signals.spawn_root.emit(temp_bullet)
@@ -154,7 +154,7 @@ class Weapon:
 							Signals.screen_shake.emit(shake_coeff/2, .2)
 			Weapon_Type.Missile:
 				pass				
-	func release():
+	func release()->void:
 		is_firing = false
 		match(type):
 			Weapon_Type.Bullet:
@@ -165,23 +165,23 @@ class Weapon:
 				pass
 			Weapon_Type.Missile:
 				pass
-	func deleteProjectiles():
-		var i = projectiles.size()-1
+	func deleteProjectiles()->void:
+		var i := projectiles.size()-1
 		while i >=0:
 			projectiles[i].queue_free()
 			i-=1
 		projectiles.clear()
-	func copy():
-		var tempWeapon = Weapon.new(reload, damage, projectile_count, bullet, type, accuracy, size_level,description,display_name, sprite,area_of_effect, bullet_flash)
+	func copy()->Weapon:
+		var tempWeapon: = Weapon.new(reload, damage, projectile_count, bullet, type, accuracy, size_level,description,display_name, sprite,area_of_effect, bullet_flash)
 		tempWeapon.offset = offset
 		tempWeapon.body = body
 		return tempWeapon
 
-var flashes = {
+var flashes: = {
 	"light_flash" : preload("res://scenes/Bullet_Adjacent/bullet_flash.tscn").instantiate().init(1, Color.hex(0xc88834FF), .01, .1, true),
 	"medium_flash" : preload("res://scenes/Bullet_Adjacent/bullet_flash.tscn").instantiate().init(2, Color.hex(0xc88834FF), .01, .3, true)
 }
-var weapons = {
+var weapons := {
 	#reload, damage, projectile_count, bullet, type, accuracy,size_level, area_of_effect, bullet_flash
 	"bolter": Weapon.new(.5, 5, 1,
 		preload("res://scenes/Bullet_Adjacent/bullet_simple_small.tscn"), 
@@ -220,7 +220,7 @@ var weapons = {
 		175,flashes["light_flash"]),
 }
 
-var bodies = {
+var bodies: = {
 	"strider_1":{
 		sprite = preload("res://assets/bodies/strider_body_1_frame.tres"),
 		armor=5,
@@ -275,7 +275,7 @@ var bodies = {
 		description = "the roamer class body",
 	},
 }
-var legs = {
+var legs: = {
 	"strider_1": {
 		move_type = "Mech",
 		speed = 500,
@@ -348,7 +348,7 @@ var legs = {
 		description = "the roamer class legs",
 	},
 }
-var control_type = {
+var control_type := {
 	"Mech" : {
 		collision_track_legs = false,
 		wobbles = true, 
@@ -365,7 +365,7 @@ var control_type = {
 		turns = true, 
 	}
 }
-func _process(_delta):
+func _process(_delta:float)->void:
 	if Engine.is_editor_hint():
 		if(Reload):
 			Reload=false

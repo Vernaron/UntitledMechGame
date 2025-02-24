@@ -1,14 +1,14 @@
 extends Node2D
 
 var target : Node2D = null
-var saves = {}
-var active_save_name = ""
-var active_save_data = {}
+var saves := {}
+var active_save_name := ""
+var active_save_data := {}
 
-var progress = {
+var progress := {
 	
 }
-var default_save = {
+var default_save := {
 	"save_ver":1.0,
 	"owned_bodies":[["strider_1",1]],
 	"owned_legs":[["strider_1", 1]],
@@ -29,8 +29,8 @@ var default_save = {
 	"active_main_quest":[],
 	"active_side_quest":[],
 }
-var settings = {}
-var default_settings = {
+var settings := {}
+var default_settings := {
 	"intensity":1.0,
 	"flashing":1.0,
 	"particles": 1.0,
@@ -42,27 +42,27 @@ var default_settings = {
 func get_number_in_inventory(equipment_name : String, equipment_type : String)->int:
 	var finalval : int = 0
 	if equipment_type.find("Weapon") !=-1:
-		for i in active_save_data["owned_weapons"]:
+		for i:Array in active_save_data["owned_weapons"]:
 			if i[0]==equipment_name:
 				finalval+=i[1]
 	elif equipment_type == "Body":
-		for i in active_save_data["owned_bodies"]:
+		for i:Array in active_save_data["owned_bodies"]:
 			if i[0]==equipment_name:
 				finalval+=i[1]
 	else:
-		for i in active_save_data["owned_legs"]:
+		for i:Array in active_save_data["owned_legs"]:
 			if i[0]==equipment_name:
 				finalval+=i[1]
 	return finalval
-func readSettings(default : bool):
+func readSettings(default : bool)->void:
 	settings = readFile("settings", default_settings, default)
 	Signals.SettingsChange.emit()
-func get_saves(default : bool):
-	for save_name in settings["save_files"]:
+func get_saves(default : bool)->void:
+	for save_name:String in settings["save_files"]:
 		saves[save_name] = readFile(save_name, default_save, default)
 	active_save_name = settings["last_active_save"]
 	active_save_data = saves[settings["last_active_save"]] 
-func switch(_save_name):
+func switch(_save_name:String)->void:
 	if saves[_save_name] != null:
 		active_save_name = _save_name
 		active_save_data = saves[_save_name]
@@ -70,34 +70,34 @@ func switch(_save_name):
 		active_save_name = _save_name
 		active_save_data = default_save
 		saves[_save_name] = default_save
-func save_player():
+func save_player()->void:
 	saves[active_save_name] = active_save_data
 	save_to_file()
-func save_to_file():
-	for save_name in saves.keys():
+func save_to_file()->void:
+	for save_name:String in saves.keys():
 		writeFile(save_name, saves[save_name])
 func readFile(filename:String, default:Dictionary, using_default : bool)->Variant : 
-	var filepath = "user://"+filename+".data"
+	var filepath := "user://"+filename+".data"
 	if(FileAccess.file_exists(filepath)&&!using_default):
 		return JSON.parse_string(FileAccess.open(filepath,FileAccess.READ).get_line())
 	else:
 		writeFile(filename, default)
 		return default 
 func writeFile(filename:String, value:Dictionary)->void:
-	var filepath = "user://"+filename+".data"
+	var filepath := "user://"+filename+".data"
 	FileAccess.open(filepath, FileAccess.WRITE).store_string(
 			JSON.stringify(value))
-func get_active_weapons():
-	var temp_arr = []
-	for weapon in PlayerInfo.active_save_data["active_weapons"]:
+func get_active_weapons()->Array:
+	var temp_arr := []
+	for weapon:String in PlayerInfo.active_save_data["active_weapons"]:
 		if weapon!="":
 			temp_arr.push_back(ItemData.weapons[weapon])
 	return temp_arr
-func get_active_legs():
+func get_active_legs()->Dictionary:
 	return ItemData.legs[PlayerInfo.active_save_data["active_legs"]]
-func get_active_body():
+func get_active_body()->Dictionary:
 	return ItemData.bodies[PlayerInfo.active_save_data["active_body"]]
-func collect_drop(item : String, number : int):
+func collect_drop(item : String, _number : int)->void:
 	if(item.find("weapon_")!=-1):
 		item = item.substr(7)
 		add_or_append(active_save_data["owned_weapons"], item)
@@ -110,22 +110,22 @@ func collect_drop(item : String, number : int):
 	else:
 		register_new_material(item)
 		add_or_append(active_save_data["materials"], item)
-func subtract_from_array(array_ref:Array, value:String):
-	for n in array_ref:
+func subtract_from_array(array_ref:Array, value:String)->void:
+	for n:Array in array_ref:
 		if n[0]==value:
 			n[1]-=1
 			if n[1]==0:
 				array_ref.remove_at(array_ref.find(n))
 			
-func add_or_append(array_ref:Array, value : String):
-	var found = false
-	for n in array_ref:
+func add_or_append(array_ref:Array, value : String)->void:
+	var found := false
+	for n :Array in array_ref:
 		if n[0]==value:
 			n[1]+=1
 			found=true
 			break
 	if !found:
 		array_ref.push_back([value, 1])
-func register_new_material(obj:String):
+func register_new_material(obj:String)->void:
 	if active_save_data["found_materials"].find(obj)==-1:
 		active_save_data["found_materials"].push_back(obj)

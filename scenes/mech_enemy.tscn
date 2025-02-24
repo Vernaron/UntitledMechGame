@@ -107,7 +107,12 @@ remote_path = NodePath("../HealthNode")
 update_rotation = false
 update_scale = false
 
+[node name="retarget" type="Timer" parent="."]
+wait_time = 0.1
+autostart = true
+
 [connection signal="update_health" from="." to="HealthNode/MiniHealthBar" method="_on_legs_update_health"]
 [connection signal="body_entered" from="target_detector" to="." method="_on_target_detector_body_entered"]
 [connection signal="body_exited" from="target_detector" to="." method="_on_target_detector_body_exited"]
 [connection signal="timeout" from="pick_target" to="." method="_on_pick_target_timeout"]
+[connection signal="timeout" from="retarget" to="." method="setTarget"]

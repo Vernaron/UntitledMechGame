@@ -7,10 +7,10 @@ func _ready() -> void:
 	#Signals.change_inventory_type.connect(set_index_dictionary)
 	pass
 
-func update_details(obj:String):
+func update_details(obj:String)->void:
 	$Stats.text = ItemData.get_description(obj, current_type)
 	$Visual/Object.sprite_frames = ItemData.get_image(obj, current_type)
-func set_index_dictionary(obj: String):
+func set_index_dictionary(obj: String)->void:
 	if obj.find("Weapon")!=-1:
 		current_type = "Weapon"
 	else:

@@ -26,6 +26,7 @@ QuestData="*res://scripts/Globals/Quest_Data.gd"
 [debug]
 
 gdscript/warnings/shadowed_variable=2
+gdscript/warnings/untyped_declaration=2
 
 [display]
 

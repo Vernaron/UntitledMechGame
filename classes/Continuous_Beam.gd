@@ -1,15 +1,15 @@
 extends Damage_Dealer
 class_name Beam
-var target_hit = {}
-var body
-var accuracy_rad
-var rotation_offset = 0
-var rotation_offset_accel = 0
-var offset
-func _ready_custom():
+var target_hit :Object= null
+var body :Body
+var accuracy_rad:float
+var rotation_offset :float= 0
+var rotation_offset_accel :float= 0
+var offset:Vector2
+func _ready_custom()->void:
 	$ray_1.position.x = -aoe/2
 	$ray_2.position.x = aoe/2
-func _process(_delta):
+func _process(_delta:float)->void:
 	if(!(is_instance_valid(body))):
 		queue_free()
 		return
@@ -38,7 +38,7 @@ func _process(_delta):
 	else:
 		final_position = global_position+Vector2(0, -4000).rotated(rotation)
 	
-func _physics_process(_delta):
+func _physics_process(_delta:float)->void:
 	if(randf()*accuracy_rad - accuracy_rad/2> rotation_offset):
 		rotation_offset_accel= clamp(rotation_offset_accel+.2, -2, 2)
 		if rotation_offset >= accuracy_rad/2:rotation_offset_accel=-1
@@ -58,7 +58,7 @@ func _physics_process(_delta):
 	
 
 	
-func _set_collide(collide : int, _is_colliding: bool):
+func _set_collide(collide : int, _is_colliding: bool)->void:
 	target = collide
 	$ray_1.set_collision_mask_value(collide, true)
 	$ray_2.set_collision_mask_value(collide, true)

@@ -5,11 +5,11 @@ var next : String = ""
 var curr_time : float =0
 var done : bool = true
 # Called when the node enters the scene tree for the first time.
-func process_text(thetext : String):
+func process_text(thetext : String)->void:
 	print(thetext)
 	buffer = thetext
 	text = ""
-func accelerate():
+func accelerate()->void:
 	if buffer!="":
 		text+=buffer
 		buffer=""

@@ -2,17 +2,17 @@ extends Legs
 @export var drops_loot : bool = true
 var valid_targets : Array[Node2D] = []
 var curr_type : ItemData.Loadouts = ItemData.Loadouts.Strider
-var loot_res = preload("res://scenes/LootCollectable.tscn")
-var death_explosion = preload("res://assets/effects/explosion_normal.tscn")
+var loot_res := preload("res://scenes/LootCollectable.tscn")
+var death_explosion := preload("res://assets/effects/explosion_normal.tscn")
 var target : Node2D = null
 signal update_health
-@onready var navrid = get_world_2d().get_navigation_map()
-var currPath = [Vector2.ZERO,Vector2.ZERO,Vector2.ZERO]
+@onready var navrid := get_world_2d().get_navigation_map()
+var currPath: = [Vector2.ZERO,Vector2.ZERO,Vector2.ZERO]
 @export var attention_span : float
 @export var swap_time: float
 var time_lost_vision:float=0
 var time_gained_vision:float = 0
-var super_angle = angle
+var super_angle := angle
 enum pathing{direct=0, nav=1}
 var path_type :pathing=pathing.direct
 var path_update:int = 0
@@ -20,9 +20,9 @@ var navAngle:float = 0
 var angleOffset:float = 0
 var distOffset : float = 0
 var wallOffset : float = 0
-@export var move_range=2000
+@export var move_range:=2000
 var angleOffsetCooldown:float = 0
-var dropTables = {
+var dropTables := {
 	ItemData.Loadouts.Strider:{
 		"materialChance" : 0.7,
 		"equipmentChance":0.2,
@@ -96,21 +96,47 @@ var dropTables = {
 	}
 	
 }
-var totalDrops = []
-func _ready_custom():
-	Signals.retarget.connect(setTarget)	
-func setTarget():
+class behaviors:
+	var orbit_distance : int = 100 #pixels
+	var aggression : int =5
+	var target_update : float = .1
+	var direction_update_time : float = 3.0
+	#states whether the mech orbits its target or 
+	#moves between predesignated points
+	var picks_points : bool = false
+	var has_follow_target : bool = false
+var loadout_behaviors := {
+	ItemData.Loadouts.Strider:{
+		"orbit-distance" : 1,
+	},
+	ItemData.Loadouts.Bulwark:{
+		
+	},
+	ItemData.Loadouts.SmallTank:{
+		
+	},
+	ItemData.Loadouts.SmallHeli:{
+		
+	},
+	ItemData.Loadouts.Roamer:{
+		
+	},
+}
+var totalDrops := []
+func _ready_custom()->void:
+	pass#	Signals.retarget.connect(setTarget)	
+func setTarget()->void:
 	if target!=null&&path_type==pathing.nav&&path_update==0&&\
 		global_position.distance_to(target.global_position)<move_range\
 		&&get_parent().process_mode!=Node.PROCESS_MODE_DISABLED: 
 		calc_path()
 	path_update=(path_update+1)%3
-func calc_path():
+func calc_path()->void:
 	if target!=null:
 		currPath = NavigationServer2D.map_get_path(navrid, global_position, target.global_position, false)
 		navAngle=currPath[1].angle_to_point(currPath[0])		
 	#
-func _construct_custom():
+func _construct_custom()->void:
 	match(curr_type):
 		ItemData.Loadouts.Strider:
 			set_current_body(ItemData.bodies["strider_1"])
@@ -135,11 +161,11 @@ func _construct_custom():
 	update_health.emit()
 	
 	
-func set_type(_type: ItemData.Loadouts):
+func set_type(_type: ItemData.Loadouts)->void:
 	curr_type = _type
 	_construct_custom()
 
-func _physics_process_custom(delta):
+func _physics_process_custom(delta:float)->void:
 	angleOffsetCooldown-=delta
 	
 	if(angleOffsetCooldown<=0):
@@ -172,13 +198,13 @@ func _physics_process_custom(delta):
 			distOffset*=.8
 	else:
 		is_moving = false
-func _get_intended_angle():
-	var tempAngle=0
-	var predictiveoffset = 0
+func _get_intended_angle()->void:
+	var tempAngle:float=0
+	#var predictiveoffset:= 0
 	
 	if(path_type==pathing.direct):
-		var direction= position.direction_to(target.position)
-		var farDistMod = 1
+		var direction:= position.direction_to(target.position)
+		var farDistMod := 1
 		if(position.distance_to(target.position) > move_range/1.5||$collChecker.is_colliding()):
 			
 			farDistMod = 4
@@ -193,58 +219,59 @@ func _get_intended_angle():
 	#if $collChecker.is_colliding():
 	#	predictiveoffset = PI	
 	angle = tempAngle
-func _take_damage(damage, location=null, bullet_spark=false, laser_spark=false):
+func _take_damage(damage:float, location:Array=[], bullet_spark:=false, laser_spark:=false)->void:
 	damage_inflict(damage)
 	resolve_particles(location, bullet_spark, laser_spark, damage)
 	Signals.screen_shake.emit(damage/2, .2)
 	update_health.emit()
-func _on_kill():
+func _on_kill()->void:
 	if drops_loot:
 		roll_drops()
-		for n in totalDrops:
-			var loot = loot_res.instantiate()
+		for n:Array in totalDrops:
+			var loot: = loot_res.instantiate()
+			print(n)
 			loot.setval(n[0], n[1])
 			loot.position = global_position
 			Signals.spawn_root.emit(loot)
-	var temp_explosion = death_explosion.instantiate()
+	var temp_explosion := death_explosion.instantiate()
 	temp_explosion.position = global_position
 	Signals.spawn_root.emit(temp_explosion)
 	Signals.screen_shake.emit(5,.2)
 	queue_free()
-func add_or_append(array_ref:Array, value : String):
-	var found = false
-	for n in array_ref:
+func add_or_append(array_ref:Array, value : String)->void:
+	var found := false
+	for n:Array in array_ref:
 		if n[0]==value:
 			n[1]+=1
 			found=true
 			break
 	if !found:
 		array_ref.push_back([value, 1])
-func roll_drops():
-	var drops = dropTables[curr_type]
+func roll_drops()->void:
+	var drops:Dictionary = dropTables[curr_type]
 	for i in range(0, 1+randi()%4):
-		var dropType = randf()
+		var dropType: = randf()
 		if(dropType<drops["materialChance"]):
-			var totalnum =0
-			for n in drops["materials"]:
-				var obj = drops["materials"][n]
+			var totalnum :float=0
+			for n:String in drops["materials"]:
+				var obj:WeightedDrops = drops["materials"][n]
 				totalnum+=obj.chance
-			var selector = randf()*totalnum
-			var curr_val = 0
-			for n in drops["materials"]:
-				var obj = drops["materials"][n]
+			var selector := randf()*totalnum
+			var curr_val :float= 0
+			for n:String in drops["materials"]:
+				var obj :WeightedDrops= drops["materials"][n]
 				curr_val+=obj.chance
 				if curr_val>=selector:
 					totalDrops.push_back([obj.name, obj.get_random_amount()])
 					break
 		elif(dropType<drops["materialChance"]+drops["equipmentChance"]):
-			var totalnum =0
-			for n in drops["equipment"]:
+			var totalnum :=0
+			for n:String in drops["equipment"]:
 				totalnum+=drops["equipment"][n].chance
-			var selector = randf()*totalnum
-			var curr_val = 0
-			for n in drops["equipment"]:
-				var obj = drops["equipment"][n]
+			var selector := randf()*totalnum
+			var curr_val :float= 0
+			for n:String in drops["equipment"]:
+				var obj :WeightedDrops= drops["equipment"][n]
 				curr_val+=obj.chance
 				if curr_val>=selector:
 					totalDrops.push_back([obj.name, obj.get_random_amount()])

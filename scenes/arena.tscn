@@ -38,7 +38,6 @@ isCombatZone = true
 [node name="Timer" type="Timer" parent="."]
 process_callback = 0
 wait_time = 0.1
-autostart = true
 script = ExtResource("10_qmkxr")
 
 [node name="mainSpawnTimer" type="Timer" parent="."]

@@ -4,26 +4,26 @@ var has_exited : bool = true
 var first_exited : bool = false
 @export var num_levels : int
 # Called when the node enters the scene tree for the first time.
-@onready var list_of_levels = []
+@onready var list_of_levels := []
 @export var level_colors : Array[Color] = []
-var ally_res = preload("res://scenes/mech_ally.tscn")
-func _ready():
+var ally_res := preload("res://scenes/mech_ally.tscn")
+func _ready()->void:
 	for n in range(0, num_levels):
 		list_of_levels.push_back(get_node("level_"+str(n)))
 	Signals.spawn_root.connect(spawn)
 	Signals.ascend.connect(ascend)
 	Signals.descend.connect(descend)
 	Signals.stair_exited.connect(stair_exited)
-	var temp_ally = ally_res.instantiate()
+	var temp_ally := ally_res.instantiate()
 	temp_ally.set_type(ItemData.Loadouts.Strider)
 	temp_ally.construct("Ally")
 	temp_ally.position = Vector2(848, -160)
 	spawn(temp_ally)
 	#remove_child(list_of_levels[1])
 	#list_of_levels[1].process_mode = PROCESS_MODE_DISABLED
-func spawn(node):
+func spawn(node:Node2D)->void:
 	list_of_levels[current_level].add_child(node)
-func ascend(teleportPoint:Vector2):
+func ascend(teleportPoint:Vector2)->void:
 	if(has_exited):
 		
 		has_exited=false
@@ -35,7 +35,7 @@ func ascend(teleportPoint:Vector2):
 		Signals.shift_background_color.emit(level_colors[current_level])
 		
 		
-func descend(teleportPoint:Vector2):
+func descend(teleportPoint:Vector2)->void:
 	if(has_exited):
 		has_exited=false
 		first_exited = false
@@ -45,12 +45,12 @@ func descend(teleportPoint:Vector2):
 		Signals.teleport_player.emit(teleportPoint)
 
 		Signals.shift_background_color.emit(level_colors[current_level])
-func stair_exited():
+func stair_exited()->void:
 	if(first_exited):
 		has_exited=true
 	else:
 		first_exited = true
-func setMainQuest(_quest : String):
+func setMainQuest(_quest : String)->void:
 	pass
-func setSubQuests(_quest : String):
+func setSubQuests(_quest : String)->void:
 	pass

@@ -1,7 +1,7 @@
 extends Node
 class mat:
 	extends Resource
-	var materials = {
+	var materials := {
 		"screws":"Screws",
 		"plates":"Plates"
 	}
@@ -10,7 +10,7 @@ class mat:
 	var disp_name : String = ""
 	var count : int =0
 	var is_material : bool = true
-	func _init(_res_name: String, _count:int, _res_type : String = "", suffix : String = ""):
+	func _init(_res_name: String, _count:int, _res_type : String = "", suffix : String = "")->void:
 		res_name = _res_name
 		res_type = _res_type
 		count = _count
@@ -19,7 +19,7 @@ class mat:
 			disp_name = materials[_res_name]
 		else:
 			disp_name = ItemData.get_display_name(res_name, res_type) + suffix
-	func subtract_from_inventory():
+	func subtract_from_inventory()->void:
 		for x in range(0, count):
 			if(is_material):	
 				PlayerInfo.subtract_from_array(PlayerInfo.active_save_data["materials"], res_name)
@@ -37,12 +37,12 @@ class CraftingRecipe:
 	var type : String = ""
 	var vis_name : String = ""
 	var recipe : Array[mat] = []
-	func _init(_name : String, _type : String, _vis_name : String, _recipe : Array[mat]):
+	func _init(_name : String, _type : String, _vis_name : String, _recipe : Array[mat])->void:
 		res_name = _name
 		type = _type
 		vis_name = _vis_name
 		recipe = _recipe
-	func subtract_materials_from_storage():
+	func subtract_materials_from_storage()->void:
 		for n in recipe:
 			n.subtract_from_inventory()
 var recipes : Array[CraftingRecipe] = [

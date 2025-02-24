@@ -2,20 +2,20 @@ extends Node2D
 class_name Damage_Dealer
 enum Team{Enemy, Ally, Both}
 var team : int
-@export var DAMAGE = 1
+@export var DAMAGE :float= 1
 var velocity : Vector2
 var final_position : Vector2 = Vector2.ZERO
 var target : int
-var enemy_coll
+var enemy_coll : Object
 var aoe : float
-var origin = Vector2.ZERO
+var origin := Vector2.ZERO
 # Called when the node enters the scene tree for the first time.
-func _ready():
+func _ready()->void:
 	origin = global_position
 	
 	_ready_custom()
 	visible = true
-func set_team(_team : int):
+func set_team(_team : int)->void:
 	team = _team
 	if team == 0||team==2:
 		_set_collide(3, true)
@@ -23,13 +23,13 @@ func set_team(_team : int):
 		_set_collide(1, true)
 	_team_set()
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(_delta):
+func _process(_delta:float)->void:
 	pass
-func deal_damage(_damage, _target, location=null, bullet_spark=false, laser_spark=false):
+func deal_damage(_damage:float, _target:Node2D, location:Array, bullet_spark:=false, laser_spark:=false)->void:
 	_target._take_damage(_damage , location, bullet_spark, laser_spark)
-func _set_collide(_number : int,_is_colliding : bool):
+func _set_collide(_number : int,_is_colliding : bool)->void:
 	pass
-func _ready_custom():
+func _ready_custom()->void:
 	pass
-func _team_set():
+func _team_set()->void:
 	pass

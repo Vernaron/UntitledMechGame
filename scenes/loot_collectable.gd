@@ -3,11 +3,11 @@ var type: String = ""
 var number : int = 0
 var velocity : Vector2 = Vector2.ZERO
 var collecting : bool = false
-var acceleration = -1
+var acceleration :float= -1
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	velocity = Vector2(0, 4000).rotated(2*PI*randf()) * (.7+.3*randf())
-func setval(_type, _number):
+func setval(_type:String, _number:int)->void:
 	type = _type
 	number = _number
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -24,12 +24,14 @@ func _process(delta: float) -> void:
 
 
 
-func _on_body_entered(body: Node2D) -> void:
+func _on_body_entered(_body: Node2D) -> void:
+	
 	if(!collecting):
 		velocity = Vector2.ZERO
 
 
-func _on_area_entered(area: Area2D) -> void:
+func _on_area_entered(_area: Area2D) -> void:
+	print("Ping")
 	if(!collecting):
 		collecting = true
 		set_collision_mask_value(20, false)

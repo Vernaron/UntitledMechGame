@@ -14,7 +14,7 @@ class blurb:
 	var highlighted : String = "both" #left right both neither
 	var text : String = ""
 	var nextblurb : String = ""
-	func _init(_left_speaker, _right_speaker, _highlighted,_left_name,_right_name, _text, _nextblurb = ""):
+	func _init(_left_speaker:String, _right_speaker:String, _highlighted:String,_left_name:String,_right_name:String, _text:String, _nextblurb := "")->void:
 		left_speaker = _left_speaker
 		right_speaker = _right_speaker
 		highlighted = _highlighted
@@ -22,13 +22,13 @@ class blurb:
 		right_name = _right_name
 		text = _text
 		nextblurb = _nextblurb
-var portraits = {
+var portraits := {
 	"":null,
 	"generic_black": preload("res://assets/portraits/generic_portrait.png"),
 	"generic_grey" : preload("res://assets/portraits/generic_portrait_grey.png"),
 	"generic_white": preload("res://assets/portraits/generic_portrait_white.png"),
 }
-var dialogues = {
+var dialogues := {
 	"":blurb.new("","","neither","" ,"",""),
 	"test":blurb.new("generic_black", "generic_white", "right","The Left One","The Right One", "asngajgggajgjangjdgdgalgjgagjjjjhhh", "test2"),
 	"test2":blurb.new("generic_grey", "", "left","Spooky Figure","", "HA you thought it would be just one didnt you"),
@@ -40,16 +40,16 @@ func _ready() -> void:
 	queue_dialogue("test")
 	queue_dialogue("boom")
 
-func queue_dialogue(blurb_name : String):
+func queue_dialogue(blurb_name : String)->void:
 	if !isActive:
 		process_dialogue(blurb_name)
 	else:
 		blurb_queue.push_back(blurb_name)
-func process_dialogue(blurb_name : String):
+func process_dialogue(blurb_name : String)->void:
 	isActive=true
 	visible = true
 	countdown = 5
-	var currblurb = dialogues[blurb_name]
+	var currblurb : blurb= dialogues[blurb_name]
 	curr_name = blurb_name
 	next_name = currblurb.nextblurb
 	match(currblurb.highlighted):
@@ -87,7 +87,7 @@ func process_dialogue(blurb_name : String):
 	$Text.process_text(currblurb.text)
 	
 	
-func _process(delta):
+func _process(delta:float)->void:
 	if $Text.done&&isActive:
 		countdown-=delta
 	if countdown<=0||(Input.is_action_just_pressed("dialogue_next")&&isActive):
