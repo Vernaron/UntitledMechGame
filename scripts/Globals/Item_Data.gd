@@ -224,7 +224,7 @@ var bodies: = {
 	"strider_1":{
 		sprite = preload("res://assets/bodies/strider_body_1_frame.tres"),
 		armor=5,
-		turn_speed = 1,
+		turn_speed = .7,
 		collision_array_points=PackedVector2Array([Vector2(0, -52),Vector2(-28, -4),Vector2(-60, -4),\
 			Vector2(-60, 36),Vector2(0, 44),Vector2(60, 35),Vector2(60, -3),Vector2(28, -4)]),
 		hardpoints=[	
@@ -248,7 +248,7 @@ var bodies: = {
 	"tank_1":{
 		sprite = preload("res://assets/bodies/tank_1_turret_frame.tres"),
 		armor=2,
-		turn_speed = 2,
+		turn_speed = 1,
 		collision_array_points = PackedVector2Array([Vector2(-16,-20),Vector2(-16,24),Vector2(16,24),Vector2(16,-20),]),
 		hardpoints = [[Vector2(0, -17), 1],nullhardpoint,nullhardpoint,nullhardpoint,nullhardpoint],
 		display_name = "Tank",
@@ -257,7 +257,7 @@ var bodies: = {
 	"heli_1":{
 		sprite = preload("res://assets/HeliSmall.tres"),
 		armor = 1,
-		turn_speed = 1,
+		turn_speed = .8,
 		collision_array_points = PackedVector2Array([Vector2(0,-26),Vector2(-35,0),Vector2(-4,19),Vector2(-12,48),Vector2(12,49),Vector2(5,20),Vector2(37,0),]),
 		hardpoints = [[Vector2(0, -20), 1],nullhardpoint,nullhardpoint,nullhardpoint,nullhardpoint],
 		display_name = "Heli",
@@ -266,7 +266,7 @@ var bodies: = {
 	"roamer_1":{
 		sprite = preload("res://assets/bodies/roamer_body_1_frame.tres"),
 		armor=3,
-		turn_speed = 2,
+		turn_speed = 1,
 		collision_array_points=PackedVector2Array([Vector2(-9,-42),Vector2(-23,-35),Vector2(-32,-15),Vector2(-32,24),Vector2(29,25),Vector2(33,19),Vector2(33,-23),Vector2(9,-25),Vector2(7,-36),]),
 		hardpoints=[	
 			[Vector2(21, -23), 1],nullhardpoint,	nullhardpoint,nullhardpoint,nullhardpoint
@@ -278,13 +278,13 @@ var bodies: = {
 var legs: = {
 	"strider_1": {
 		move_type = "Mech",
-		speed = 500,
+		speed = 300,
 		acceleration = .7,
 		dash_time=.1,
 		dash_cooldown=3,
 		dash_speed=300,
 		dash_type=ItemData.DASH.BURST,
-		turn_radius=.3,
+		turn_radius=.25,
 		health = 15,
 		sprite = preload("res://assets/Strider_Legs_1.tres"),
 		display_name = "Strider",
@@ -320,7 +320,7 @@ var legs: = {
 	},
 	"heli_1":{
 		move_type = "Helicopter",
-		speed= 500,
+		speed= 300,
 		acceleration=0.5,
 		dash_time=0,
 		dash_cooldown=0,
@@ -335,13 +335,13 @@ var legs: = {
 	},
 	"roamer_1": {
 		move_type = "Mech",
-		speed = 600,
+		speed = 400,
 		acceleration = .8,
 		dash_time=.1,
 		dash_cooldown=3,
 		dash_speed=200,
 		dash_type=ItemData.DASH.BURST,
-		turn_radius=.4,
+		turn_radius=.3,
 		health = 10,
 		sprite = preload("res://assets/Roamer_Legs_1.tres"),
 		display_name = "Roamer",

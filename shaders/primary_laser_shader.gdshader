@@ -57,8 +57,8 @@ vec4 get_color(vec2 _UV, vec2 offset){
 			1.0-size_1.y*0.5*(1.0+scale_1*sin(PI*(offset_1+(UV_x+TIME*speed_1)/size_1.x)))>(UV_off.y) //right(1)
 		){
 			return vec4(rgb_1.r,rgb_1.g,rgb_1.b,1);
-		}	
-	
+		}
+
 	return vec4(rgb_1.r,rgb_1.g,rgb_1.b,0);
 	}
 void fragment() {

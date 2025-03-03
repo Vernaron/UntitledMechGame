@@ -98,12 +98,12 @@ func get_dash_vector(delta:float)->Vector2:
 	var dash_boost := Vector2.ZERO
 	match (current_dash_type):
 		ItemData.DASH.BURST:
-			dash_boost = Vector2(0, -curr_dash_ratio*5) \
+			dash_boost = Vector2(0, -curr_dash_ratio*3) \
 				.rotated(angle_locked) * dash_speed
 			if(current_dash_time > 0):
 				current_dash_time-=delta
 			else:
-				curr_dash_ratio*=0.8
+				curr_dash_ratio*=.95*(1-delta)
 		ItemData.DASH.JET:
 			if(jet_button_down&&!is_on_cooldown):
 				curr_dash_ratio+=ACCELERATION * 4 * delta
