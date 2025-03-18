@@ -4,7 +4,7 @@ var target : Node2D = null
 var saves := {}
 var active_save_name := ""
 var active_save_data := {}
-
+var active_quest : QuestData.Quest = null
 var progress := {
 	
 }

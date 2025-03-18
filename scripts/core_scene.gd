@@ -10,7 +10,7 @@ func _ready()->void:
 	Signals.start_base.connect(start_base)
 	randomize()
 	PlayerInfo.readSettings(default_settings)
-	print(PlayerInfo.settings)
+#	print(PlayerInfo.settings)
 	PlayerInfo.get_saves(default_saves)
 	start_base()
 

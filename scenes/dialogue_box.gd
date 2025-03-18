@@ -37,8 +37,8 @@ var dialogues := {
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	Signals.start_dialogue.connect(queue_dialogue)
-	queue_dialogue("test")
-	queue_dialogue("boom")
+	#queue_dialogue("test")
+	#queue_dialogue("boom")
 
 func queue_dialogue(blurb_name : String)->void:
 	if !isActive:

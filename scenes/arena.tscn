@@ -29,8 +29,7 @@ defaultZoom = 0.5
 zoomShiftIntensity = 0.1
 
 [node name="CanvasModulate" type="CanvasModulate" parent="mainCamera"]
-visible = false
-color = Color(0.560784, 0.560784, 0.560784, 1)
+color = Color(0.784314, 0.784314, 0.854902, 1)
 
 [node name="Menu" parent="." instance=ExtResource("3_vwshk")]
 isCombatZone = true
@@ -48,7 +47,7 @@ script = ExtResource("11_pmnxx")
 [node name="Background" type="CanvasLayer" parent="."]
 layer = -10
 
-[node name="ColorRect" type="ColorRect" parent="Background"]
+[node name="ColorRect" type="ColorRect" parent="Background" node_paths=PackedStringArray("modulate_source")]
 show_behind_parent = true
 offset_left = -4000.0
 offset_top = -3000.0
@@ -57,6 +56,7 @@ offset_bottom = 3000.0
 mouse_filter = 2
 color = Color(0.227451, 0.227451, 0.298039, 1)
 script = ExtResource("12_o6aqm")
+modulate_source = NodePath("../../mainCamera/CanvasModulate")
 
 [node name="Foreground" type="CanvasLayer" parent="."]
 layer = 10

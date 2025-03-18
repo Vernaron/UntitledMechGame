@@ -210,14 +210,10 @@ func _get_intended_angle()->void:
 			farDistMod = 4
 		tempAngle = normalize(atan2(-direction.y, -direction.x) + 
 				((angleOffset+distOffset)/farDistMod))
-			#$collChecker.rotation=tempAngle 
 		tempAngle+=normalize(tempAngle-normalize(angle))/6
 		
 	elif(path_type==pathing.nav):
 		tempAngle=navAngle
-	
-	#if $collChecker.is_colliding():
-	#	predictiveoffset = PI	
 	angle = tempAngle
 func _take_damage(damage:float, location:Array=[], bullet_spark:=false, laser_spark:=false)->void:
 	damage_inflict(damage)
@@ -252,29 +248,29 @@ func roll_drops()->void:
 	for i in range(0, 1+randi()%4):
 		var dropType: = randf()
 		if(dropType<drops["materialChance"]):
-			var totalnum :float=0
-			for n:String in drops["materials"]:
-				var obj:WeightedDrops = drops["materials"][n]
-				totalnum+=obj.chance
-			var selector := randf()*totalnum
+			var totalchance :float=0
+			for material_key:String in drops["materials"]:
+				var material_drop:WeightedDrops = drops["materials"][material_key]
+				totalchance+=material_drop.chance
+			var selector := randf()*totalchance
 			var curr_val :float= 0
-			for n:String in drops["materials"]:
-				var obj :WeightedDrops= drops["materials"][n]
-				curr_val+=obj.chance
+			for material_key:String in drops["materials"]:
+				var material_drop :WeightedDrops= drops["materials"][material_key]
+				curr_val+=material_drop.chance
 				if curr_val>=selector:
-					totalDrops.push_back([obj.name, obj.get_random_amount()])
+					totalDrops.push_back([material_drop.name, material_drop.get_random_amount()])
 					break
 		elif(dropType<drops["materialChance"]+drops["equipmentChance"]):
-			var totalnum :=0
-			for n:String in drops["equipment"]:
-				totalnum+=drops["equipment"][n].chance
-			var selector := randf()*totalnum
+			var total_weight :=0
+			for equipment_key:String in drops["equipment"]:
+				total_weight+=drops["equipment"][equipment_key].chance
+			var selector := randf()*total_weight
 			var curr_val :float= 0
-			for n:String in drops["equipment"]:
-				var obj :WeightedDrops= drops["equipment"][n]
-				curr_val+=obj.chance
+			for equipment_key:String in drops["equipment"]:
+				var equipment_drop :WeightedDrops= drops["equipment"][equipment_key]
+				curr_val+=equipment_drop.chance
 				if curr_val>=selector:
-					totalDrops.push_back([obj.name, obj.get_random_amount()])
+					totalDrops.push_back([equipment_drop.name, equipment_drop.get_random_amount()])
 					break
 	
 

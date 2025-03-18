@@ -141,10 +141,19 @@ texture_region_size = Vector2i(64, 64)
 2:2/2 = 2
 2:2/2/flip_h = true
 2:2/3 = 3
+0:3/0 = 0
+0:3/0/physics_layer_0/polygon_0/points = PackedVector2Array(-32, -32, 32, -32, 32, 32, -32, 32)
+1:3/0 = 0
+1:3/0/physics_layer_0/polygon_0/points = PackedVector2Array(-32, -32, 32, -32, 32, 32, -32, 32)
+2:3/0 = 0
+2:3/0/physics_layer_0/polygon_0/points = PackedVector2Array(-32, -32, 32, -32, 32, 32, -32, 32)
+0:4/0 = 0
 
 [resource]
 tile_size = Vector2i(64, 64)
 occlusion_layer_0/light_mask = 1
 physics_layer_0/collision_layer = 32768
 physics_layer_0/physics_material = SubResource("PhysicsMaterial_gc5w5")
+custom_data_layer_0/name = ""
+custom_data_layer_0/type = 1
 sources/0 = SubResource("TileSetAtlasSource_w6gr0")
