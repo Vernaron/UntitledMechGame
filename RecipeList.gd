@@ -64,27 +64,30 @@ func _on_item_activated(index: int) -> void:
 	
 func craft()->void:
 	var isCraftable := true
-	for obj in active_recipe.recipe:
-		var res_found := false
-		#var res_num :int= 0
-		var less_than:=true
-		if obj.is_material:
-			for n :Array in PlayerInfo.active_save_data["materials"]:
-				if n[0]==obj.res_name:
-					res_found=true
-					if n[1]>=obj.count:
-						less_than=false
-					break
-		else:
-			res_found=true
-			if PlayerInfo.get_number_in_inventory(obj.res_name, obj.res_type)>=obj.count:
-				print("there")
-				less_than=false
-		if(!res_found||less_than):
-			print("here")
-			isCraftable=false
-			break
-		print(isCraftable)
+	if active_recipe!=null:
+		for obj in active_recipe.recipe:
+			var res_found := false
+			#var res_num :int= 0
+			var less_than:=true
+			if obj.is_material:
+				for n :Array in PlayerInfo.active_save_data["materials"]:
+					if n[0]==obj.res_name:
+						res_found=true
+						if n[1]>=obj.count:
+							less_than=false
+						break
+			else:
+				res_found=true
+				if PlayerInfo.get_number_in_inventory(obj.res_name, obj.res_type)>=obj.count:
+					print("there")
+					less_than=false
+			if(!res_found||less_than):
+				print("here")
+				isCraftable=false
+				break
+			print(isCraftable)
+	else:
+		isCraftable = false
 	if isCraftable:
 		
 		active_recipe.subtract_materials_from_storage()

@@ -14,6 +14,7 @@ func _ready()->void:
 	Signals.ascend.connect(ascend)
 	Signals.descend.connect(descend)
 	Signals.stair_exited.connect(stair_exited)
+	Signals.change_layer_background_color.connect(update_background_color)
 	var temp_ally := ally_res.instantiate()
 	temp_ally.set_type(ItemData.Loadouts.Strider)
 	temp_ally.construct("Ally")
@@ -23,6 +24,9 @@ func _ready()->void:
 	#list_of_levels[1].process_mode = PROCESS_MODE_DISABLED
 func spawn(node:Node2D)->void:
 	list_of_levels[current_level].add_child(node)
+func update_background_color(newColor : Color)->void:
+	level_colors[current_level-1] = newColor;
+	Signals.shift_background_color.emit(newColor)
 func ascend(teleportPoint:Vector2)->void:
 	if(has_exited):
 		

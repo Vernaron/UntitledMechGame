@@ -6,7 +6,12 @@ enum Weapon_Type{Bullet, Laser, Missile, Grenade}
 enum Loadouts{Strider, Bulwark, SmallTank, SmallHeli, Roamer}
 enum DASH{BURST, JET}
 var nullhardpoint:Array = [Vector2.ZERO, -1]
-
+class Tag:
+	var color : Color
+	var tag_name : String
+	var description : String 
+	var display_name : String
+	pass
 func get_display_name(equip_name : String, equip_type : String)->String:
 	print(equip_name)
 	print(equip_type)
@@ -64,6 +69,7 @@ class Weapon:
 		 _area_of_effect:float = 0.0,
 		 flash:Node2D = null
 		)->void:
+		if Engine.is_editor_hint(): return
 		projectile_count = _projectile_count
 		reload = _reload
 		damage = _damage

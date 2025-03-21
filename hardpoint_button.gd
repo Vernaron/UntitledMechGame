@@ -11,7 +11,7 @@ func _ready() -> void:
 func was_pressed()->void:
 	wasPressed=true
 	Signals.change_inventory_type.emit("Weapon_"+str(number))
-func toggleoff(_unused:bool)->void:
+func toggleoff(_unused:String)->void:
 	if wasPressed:
 		button_pressed = true
 		wasPressed = false

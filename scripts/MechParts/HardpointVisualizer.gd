@@ -28,9 +28,8 @@ func _process(delta:float)->void:
 			notify_property_list_changed()
 			var tempLocations := ""
 			for node in get_children():
-				tempLocations+="[Vector2"+str(node.position*4)+", "+ node.name.right(1)+"],"
-				
-			
+				tempLocations+="[Vector2"+str(node.position*4)+",[]],"
+
 			printer.array = get_parent().get_parent().find_child("LegCollisionPolygon").polygon
 			printer.isActive = true
 			printer._process(delta)
@@ -55,7 +54,7 @@ func _process(delta:float)->void:
 				if hardpoint[1]!=-1:
 					var hardNode := point_res.instantiate()
 					hardNode.position = hardpoint[0]/4
-					hardNode.name = "Hardpoint_" +str(num)+"_"+str(hardpoint[1]) 
+					hardNode.name = "Hardpoint_" +str(num) 
 					num+=1
 					hardpointList.push_back(hardNode)
 					
