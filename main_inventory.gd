@@ -56,11 +56,10 @@ func equip()->void:
 			Signals.change_inventory_type.emit(target_type)
 			PlayerInfo.save_player()
 func equip_weapon(weapon_slot:int, value:String)->void:
-	var hardpoint_size : int = ItemData.bodies[PlayerInfo.active_save_data["active_body"]].hardpoints[weapon_slot][1]
-	print(hardpoint_size, " ", ItemData.weapons[value].size_level)
-	print(weapon_slot)
-	if(hardpoint_size<ItemData.weapons[value].size_level):
-		return
+	var tag_list : Array[ItemData.Tag] = ItemData.bodies[PlayerInfo.active_save_data["active_body"]].hardpoints[weapon_slot][1] 
+	for tag : ItemData.Tag in ItemData.weapons[value].tags:
+		if !tag.has_valid_tag(tag_list):
+			return
 	for obj : Array in PlayerInfo.active_save_data["owned_weapons"]:
 		if obj[1]>0&&obj[0]==value:
 

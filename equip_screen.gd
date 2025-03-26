@@ -17,15 +17,15 @@ func change_inventory_type(newType : String)->void:
 			$SelectedName.text = "[center] Mech Legs [/center]"
 			$Details/Visual/Object.sprite_frames = ItemData.legs[PlayerInfo.active_save_data["active_legs"]].sprite
 func resolve_hardpoint_size(number:int)->void:
-	var h_size :int= ItemData.bodies[PlayerInfo.active_save_data["active_body"]].hardpoints[number][1]
+	#var h_size :int= ItemData.bodies[PlayerInfo.active_save_data["active_body"]].hardpoints[number][1]
 	var size_class := ""
-	match(h_size):
-		1: size_class = "S"
-		2: size_class = "M"
-		3: size_class = "L"
-		4: size_class = "XL"
-		5: size_class = "XXL"
-	print(h_size)
+	#match(h_size):
+	#	1: size_class = "S"
+	#	2: size_class = "M"
+	#	3: size_class = "L"
+	#	4: size_class = "XL"
+	#	5: size_class = "XXL"
+	#print(h_size)
 	$SelectedName.text = "[center] "+size_class + " Hardpoint [/center]"
 func update_images()->void:
 

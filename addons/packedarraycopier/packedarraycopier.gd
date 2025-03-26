@@ -14,7 +14,6 @@ func _process(delta):
 		for item in array:
 			array_printable+="Vector2("+str(item[0])+","+str(item[1])+"),"
 		array_printable+="]),"
-		print(array_printable)
 		isActive = false
 func _exit_tree():
 	# Clean-up of the plugin goes here.

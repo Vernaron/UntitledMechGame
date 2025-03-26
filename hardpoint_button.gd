@@ -19,7 +19,7 @@ func toggleoff(_unused:String)->void:
 		button_pressed = false
 func update_lines()->void:
 	var current_body :Dictionary= ItemData.bodies[PlayerInfo.active_save_data["active_body"]]
-	if current_body["hardpoints"][number-1][1]==-1:
+	if current_body["hardpoints"][number-1][1]==[]:
 		visible=false
 		disabled=true
 		erase_line()
