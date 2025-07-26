@@ -54,7 +54,7 @@ func _physics_process(_delta:float)->void:
 	$tipLight.position.y = -final_position.distance_to(global_position)+5
 	if(target_hit!=null && target_hit is Legs && target_hit.get_collision_layer_value(target)==true):
 		enemy_coll = target_hit
-		if(enemy_coll!= null):deal_damage(DAMAGE * _delta, enemy_coll, [rotation-PI/2,final_position])
+		if(enemy_coll!= null):deal_damage(DAMAGE * _delta, heat_hit * _delta, enemy_coll, [rotation-PI/2,final_position])
 	
 
 	

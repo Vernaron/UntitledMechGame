@@ -11,11 +11,11 @@ var delta_buildup :float= 0
 #Hardpoint that encapsulates a weapon
 class Hardpoint:
 	var weapon : ItemData.Weapon
-	var tier : int = 0
+	var tags : Array
 	var offset: Vector2
-	func _init(_tier:int, _offset:Vector2)->void:
+	func _init(_tags:Array, _offset:Vector2)->void:
 		offset = _offset
-		tier = _tier
+		tags = _tags
 	func set_weapon(_weapon : ItemData.Weapon)->void:
 		weapon = _weapon
 	func shoot(delta:float)->void:

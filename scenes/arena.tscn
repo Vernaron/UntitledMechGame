@@ -1,13 +1,33 @@
-[gd_scene load_steps=10 format=3 uid="uid://dqnudwhs81r02"]
+[gd_scene load_steps=13 format=3 uid="uid://dqnudwhs81r02"]
 
 [ext_resource type="Script" path="res://scripts/arena.gd" id="1_dggth"]
 [ext_resource type="Script" path="res://scripts/Camera2D.gd" id="2_rbf87"]
 [ext_resource type="Script" path="res://scenes/VignetteRect.gd" id="3_eeqy0"]
 [ext_resource type="Shader" path="res://scenes/vignette.gdshader" id="3_efgl7"]
 [ext_resource type="PackedScene" uid="uid://dewdyvvv62g8a" path="res://pauseMenu.tscn" id="3_vwshk"]
+[ext_resource type="Script" path="res://scenes/heat_gauge.gd" id="7_05dvn"]
 [ext_resource type="Script" path="res://scripts/enemy_targetter.gd" id="10_qmkxr"]
 [ext_resource type="Script" path="res://scripts/mainSpawnTimer.gd" id="11_pmnxx"]
 [ext_resource type="Script" path="res://scripts/BackgroundColor.gd" id="12_o6aqm"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8b8lb"]
+bg_color = Color(0.2, 0.2, 0.2, 1)
+border_width_left = 3
+border_width_top = 5
+border_width_right = 3
+border_width_bottom = 5
+border_color = Color(0.1, 0.1, 0.1, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+expand_margin_left = 3.0
+expand_margin_top = 5.0
+expand_margin_right = 3.0
+expand_margin_bottom = 5.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ej7gc"]
+bg_color = Color(0.289125, 0.45, 0.1575, 1)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ic3iw"]
 shader = ExtResource("3_efgl7")
@@ -60,6 +80,19 @@ modulate_source = NodePath("../../mainCamera/CanvasModulate")
 
 [node name="Foreground" type="CanvasLayer" parent="."]
 layer = 10
+
+[node name="HeatGauge" type="ProgressBar" parent="Foreground"]
+offset_left = 64.0
+offset_top = 849.0
+offset_right = 108.0
+offset_bottom = 1031.0
+theme_override_styles/background = SubResource("StyleBoxFlat_8b8lb")
+theme_override_styles/fill = SubResource("StyleBoxFlat_ej7gc")
+max_value = 1.0
+step = 0.0
+value = 0.5
+fill_mode = 3
+script = ExtResource("7_05dvn")
 
 [node name="VignetteRect" type="ColorRect" parent="Foreground"]
 z_index = -1

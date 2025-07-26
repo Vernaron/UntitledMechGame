@@ -7,6 +7,7 @@ var richochet_blast: = load("res://particles/bullet_richochet.tscn")
 var control_type : Dictionary= ItemData.control_type["Mech"]
 var wobble : bool = true
 var angle : float = 0 
+var heat : float = 0.0
 var curr_move_ratio : float= 0
 var curr_dash_ratio : float = 0
 var touching_wall:bool = false
@@ -41,6 +42,12 @@ func construct(_name := "", _current_legs := {}, _current_body := {}, _weapons_a
 	if _current_body !={}: set_current_body(_current_body)
 	if _weapons_array != []:set_weapons_from_array(_weapons_array)
 func _process(delta:float)->void:
+	if heat>1:heat=1
+	modulate.r = 1.0 + heat*2
+	if heat>0:
+		heat-=.2*delta
+		if heat<0:
+			heat=0
 	if(layer_enabled):
 		_process_custom(delta)
 func _physics_process(delta:float)->void:
@@ -175,8 +182,10 @@ func end_dash()->void:
 func set_team(_team:int)->void:
 	$Body.team=_team	
 
-func damage_inflict(damage:float)->void:
-	current_health -=damage * 20/($Body.armor + 20)
+func damage_inflict(damage:float, heat_hit : float)->void:
+	heat+=heat_hit
+	current_health -=damage * 20/($Body.armor + 20) * (1+.5*heat)
+	print(damage * 20/($Body.armor + 20) * (1+.5*heat))
 	if(current_health <= 0):
 	#	healthZero = true
 		_on_kill()
@@ -205,7 +214,7 @@ func _get_intended_angle()->void:
 	pass
 func _construct_custom()->void:
 	pass
-func _take_damage(_damage:float, _location:Array=[], _bullet_spark:=false, _laser_spark:=false)->void:
+func _take_damage(_damage:float, heat_hit : float, _location:Array=[], _bullet_spark:=false, _laser_spark:=false)->void:
 	pass
 func _on_kill()->void:
 	pass

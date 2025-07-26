@@ -51,7 +51,7 @@ func _process(delta:float)->void:
 			get_parent().get_parent().find_child("LegCollisionPolygon").notify_property_list_changed()
 			print(get_children())
 			for hardpoint : Array in itemData.bodies[active_string]["hardpoints"]:
-				if hardpoint[1]!=-1:
+				if hardpoint[1]!=[]:
 					var hardNode := point_res.instantiate()
 					hardNode.position = hardpoint[0]/4
 					hardNode.name = "Hardpoint_" +str(num) 

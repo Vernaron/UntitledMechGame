@@ -24,6 +24,6 @@ func rotation_fixed(rot:float)->float:
 	if temp < 0: return temp + 2*PI
 	return temp 
 func _hit(damage:float, currCollision:Node2D, _transform:Array, sparks:bool)->void:
-	deal_damage(damage, currCollision,_transform,sparks)
+	deal_damage(damage, heat_hit,currCollision,_transform,sparks)
 func _delete()->void:
 	queue_free()

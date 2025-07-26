@@ -18,6 +18,7 @@ func _ready()->void:
 		total_size+=n.weight
 func _spawn()->void:
 	if(active):
+		print("Spawned")
 		_spawn_enemy()
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta:float)->void:
@@ -87,5 +88,7 @@ func _spawn_enemy()->void:
 
 func _on_body_entered(_body:Node2D)->void:
 	active = true
+	print("Entered")
 func _on_body_exited(_body:Node2D)->void:
 	active = false
+	print("Exited")

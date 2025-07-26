@@ -17,7 +17,7 @@
 script = ExtResource("1_tg742")
 default_settings = true
 
-[node name="DialogueBox" type="CanvasLayer" parent="."]
+[node name="DialogueBox" type="CanvasLayer" parent="." groups=["DialogueControllers"]]
 visible = false
 script = ExtResource("2_s7jh5")
 

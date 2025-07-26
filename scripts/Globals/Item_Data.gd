@@ -60,6 +60,8 @@ class Weapon:
 	var body : Node2D
 	var reload : float
 	var damage : float
+	var heat : float
+	var heat_payload : float
 	var offset : Vector2 = Vector2.ZERO
 	var bullet : Resource
 	var projectile_count : int
@@ -75,6 +77,8 @@ class Weapon:
 	var display_name : String
 	var sprite : Resource
 	func _init(_reload : float, 
+		_heat : float,
+		_heat_payload : float,
 		_damage: float, 
 		_projectile_count : int, 
 		_bullet : Resource, 
@@ -91,6 +95,8 @@ class Weapon:
 		projectile_count = _projectile_count
 		reload = _reload
 		damage = _damage
+		heat = _heat
+		heat_payload = _heat_payload
 		bullet_flash = flash
 		bullet = _bullet
 		type = _type
@@ -117,10 +123,12 @@ class Weapon:
 			Weapon_Type.Bullet:
 				curr_reload-=delta
 				if(curr_reload<=0):
+					body.get_parent().heat+=heat
 					for num in range(0, projectile_count):
 						var temp_bullet :Damage_Dealer= bullet.instantiate()
 						temp_bullet.set_team(body.team)
 						temp_bullet.DAMAGE = damage
+						temp_bullet.heat_hit = heat_payload
 						temp_bullet.rotation = body.global_rotation + (randf()*accuracy - accuracy/2)*PI/180
 						temp_bullet.position=offset.rotated(body.global_rotation)+body.global_position
 						
@@ -136,10 +144,12 @@ class Weapon:
 			Weapon_Type.Laser:
 				if !is_firing:
 					is_firing = true
+					body.get_parent().heat+=heat*delta
 					for num in range(0, projectile_count):
 						var temp_bullet:Damage_Dealer = bullet.instantiate()
 						temp_bullet.set_team(body.team)
 						temp_bullet.DAMAGE = damage
+						temp_bullet.heat_hit = heat_payload
 						temp_bullet.rotation = body.global_rotation
 						temp_bullet.aoe = area_of_effect
 						temp_bullet.accuracy_rad = accuracy*PI/180 
@@ -150,6 +160,7 @@ class Weapon:
 						projectiles.push_back(temp_bullet)
 						Signals.spawn_root.emit(temp_bullet)
 				else:
+					body.get_parent().heat+=heat*delta
 					var accadjusted := accuracy * PI / 180
 					for i in range(0, projectiles.size()):
 						var target := randf()*2*accadjusted -accadjusted
@@ -158,12 +169,14 @@ class Weapon:
 						else:
 							projectiles[i].rotation+=accadjusted/10 * delta
 			Weapon_Type.Grenade:
+				body.get_parent().heat+=heat
 				curr_reload-=delta
 				if(curr_reload<=0):
 					for num in range(0, projectile_count):
 						var temp_bullet :Damage_Dealer= bullet.instantiate()
 						temp_bullet.set_team(body.team)
 						temp_bullet.DAMAGE = damage
+						temp_bullet.heat_hit = heat_payload
 						temp_bullet.rotation = body.global_rotation + (randf()*accuracy - accuracy/2)*PI/180
 						temp_bullet.position=offset.rotated(body.global_rotation)+body.global_position
 						temp_bullet.aoe = area_of_effect
@@ -196,7 +209,7 @@ class Weapon:
 			i-=1
 		projectiles.clear()
 	func copy()->Weapon:
-		var tempWeapon: = Weapon.new(reload, damage, projectile_count, bullet, type, accuracy, tags,description,display_name, sprite,area_of_effect, bullet_flash)
+		var tempWeapon: = Weapon.new(reload,heat,heat_payload, damage, projectile_count, bullet, type, accuracy, tags,description,display_name, sprite,area_of_effect, bullet_flash)
 		tempWeapon.offset = offset
 		tempWeapon.body = body
 		return tempWeapon
@@ -218,38 +231,38 @@ var flashes: = {
 }
 var weapons := {
 	#reload, damage, projectile_count, bullet, type, accuracy,size_level, area_of_effect, bullet_flash
-	"bolter": Weapon.new(.5, 5, 1,
+	"bolter": Weapon.new(.5, .05, 0.01,5, 1,
 		preload("res://scenes/Bullet_Adjacent/bullet_simple_small.tscn"), 
 		Weapon_Type.Bullet, 1, [tags["Medium"], tags["Cannon"]],
 		"bolter gun stuff","Bolter",preload("res://assets/BlankFrames.tres"),
 		0.0,flashes["light_flash"]),
-	"gatling": Weapon.new(.1, 1, 1, 
+	"gatling": Weapon.new(.1, .05,0.01, 1, 1, 
 		preload("res://scenes/Bullet_Adjacent/bullet_simple_tiny.tscn"), 
 		Weapon_Type.Bullet, 5, [tags["Medium"], tags["Cannon"]],
 		"Size: S\nDamage: 1\n Reload: .1s\n Accuracy: 5°\n
 		little gun go dakka","Gatling", preload("res://assets/BlankFrames.tres"),
 		0.0, flashes["light_flash"]),
-	"autocannon": Weapon.new(5, 15, 1, 
+	"autocannon": Weapon.new(5,.1,0.05, 15, 1, 
 		preload("res://scenes/Bullet_Adjacent/bullet_simple_large.tscn"), 
 		Weapon_Type.Bullet, 1, [tags["Heavy"], tags["Cannon"]],
 		"Size: M\nDamage: 15\nReload: 5s\nAccuracy:1°\n
 	big gun go boom","Autocannon",preload("res://assets/BlankFrames.tres"),
 	 0.0, flashes["medium_flash"]),
-	"laser_small": Weapon.new(-1, 2, 1, 
+	"laser_small": Weapon.new(-1,.05,0.1, 2, 1, 
 		preload("res://scenes/Bullet_Adjacent/continuous_laser_small.tscn"),
 		Weapon_Type.Laser, 2,[tags["Medium"], tags["Beam"]],
 		"little laser go bzzz","Small Laser",preload("res://assets/BlankFrames.tres"),
 		 2, flashes["light_flash"]),
-	"tank_cannon": Weapon.new(1, 3, 1, 
+	"tank_cannon": Weapon.new(1,.05,0.01, 3, 1, 
 		preload("res://scenes/Bullet_Adjacent/bullet_simple_tiny.tscn"), 
 		Weapon_Type.Bullet, 1, [tags["Medium"], tags["Cannon"]],
 		"tank gun go pew","Tank Cannon", preload("res://assets/BlankFrames.tres"),
 		0.0,flashes["light_flash"]),
-	"auto_shotgun":Weapon.new(.2,1,4,preload("res://scenes/Bullet_Adjacent/bullet_simple_small.tscn"),
+	"auto_shotgun":Weapon.new(.2,.05,0.01,1,4,preload("res://scenes/Bullet_Adjacent/bullet_simple_small.tscn"),
 		Weapon_Type.Bullet,5,[tags["Medium"], tags["Cannon"]],
 		"rapid fire auto shotgun", "Auto Shotgun",preload("res://assets/BlankFrames.tres")
 		,0,flashes["light_flash"]),
-	"thumper": Weapon.new(1, 5, 1,
+	"thumper": Weapon.new(1,.1,0.01, 5, 1,
 		preload("res://scenes/Bullet_Adjacent/bullet_explosive_small.tscn"), 
 		Weapon_Type.Grenade, 1, [tags["Medium"], tags["Explosive"]],
 		"thumper gun stuff","Thumper",preload("res://assets/BlankFrames.tres"),

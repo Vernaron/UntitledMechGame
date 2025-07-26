@@ -43,6 +43,10 @@ project/assembly_name="UntitledMechGame"
 
 shake_intensity=3.0
 
+[global_group]
+
+DialogueControllers=""
+
 [gui]
 
 theme/default_font_hinting=2

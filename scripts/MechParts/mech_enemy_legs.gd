@@ -215,8 +215,8 @@ func _get_intended_angle()->void:
 	elif(path_type==pathing.nav):
 		tempAngle=navAngle
 	angle = tempAngle
-func _take_damage(damage:float, location:Array=[], bullet_spark:=false, laser_spark:=false)->void:
-	damage_inflict(damage)
+func _take_damage(damage:float, heat_hit : float, location:Array=[], bullet_spark:=false, laser_spark:=false)->void:
+	damage_inflict(damage, heat_hit)
 	resolve_particles(location, bullet_spark, laser_spark, damage)
 	Signals.screen_shake.emit(damage/2, .2)
 	update_health.emit()

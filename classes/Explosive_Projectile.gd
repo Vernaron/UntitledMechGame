@@ -8,7 +8,7 @@ func _ready_custom()->void:
 	$Explosion.body_exited.connect(coll_exit)
 func _hit(damage:float, _currCollision:Node2D, _transform:Array, _sparks:bool)->void:
 	for n in explosive_targets:
-		deal_damage(damage, n,_transform,false)
+		deal_damage(damage, heat_hit, n,_transform,false)
 func _set_collide(collide : int, _is_colliding: bool)->void:
 	$ray.set_collision_mask_value(collide, true)
 	$Explosion.set_collision_mask_value(collide, _is_colliding)
